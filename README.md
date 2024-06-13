@@ -3,7 +3,7 @@
 Welcome to our Project which we have built a mail client service which allows you to send mail through SMTP service and receive them through IMAP  service using enough_mail api. and we have done this in flutter and backend is written in dart.
 ## Why Flutter?
 Flutter is an open-source UI software development kit created by Google. It is used to build  applications for mobile, web, and desktop from a single codebase. Flutter apps are written in Dart, a language optimized for fast apps on any platform.
-<h3>Reasons for using dart</h3>
+<h3>Reasons for using flutter</h3>
 
 *  Flutter allows the creation of apps for Android, iOS, Web, Linux, macOS and Windows from a single codebase.
 *  It allows the developers to see the result of code change almost instantly without restarting the app.
