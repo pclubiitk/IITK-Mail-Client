@@ -15,7 +15,7 @@ class EmailService {
       await client.connectToServer('qasid.iitk.ac.in', 993, isSecure: true);
       await client.login(username, password);
       await client.selectInbox();
-      final fetchMessages = await client.fetchRecentMessages(messageCount: 50, criteria: 'BODY.PEEK[]');
+      final fetchMessages = await client.fetchRecentMessages(messageCount: 15, criteria: 'BODY.PEEK[]');
       await client.logout();
       return fetchMessages.messages.reversed.toList();
     } on ImapException catch (e) {
