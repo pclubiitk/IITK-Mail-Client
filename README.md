@@ -30,10 +30,14 @@ There are three major features we have implemented up till now-
 
 ### 1. Clone the repository 
  git clone <repo-ssh> 
-### 2. Choose and run the emulator of your choice
-You can check the available emulators and devices by pressing `ctrl`+`shift`+`P` on windows and `cmd`+`shift`+`P` on mac
-### 3. Running the Application
-Press `fn`+`f5` to run
+### 2. Resolving dependencies
+ flutter pub get
+### 3. Choose and run the emulator of your choice
+You can check the available emulators and devices by pressing `ctrl`+`shift`+`P` on windows and `cmd`+`shift`+`P` on mac and then select your device.
+To run on your own Phone you will first need to enable developers options and USB Debugging then 
+connect your phone with USB cable. You will be able to see your phone in the list of available devices as well as you press the above commands.
+### 4. Running the Application
+Press `fn`+`f5` to run or execute `flutter run` on terminal
 
 ### Note: Please refer to video for complete demonstration
 
