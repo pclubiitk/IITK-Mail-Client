@@ -1,5 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+///We first create an instance of storage and then use save credentials function to save them
+///Call the functions getUsername and getPassword whenever we want to use saved credentials
+///for reference, go to main.dart where I have used the stored credentials
+
 class SecureStorageService {
   static const _storage = FlutterSecureStorage();
 

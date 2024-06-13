@@ -21,7 +21,7 @@ class DrawerItems extends StatelessWidget {
           const Divider(),
           NavbarItem(icon: Icons.settings, text: 'Settings', onTap: () {}),
           NavbarItem(icon: Icons.login_sharp, text: 'Log Out', onTap: () {
-            SecureStorageService.clearCredentials();
+            SecureStorageService.clearCredentials();  //To clear the saved credentials when logged out
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(

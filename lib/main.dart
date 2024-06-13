@@ -4,6 +4,11 @@ import 'package:test_drive/pages/email_list.dart';
 import 'services/auth_service.dart';
 import 'services/secure_storage_service.dart';
 
+///Encrytion Commit
+///When the app starts, it retrieve the credentials from storage,
+///if they are null it navigates to login page, otherwise it authenticates the saved
+///credentials and navigates to email view page if correct otherwise to login page
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -33,8 +38,6 @@ void main() async {
   ));
 }
 
-
-
 class MyApp extends StatelessWidget {
   final String initialRoute;
   final String? savedUsername;
@@ -58,9 +61,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/emailList': (context) => EmailListPage(
-          username: savedUsername!,
-          password: savedPassword!,
-        ),
+              username: savedUsername!,
+              password: savedPassword!,
+            ),
       },
       debugShowCheckedModeBanner: false,
     );
