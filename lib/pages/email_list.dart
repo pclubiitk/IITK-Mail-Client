@@ -1,11 +1,12 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_drive/main.dart';
+
 import 'package:test_drive/pages/compose_mail_page.dart';
 import 'package:test_drive/pages/emai_view_page.dart';
 import 'package:test_drive/services/drawer_item.dart';
 import 'package:test_drive/services/email_fetch.dart';
+import 'package:test_drive/theme_notifier.dart';
 
 class EmailListPage extends StatefulWidget {
   final String username;

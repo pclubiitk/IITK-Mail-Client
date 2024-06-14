@@ -1,8 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
-import 'package:provider/provider.dart';
-import 'package:test_drive/main.dart';
 
 class EmailViewPage extends StatefulWidget {
   final MimeMessage email;
@@ -30,7 +28,6 @@ class _EmailViewPageState extends State<EmailViewPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,

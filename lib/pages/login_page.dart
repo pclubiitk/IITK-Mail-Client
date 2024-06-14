@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_drive/main.dart';
 import 'package:test_drive/services/login_manager.dart';
+import 'package:test_drive/theme_notifier.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
