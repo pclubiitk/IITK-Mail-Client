@@ -5,11 +5,15 @@ import 'package:test_drive/services/snackbar_navigate.dart';
 class ComposeEmailPage extends StatefulWidget {
   final String username;
   final String password;
+  final String server;
+  final bool isSecure; // Add this parameter
 
   const ComposeEmailPage({
     super.key,
     required this.username,
     required this.password,
+    required this.server,
+    required this.isSecure, // Add this parameter
   });
 
   @override
@@ -32,6 +36,8 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
     await EmailSender.sendEmail(
       username: widget.username,
       password: widget.password,
+      server: widget.server,
+      isSecure: widget.isSecure, // Pass this parameter
       to: _toController.text,
       subject: _subjectController.text,
       body: _bodyController.text,
@@ -127,7 +133,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                     border: Border.all(color: Colors.grey[700]!),
                   ),
                   child: Text(
-                    "${widget.username}@iitk.ac.in",
+                    "${widget.username}@${widget.server}",
                     style: const TextStyle(color: Colors.white70),
                   ),
                 ),

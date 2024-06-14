@@ -13,7 +13,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _isAuthenticated = false;
+  bool _isSecure = true; // Default to secure
   String? _errorMessage;
+  String _selectedServer = 'iitk.ac.in'; // Default selected server
+  final List<String> _serverOptions = ['iitk.ac.in']; // List of server options
 
   @override
   void dispose() {
@@ -36,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       username: username,
       password: password,
+      server: _selectedServer,
+      isSecure: _isSecure,
       onLoginResult: (isAuthenticated, errorMessage) {
         setState(() {
           _isAuthenticated = isAuthenticated;
@@ -49,6 +54,38 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Login'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: DropdownButton<String>(
+              dropdownColor: Colors.black,
+              value: _selectedServer,
+              icon: const Icon(Icons.arrow_downward, color: Colors.white),
+              iconSize: 24,
+              elevation: 16,
+              style: const TextStyle(color: Colors.white),
+              underline: Container(
+                height: 2,
+                color: Colors.white,
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedServer = newValue!;
+                });
+              },
+              items: _serverOptions.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: Center(
         child: Container(
@@ -102,6 +139,26 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   prefixIcon: const Icon(Icons.lock, color: Colors.white),
                 ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Secure Connection',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Switch(
+                    value: _isSecure,
+                    onChanged: (value) {
+                      setState(() {
+                        _isSecure = value;
+                      });
+                    },
+                    activeColor: Colors.green,
+                    inactiveThumbColor: Colors.red,
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               Container(

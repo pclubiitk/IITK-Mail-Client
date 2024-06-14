@@ -1,18 +1,16 @@
 import 'package:enough_mail/enough_mail.dart';
 
-/// the method defined in the class logs in to the IMAP client of iitk
-/// after log in we choose inbox folder from the server
-/// the fetchRecentMessages method fetches 50(hardcoded) most recent messages from the inbox folder
-/// we reverse the mails to order them chronologically
-
 class EmailService {
   static Future<List<MimeMessage>> fetchEmails({
     required String username,
     required String password,
+    required String server,
+    required bool isSecure, // Added isSecure parameter
   }) async {
     final client = ImapClient(isLogEnabled: false);
+    final int port = isSecure ? 993 : 143; // Select port based on isSecure
     try {
-      await client.connectToServer('qasid.iitk.ac.in', 993, isSecure: true);
+      await client.connectToServer('qasid.$server', port, isSecure: isSecure);
       await client.login(username, password);
       await client.selectInbox();
       final fetchMessages = await client.fetchRecentMessages(messageCount: 15, criteria: 'BODY.PEEK[]');

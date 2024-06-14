@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:test_drive/pages/compose_mail_page.dart';
 import 'package:test_drive/pages/emai_view_page.dart';
+
 import 'package:test_drive/services/drawer_item.dart';
 import 'package:test_drive/services/email_fetch.dart';
 
 class EmailListPage extends StatefulWidget {
   final String username;
   final String password;
+  final String server;
+  final bool isSecure;
+
   const EmailListPage({
     super.key,
     required this.username,
     required this.password,
+    required this.server,
+    required this.isSecure,
   });
 
   @override
@@ -33,6 +39,8 @@ class _EmailListPageState extends State<EmailListPage> {
       final fetchedEmails = await EmailService.fetchEmails(
         username: widget.username,
         password: widget.password,
+        server: widget.server,
+        isSecure: widget.isSecure,
       );
       setState(() {
         emails = fetchedEmails;
@@ -40,6 +48,9 @@ class _EmailListPageState extends State<EmailListPage> {
       });
     } catch (e) {
       debugPrint("Failed to fetch emails: $e");
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -126,7 +137,12 @@ class _EmailListPageState extends State<EmailListPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ComposeEmailPage(username: widget.username, password: widget.password),
+              builder: (context) => ComposeEmailPage(
+                username: widget.username,
+                password: widget.password,
+                server: widget.server,
+                isSecure: widget.isSecure,
+              ),
             ),
           );
         },
