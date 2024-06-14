@@ -5,6 +5,7 @@ import 'package:test_drive/pages/email_list.dart';
 import 'package:test_drive/services/auth_service.dart';
 import 'package:test_drive/services/secure_storage_service.dart';
 import 'package:test_drive/theme_notifier.dart'; 
+import './EmailCache/initializeobjectbox.dart' ;
 
 /// Encryption Commit
 /// When the app starts, it retrieves the credentials from storage.
@@ -12,6 +13,8 @@ import 'package:test_drive/theme_notifier.dart';
 /// the saved credentials and navigates to the email view page if correct, otherwise to the login page.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeObjectBox() ;
 
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();

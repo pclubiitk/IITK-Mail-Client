@@ -7,6 +7,8 @@ import 'package:test_drive/pages/emai_view_page.dart';
 import 'package:test_drive/services/drawer_item.dart';
 import 'package:test_drive/services/email_fetch.dart';
 import 'package:test_drive/theme_notifier.dart';
+import '../EmailCache/initializeobjectbox.dart';
+import "../EmailCache/models/email.dart";
 
 class EmailListPage extends StatefulWidget {
   final String username;
@@ -22,7 +24,7 @@ class EmailListPage extends StatefulWidget {
 }
 
 class _EmailListPageState extends State<EmailListPage> {
-  List<MimeMessage> emails = [];
+  List<Email> emails = [];
   bool _isLoading = true;
 
   @override
@@ -33,12 +35,13 @@ class _EmailListPageState extends State<EmailListPage> {
 
   Future<void> _fetchEmails() async {
     try {
-      final fetchedEmails = await EmailService.fetchEmails(
+      await EmailService.fetchEmails(
         username: widget.username,
         password: widget.password,
       );
+
       setState(() {
-        emails = fetchedEmails;
+        emails = objectbox.emailBox.getAll();
         _isLoading = false;
       });
     } catch (e) {
@@ -68,7 +71,9 @@ class _EmailListPageState extends State<EmailListPage> {
               backgroundColor: theme.primaryColor,
               child: Text(
                 widget.username[0].toUpperCase(),
-                style: theme.textTheme.titleMedium?.copyWith(color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
+                style: theme.textTheme.titleMedium?.copyWith(
+                    color:
+                        themeNotifier.isDarkMode ? Colors.black : Colors.white),
               ),
             ),
             IconButton(
@@ -98,13 +103,15 @@ class _EmailListPageState extends State<EmailListPage> {
             : ListView.separated(
                 padding: const EdgeInsets.all(16.0),
                 itemCount: emails.length,
-                separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
+                separatorBuilder: (context, index) =>
+                    Divider(color: theme.dividerColor),
                 itemBuilder: (context, index) {
                   final email = emails[index];
-                  final subject = email.decodeSubject() ?? 'No Subject';
-                  final sender = email.from?.first.email ?? 'Unknown Sender';
-                  final date = email.decodeDate() ?? DateTime.now();
-                  final time = '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                  final subject = email.subject ?? 'No Subject';
+                  final sender = email.from ?? 'Unknown Sender';
+                  final date = email.receivedDate ?? DateTime.now();
+                  final time =
+                      '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -119,7 +126,10 @@ class _EmailListPageState extends State<EmailListPage> {
                         backgroundColor: theme.primaryColor,
                         child: Text(
                           sender[0].toUpperCase(),
-                          style: theme.textTheme.titleMedium?.copyWith(color:themeNotifier.isDarkMode ? Colors.black : Colors.white),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                              color: themeNotifier.isDarkMode
+                                  ? Colors.black
+                                  : Colors.white),
                         ),
                       ),
                       title: Text(
@@ -134,11 +144,14 @@ class _EmailListPageState extends State<EmailListPage> {
                         children: [
                           Text(
                             subject,
-                            style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodyLarge?.color),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color),
                           ),
                           Text(
-                            email.decodeTextPlainPart() ?? 'No Content',
-                            style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodyLarge?.color?.withOpacity(0.7)),
+                            email.subject ?? 'No Content',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.7)),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -150,11 +163,15 @@ class _EmailListPageState extends State<EmailListPage> {
                         children: [
                           Text(
                             '${date.day}/${date.month}/${date.year}',
-                            style: theme.textTheme.bodySmall?.copyWith(color: theme.textTheme.bodyLarge?.color?.withOpacity(0.6)),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.6)),
                           ),
                           Text(
                             time,
-                            style: theme.textTheme.bodySmall?.copyWith(color: theme.textTheme.bodyLarge?.color?.withOpacity(0.6)),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.6)),
                           ),
                         ],
                       ),
@@ -168,12 +185,15 @@ class _EmailListPageState extends State<EmailListPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ComposeEmailPage(username: widget.username, password: widget.password),
+              builder: (context) => ComposeEmailPage(
+                  username: widget.username, password: widget.password),
             ),
           );
         },
-        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ?? theme.primaryColor,
-        child: Icon(Icons.edit, color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
+        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ??
+            theme.primaryColor,
+        child: Icon(Icons.edit,
+            color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
       ),
     );
   }
