@@ -38,6 +38,7 @@ dependencies:
   enough_mail: ^2.1.6
   file_picker: ^8.0.3
   flutter_secure_storage: ^4.2.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
