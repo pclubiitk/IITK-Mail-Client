@@ -1,5 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
+import 'package:provider/provider.dart';
+import 'package:test_drive/main.dart';
 
 class EmailViewPage extends StatefulWidget {
   final MimeMessage email;
@@ -15,8 +18,6 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final String body;
   late final DateTime date;
 
-  /// initialise the values of the required fields in initstate 
-
   @override
   void initState() {
     super.initState();
@@ -28,51 +29,60 @@ class _EmailViewPageState extends State<EmailViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(43, 39, 39, 1),
+        backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:  Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.reply, color: Colors.white),
+            icon:  Icon(Icons.reply, color:theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               //reply logic yet to be implemented
             },
           ),
           IconButton(
-            icon: const Icon(Icons.delete, color: Colors.white),
+            icon:  Icon(Icons.delete, color:theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               // delete request logic to implemented
             },
           ),
           IconButton(
-            icon: const Icon(Icons.flag, color: Colors.white),
+            icon:  Icon(Icons.flag, color:theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // add email to flag or starred 
+              // add email to flag or starred
             },
           ),
         ],
       ),
       body: Container(
-        color: Colors.black,
+        color: theme.scaffoldBackgroundColor,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               subject,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: theme.brightness == Brightness.dark ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
             ),
             const SizedBox(height: 16),
             Row(
               children: [
                 CircleAvatar(
-                  child: Text(sender[0].toUpperCase()),
+                  child: Text(
+                    sender[0].toUpperCase(),
+                    style: theme.textTheme.titleMedium?.copyWith(color: theme.brightness == Brightness.dark ? Colors.white : Colors.black),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Column(
@@ -80,11 +90,11 @@ class _EmailViewPageState extends State<EmailViewPage> {
                   children: [
                     Text(
                       '${date.day}-${date.month}-${date.year}',
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
+                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.grey, fontSize: 14),
                     ),
                     Text(
                       sender,
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      style: theme.textTheme.bodyLarge?.copyWith(color: theme.brightness == Brightness.dark ? Colors.white : Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -97,7 +107,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
               child: SingleChildScrollView(
                 child: Text(
                   body,
-                  style: const TextStyle(color: Colors.white70, fontSize: 16),
+                  style: theme.textTheme.bodyMedium?.copyWith(color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.black87, fontSize: 16),
                 ),
               ),
             ),

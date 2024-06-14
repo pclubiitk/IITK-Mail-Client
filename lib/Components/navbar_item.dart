@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:test_drive/main.dart';
 
 class NavbarItem extends StatefulWidget {
   final IconData icon;
@@ -8,7 +10,7 @@ class NavbarItem extends StatefulWidget {
     super.key,
     required this.icon,
     required this.text,
-    required this.onTap
+    required this.onTap, TextStyle? textStyle, Color? iconColor
     });
 
   @override
@@ -16,13 +18,15 @@ class NavbarItem extends StatefulWidget {
 }
 
 class _NavbarItemState extends State<NavbarItem> {
+ 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return  ListTile(
-                leading:  Icon(widget.icon, color: Colors.white),
+                leading:  Icon(widget.icon, color: themeNotifier.isDarkMode ? Colors.white : Colors.black),
                 title: Text(
                   widget.text,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color:  themeNotifier.isDarkMode ? Colors.white : Colors.black),
                 ),
                 onTap: widget.onTap,
               );
