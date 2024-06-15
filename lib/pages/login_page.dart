@@ -68,6 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
       body: Center(
+         
         child: Container(
           padding: const EdgeInsets.all(24.0),
           child: Column(
