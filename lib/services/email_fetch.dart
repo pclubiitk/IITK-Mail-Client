@@ -28,18 +28,6 @@ class EmailService {
       throw Exception("IMAP failed with $e");
     }
 
-    int getHighestUidFromDatabase() {
-      // Assuming objectbox.emailBox contains the Email entities
-      final query = objectbox.emailBox
-          .query()
-          .order(Email_.uniqueId, flags: Order.descending)
-          .build();
-      final highestUidEmail = query.findFirst();
-      query.close();
-      if (highestUidEmail != null) {
-        return int.parse(highestUidEmail.uniqueId);
-      }
-      return 0; // If no emails are found, return 0
-    }
+    
   }
 }
