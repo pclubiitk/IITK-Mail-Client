@@ -51,12 +51,6 @@ class _EmailViewPageState extends State<EmailViewPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.reply, color: theme.appBarTheme.iconTheme?.color),
-            onPressed: () {
-              //reply logic yet to be implemented
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               // delete request logic to implemented
@@ -160,31 +154,12 @@ class _EmailViewPageState extends State<EmailViewPage> {
                         ),
                         Text('Reply',
                             style: TextStyle(
-                              color: theme.brightness == Brightness.dark
-                                  ? Colors.white70
-                                  : Colors.black87,
+                              color: theme.appBarTheme.iconTheme?.color,
                             )),
                       ],
                     ),
                     const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.reply_all),
-                          onPressed: () {},
-                        ),
-                        Text('Reply all',
-                            style: TextStyle(
-                              color: theme.brightness == Brightness.dark
-                                  ? Colors.white70
-                                  : Colors.black87,
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 10,
+                      width: 15,
                     ),
                     Column(
                       children: [
@@ -204,9 +179,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                         ),
                         Text('Forward',
                             style: TextStyle(
-                              color: theme.brightness == Brightness.dark
-                                  ? Colors.white70
-                                  : Colors.black87,
+                              color:theme.appBarTheme.iconTheme?.color,
                             )),
                       ],
                     )
