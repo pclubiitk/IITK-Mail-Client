@@ -1,11 +1,12 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
 
 class EmailForward {
   static Future<void> forwardEmail({
     required String username,
     required String password,
-    required MimeMessage originalMessage,
+    required Email originalMessage,
     required String forwardTo,
     required String forwardBody,
     required Function(String, Color) onResult,
@@ -17,8 +18,10 @@ class EmailForward {
 
       await client.authenticate(username, password, AuthMechanism.plain);
 
-      final originalPlainText = originalMessage.decodeTextPlainPart() ?? '';
-      final originalHtmlText = originalMessage.decodeTextHtmlPart() ?? '';
+      // final originalPlainText = originalMessage.decodeTextPlainPart() ?? '';
+      // final originalHtmlText = originalMessage.decodeTextHtmlPart() ?? '';
+      final originalPlainText = originalMessage.body ?? '';
+      final originalHtmlText = originalMessage.body ?? '';
       final forwardText = '\n\nForwarded message:\n\n$originalPlainText';
       final fullForwardBody = '$forwardBody\n$forwardText';
 
@@ -28,7 +31,7 @@ class EmailForward {
       )
         ..from = [MailAddress(username, '$username@iitk.ac.in')]
         ..to = [MailAddress(forwardTo, forwardTo)]
-        ..subject = 'Fwd: ${originalMessage.decodeSubject()}';
+        ..subject = 'Fwd: ${originalMessage.subject}';
 
       final mimeMessage = builder.buildMimeMessage();
       final sendResponse = await client.sendMessage(mimeMessage);

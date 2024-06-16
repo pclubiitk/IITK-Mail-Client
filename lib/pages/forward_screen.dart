@@ -1,10 +1,11 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
 import 'package:test_drive/services/forward_mail.dart';
 import 'package:test_drive/services/snackbar_navigate.dart';
 
 class ForwardEmailPage extends StatefulWidget {
-  final MimeMessage email;
+  final Email email;
   final String username;
   final String password;
 
@@ -71,9 +72,9 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
   @override
   void initState() {
     super.initState();
-    subject = widget.email.decodeSubject() ?? 'No Subject';
-    sender = widget.email.from?.first.email ?? 'Unknown Sender';
-    body = widget.email.decodeTextPlainPart() ?? 'No Content';
+    subject = widget.email.subject ?? 'No Subject';
+    sender = widget.email.from ?? 'Unknown Sender';
+    body = widget.email.body ?? 'No Content';
   }
 
   @override

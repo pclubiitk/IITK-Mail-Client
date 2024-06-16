@@ -1,10 +1,11 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
 import 'package:test_drive/services/reply_mail.dart';
 import 'package:test_drive/services/snackbar_navigate.dart';
 
 class ReplyEmailPage extends StatefulWidget {
-  final MimeMessage email;
+  final Email email;
   final String username;
   final String password;
 
@@ -69,9 +70,9 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
   @override
   void initState() {
     super.initState();
-    subject = widget.email.decodeSubject() ?? 'No Subject';
-    sender = widget.email.from?.first.email ?? 'Unknown Sender';
-    body = widget.email.decodeTextPlainPart() ?? 'No Content';
+    subject = widget.email.subject ?? 'No Subject';
+    sender = widget.email.from ?? 'Unknown Sender';
+    body = widget.email.body ?? 'No Content';
   }
 
   @override
@@ -119,7 +120,7 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
                       border: Border.all(),
                     ),
                     child: Text(
-                      widget.email.from?.first.email ?? 'Unknown Sender',
+                      widget.email.from ?? 'Unknown Sender',
                       style: TextStyle(
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
                       ),

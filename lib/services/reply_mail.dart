@@ -1,11 +1,12 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
 
 class EmailReply {
   static Future<void> replyEmail({
     required String username,
     required String password,
-    required MimeMessage originalMessage,
+    required Email originalMessage,
     required String replyBody,
     required Function(String, Color) onResult,
   }) async {
@@ -16,18 +17,21 @@ class EmailReply {
 
       await client.authenticate(username, password, AuthMechanism.plain);
 
-      final originalPlainText = originalMessage.decodeTextPlainPart() ?? '';
-      final originalHtmlText = originalMessage.decodeTextHtmlPart() ?? '';
-      final replyText = '\n\nOn ${originalMessage.decodeDate()} ${originalMessage.decodeSender()} wrote:\n\n$originalPlainText';
+      // final originalPlainText = originalMessage.body ?? '';
+      // final originalHtmlText = originalMessage.body ?? '';
+      final body = originalMessage.body;
+      // final replyText = '\n\nOn ${originalMessage.decodeDate()} ${originalMessage.decodeSender()} wrote:\n\n$originalPlainText';
+      final replyText = '\n\nOn ${originalMessage.receivedDate} ${originalMessage.from} wrote:\n\n$body';
       final fullReplyBody = '$replyBody\n$replyText';
 
       final builder = MessageBuilder.prepareMultipartAlternativeMessage(
         plainText: fullReplyBody,
-        htmlText: "<p>$replyBody</p><blockquote>$originalHtmlText</blockquote>",
+        htmlText: "<p>$replyBody</p><blockquote>$body</blockquote>",
       )
         ..from = [MailAddress(username, '$username@iitk.ac.in')]
-        ..to = originalMessage.from?.toList()
-        ..subject = 'Re: ${originalMessage.decodeSubject()}';
+        ..to = [MailAddress('', originalMessage.to)]
+        // ..to = originalMessage.from
+        ..subject = 'Re: ${originalMessage.subject}';
 
       final mimeMessage = builder.buildMimeMessage();
       final sendResponse = await client.sendMessage(mimeMessage);
