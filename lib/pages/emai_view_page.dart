@@ -2,11 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
 import 'package:test_drive/pages/forward_screen.dart';
 import 'package:test_drive/pages/reply_screen.dart';
 
 class EmailViewPage extends StatefulWidget {
-  final MimeMessage email;
+  final Email email;
   final String username;
   final String password;
 
