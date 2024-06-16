@@ -117,7 +117,7 @@ class _EmailListPageState extends State<EmailListPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EmailViewPage(email: email),
+                          builder: (context) => EmailViewPage(email: email,username: widget.username,password: widget.password,),
                         ),
                       );
                     },
