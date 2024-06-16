@@ -38,7 +38,10 @@ dependencies:
   enough_mail: ^2.1.6
   file_picker: ^8.0.3
   flutter_secure_storage: ^4.2.1
-  provider: ^6.1.2
+  objectbox_flutter_libs: ^1.4.1
+  objectbox: ^1.6.0
+  path_provider: ^2.0.11
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +53,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  build_runner: ^2.2.1
+  objectbox_generator: ^1.6.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

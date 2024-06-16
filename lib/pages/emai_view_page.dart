@@ -30,10 +30,10 @@ class _EmailViewPageState extends State<EmailViewPage> {
   @override
   void initState() {
     super.initState();
-    subject = widget.email.decodeSubject() ?? 'No Subject';
-    sender = widget.email.from?.first.email ?? 'Unknown Sender';
-    body = widget.email.decodeTextPlainPart() ?? 'No Content';
-    date = widget.email.decodeDate() ?? DateTime.now();
+    subject = widget.email.subject ?? 'No Subject';
+    sender = widget.email.from ?? 'Unknown Sender';
+    body = widget.email.body ?? 'No Content';
+    date = widget.email.receivedDate ?? DateTime.now();
   }
 
   @override
