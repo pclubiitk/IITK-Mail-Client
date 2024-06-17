@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_drive/services/send_mail.dart';
 import 'package:test_drive/services/snackbar_navigate.dart';
+import 'package:provider/provider.dart';
+import '../models/advanced_settings_model.dart';
 
 class ComposeEmailPage extends StatefulWidget {
   final String username;
@@ -25,11 +27,13 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
   Color _snackBarColor = Colors.green;
 
   Future<void> _sendEmail() async {
+    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
     setState(() {
       _isLoading = true;
     });
 
     await EmailSender.sendEmail(
+      emailSettings: emailSettings,
       username: widget.username,
       password: widget.password,
       to: _toController.text,
@@ -64,47 +68,45 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.appBarTheme.backgroundColor,
+        backgroundColor: const Color.fromRGBO(43, 39, 39, 1),
         leading: IconButton(
-          icon:  Icon(Icons.arrow_back, color:  theme.appBarTheme.iconTheme?.color),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
           IconButton(
-            icon:  Icon(Icons.send, color: theme.appBarTheme.iconTheme?.color),
+            icon: const Icon(Icons.send, color: Colors.white),
             onPressed: _isLoading ? null : _sendEmail,
           ),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
-        color: theme.scaffoldBackgroundColor,
+        color: Colors.black,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                 SizedBox(
+                const SizedBox(
                   width: 50,
                   child: Text(
                     'To:',
-                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _toController,
-                    style: TextStyle(color: theme.colorScheme.onSurface),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.dividerColor),
+                        borderSide: BorderSide(color: Colors.grey.shade800),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.primaryColor),
+                        borderSide: BorderSide(color: Colors.grey.shade900),
                       ),
                     ),
                   ),
@@ -114,24 +116,23 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                 SizedBox(
+                const SizedBox(
                   width: 50,
                   child: Text(
                     'From:',
-                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: theme.cardColor,
+                    color: Colors.grey[850],
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(),
-                     //border: Border.all(color: theme.borderColor),
+                    border: Border.all(color: Colors.grey[700]!),
                   ),
                   child: Text(
                     "${widget.username}@iitk.ac.in",
-                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6)),
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 ),
               ],
@@ -139,23 +140,23 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 70,
                   child: Text(
                     'Subject:',
-                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _subjectController,
-                    style: TextStyle(color: theme.colorScheme.onSurface),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.dividerColor),
+                        borderSide: BorderSide(color: Colors.grey.shade800),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.primaryColor),
+                        borderSide: BorderSide(color: Colors.grey.shade900),
                       ),
                     ),
                   ),
@@ -163,11 +164,11 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
               ],
             ),
             const SizedBox(height: 16),
-            const Divider(color: Colors.grey),
+            const Divider(),
             Expanded(
               child: TextField(
                 controller: _bodyController,
-                style: TextStyle(color: theme.colorScheme.onSurface),
+                style: const TextStyle(color: Colors.white),
                 maxLines: null,
                 expands: true,
                 decoration: const InputDecoration(

@@ -1,5 +1,6 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
+import '../models/advanced_settings_model.dart';
 
 /// the sendEmail method of the class accepts the email components, connects to the SMTP client of iitk,
 /// sends ehlo command to the server,builds a MIME message, wraps the body in plain text & html text, 
@@ -14,10 +15,15 @@ class EmailSender {
     required String subject,
     required String body,
     required Function(String, Color) onResult,
+    required EmailSettingsModel emailSettings,
   }) async {
+    final String serverName=emailSettings.smtpServer;
+    final int port=int.parse(emailSettings.smtpPort);
+    final String domainName=emailSettings.domain;
+    
     final client = SmtpClient('enough_mail', isLogEnabled: true);
     try {
-      await client.connectToServer('mmtp.iitk.ac.in', 465, isSecure: true);
+      await client.connectToServer(serverName, port, isSecure: port == 465);
       await client.ehlo();
 
       await client.authenticate(username, password, AuthMechanism.plain);
@@ -26,7 +32,7 @@ class EmailSender {
         plainText: body,
         htmlText: "<p>$body</p>",
       )
-        ..from = [MailAddress(username, '$username@iitk.ac.in')]
+        ..from = [MailAddress(username, '$username@$domainName')]
         ..to = [MailAddress(to, to)]
         ..subject = subject;
 
