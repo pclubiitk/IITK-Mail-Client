@@ -5,6 +5,10 @@ import '../models/advanced_settings_model.dart';
 import 'auth_service.dart';
 import 'secure_storage_service.dart';
 
+/// the login method uses AuthService method to verify the credentials, 
+/// if credentials are verified, it navigates to Email list page and 
+/// also save the credentials to flutter secure storage
+
 class LoginManager {
   static Future<void> login({
     required BuildContext context,

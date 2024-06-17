@@ -2,7 +2,8 @@ import 'package:enough_mail/enough_mail.dart';
 import 'dart:io';
 import 'dart:async';
 import '../models/advanced_settings_model.dart';
-
+/// The authenticate method of AuthService verifies the credentials from IMTP server of iitk
+/// Throws an [ImapException] if there is an error during the connection or authentication process.
 class AuthService {
   static Future<String?> authenticate({
     required EmailSettingsModel emailSettings,
