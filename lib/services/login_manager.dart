@@ -29,7 +29,7 @@ class LoginManager {
       }
       onLoginResult(true, null);
     } else {
-      onLoginResult(false, 'Authentication failed! Please enter valid credentials.');
+      onLoginResult(false, 'You have entered wrong \n username or password');
     }
   }
 }

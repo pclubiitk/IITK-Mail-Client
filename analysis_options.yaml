@@ -7,6 +7,13 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+analyzer:
+  errors:
+    camel_case_types: ignore
+    non_constant_identifier_names: ignore
+    prefer_const_constructors: ignore
+    unnecessary_brace_in_string_interps: ignore
+    use_super_parameters: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:

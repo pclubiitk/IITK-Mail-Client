@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'Dependency_Injection.dart';
+import 'package:get/get.dart';
 import 'package:test_drive/pages/login_page.dart';
 import 'package:test_drive/pages/email_list.dart';
 import 'package:test_drive/services/auth_service.dart';
@@ -34,6 +36,7 @@ void main() async {
       validPassword = savedPassword;
     }
   }
+  
 
   runApp(
     ChangeNotifierProvider(
@@ -45,6 +48,7 @@ void main() async {
       ),
     ),
   );
+  DependencyInjection.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -63,7 +67,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'IITK Mail-Client',
       theme: themeNotifier.getTheme(),
       initialRoute: initialRoute,

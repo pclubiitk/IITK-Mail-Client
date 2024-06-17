@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:enough_mail/enough_mail.dart';
+
 import 'package:test_drive/EmailCache/models/email.dart';
 import 'package:test_drive/pages/forward_screen.dart';
 import 'package:test_drive/pages/reply_screen.dart';
@@ -31,7 +31,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
   @override
   void initState() {
     super.initState();
-    subject = widget.email.subject ?? 'No Subject';
+    subject = widget.email.subject ?? "No Subject";
     sender = widget.email.from ?? 'Unknown Sender';
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();

@@ -16,7 +16,9 @@ class AuthService {
       await client.logout();
       return true;
     } on ImapException {
+
       return false;
+
     }
   }
 }
