@@ -1,9 +1,22 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
+import 'package:test_drive/pages/forward_screen.dart';
+import 'package:test_drive/pages/reply_screen.dart';
 
 class EmailViewPage extends StatefulWidget {
-  final MimeMessage email;
-  const EmailViewPage({super.key, required this.email});
+  final Email email;
+  final String username;
+  final String password;
+
+  const EmailViewPage({
+    super.key,
+    required this.email,
+    required this.username,
+    required this.password,
+  });
 
   @override
   State<EmailViewPage> createState() => _EmailViewPageState();
@@ -15,95 +28,167 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final String body;
   late final DateTime date;
 
-  /// initialise the values of the required fields in initstate 
-
   @override
   void initState() {
     super.initState();
-    subject = widget.email.decodeSubject() ?? 'No Subject';
-    sender = widget.email.from?.first.email ?? 'Unknown Sender';
-    body = widget.email.decodeTextPlainPart() ?? 'No Content';
-    date = widget.email.decodeDate() ?? DateTime.now();
+    subject = widget.email.subject ?? 'No Subject';
+    sender = widget.email.from ?? 'Unknown Sender';
+    body = widget.email.body ?? 'No Content';
+    date = widget.email.receivedDate ?? DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(43, 39, 39, 1),
+        backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:
+              Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.reply, color: Colors.white),
-            onPressed: () {
-              //reply logic yet to be implemented
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.white),
+            icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               // delete request logic to implemented
             },
           ),
           IconButton(
-            icon: const Icon(Icons.flag, color: Colors.white),
+            icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // add email to flag or starred 
+              // add email to flag or starred
             },
           ),
         ],
       ),
       body: Container(
-        color: Colors.black,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              subject,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
-            ),
-            const SizedBox(height: 16),
-            Row(
+          color: theme.scaffoldBackgroundColor,
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  child: Text(sender[0].toUpperCase()),
+                Text(
+                  subject,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
                 ),
-                const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                const SizedBox(height: 16),
+                Row(
                   children: [
-                    Text(
-                      '${date.day}-${date.month}-${date.year}',
-                      style: const TextStyle(color: Colors.white70, fontSize: 14),
+                    CircleAvatar(
+                      child: Text(
+                        sender[0].toUpperCase(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black),
+                      ),
                     ),
-                    Text(
-                      sender,
-                      style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${date.day}-${date.month}-${date.year}',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white70
+                                    : Colors.grey,
+                                fontSize: 14),
+                          ),
+                          Text(
+                            sender,
+                            maxLines: null,
+                            overflow: TextOverflow.fade,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
+                SizedBox(height: 16),
+                Divider(color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  body,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white70
+                          : Colors.black87,
+                      fontSize: 16),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.reply),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReplyEmailPage(
+                                    email: widget.email,
+                                    username: widget.username,
+                                    password: widget.password),
+                              ),
+                            );
+                          },
+                        ),
+                        Text('Reply',
+                            style: TextStyle(
+                              color: theme.appBarTheme.iconTheme?.color,
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.forward),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForwardEmailPage(
+                                    email: widget.email,
+                                    username: widget.username,
+                                    password: widget.password),
+                              ),
+                            );
+                          },
+                        ),
+                        Text('Forward',
+                            style: TextStyle(
+                              color:theme.appBarTheme.iconTheme?.color,
+                            )),
+                      ],
+                    )
+                  ],
+                )
               ],
             ),
-            const SizedBox(height: 16),
-            const Divider(color: Colors.grey),
-            const SizedBox(height: 16),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(
-                  body,
-                  style: const TextStyle(color: Colors.white70, fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

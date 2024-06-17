@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:enough_mail/enough_mail.dart';
 import 'package:test_drive/pages/compose_mail_page.dart';
 import 'package:test_drive/pages/emai_view_page.dart';
 import 'package:test_drive/services/drawer_item.dart';
 import 'package:test_drive/services/email_fetch.dart';
 import '../models/advanced_settings_model.dart';
+import 'package:test_drive/theme_notifier.dart';
+import '../EmailCache/initializeobjectbox.dart';
+import "../EmailCache/models/email.dart";
 import 'package:provider/provider.dart';
 
 class EmailListPage extends StatefulWidget {
@@ -21,7 +23,7 @@ class EmailListPage extends StatefulWidget {
 }
 
 class _EmailListPageState extends State<EmailListPage> {
-  List<MimeMessage> emails = [];
+  List<Email> emails = [];
   bool _isLoading = true;
 
   @override
@@ -31,15 +33,16 @@ class _EmailListPageState extends State<EmailListPage> {
   }
 
   Future<void> _fetchEmails() async {
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     try {
-      final fetchedEmails = await EmailService.fetchEmails(
+      await EmailService.fetchEmails(
         emailSettings: emailSettings,
         username: widget.username,
         password: widget.password,
       );
       setState(() {
-        emails = fetchedEmails;
+        emails = objectbox.emailBox.getAll();
         _isLoading = false;
       });
     } catch (e) {
@@ -49,58 +52,111 @@ class _EmailListPageState extends State<EmailListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(43, 39, 39, 1),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         title: Row(
           children: [
-            const Text('Inbox', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            Text(
+              'Inbox',
+              style: theme.textTheme.titleLarge?.copyWith(
+                color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const Spacer(),
             CircleAvatar(
-              child: Text(widget.username[0].toUpperCase()),
+              backgroundColor: theme.primaryColor,
+              child: Text(
+                widget.username[0].toUpperCase(),
+                style: theme.textTheme.titleMedium?.copyWith(
+                    color:
+                        themeNotifier.isDarkMode ? Colors.black : Colors.white),
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                themeNotifier.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                color: theme.iconTheme.color,
+              ),
+              onPressed: () {
+                themeNotifier.toggleTheme();
+              },
             ),
           ],
         ),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(
+          color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+        ),
       ),
       drawer: const Drawer(child: DrawerItems()),
       body: Container(
-        color: Colors.black,
+        color: theme.scaffoldBackgroundColor,
         child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                ),
               )
             : ListView.separated(
                 padding: const EdgeInsets.all(16.0),
                 itemCount: emails.length,
-                separatorBuilder: (context, index) => const Divider(color: Colors.grey),
+                separatorBuilder: (context, index) =>
+                    Divider(color: theme.dividerColor),
                 itemBuilder: (context, index) {
                   final email = emails[index];
-                  final subject = email.decodeSubject() ?? 'No Subject';
-                  final sender = email.from?.first.email ?? 'Unknown Sender';
-                  final date = email.decodeDate() ?? DateTime.now();
-                  final time = '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                  final subject = email.subject ?? 'No Subject';
+                  final sender = email.from ?? 'Unknown Sender';
+                  final date = email.receivedDate ?? DateTime.now();
+                  final time =
+                      '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EmailViewPage(email: email),
+                          builder: (context) => EmailViewPage(
+                            email: email,
+                            username: widget.username,
+                            password: widget.password,
+                          ),
                         ),
                       );
                     },
                     child: ListTile(
                       leading: CircleAvatar(
-                        child: Text(sender[0].toUpperCase()),
+                        backgroundColor: theme.primaryColor,
+                        child: Text(
+                          sender[0].toUpperCase(),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                              color: themeNotifier.isDarkMode
+                                  ? Colors.black
+                                  : Colors.white),
+                        ),
                       ),
-                      title: Text(sender, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      title: Text(
+                        sender,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.textTheme.bodyLarge?.color,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(subject, style: const TextStyle(color: Colors.white)),
                           Text(
-                            email.decodeTextPlainPart() ?? 'No Content',
-                            style: const TextStyle(color: Colors.white70),
+                            subject,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color),
+                          ),
+                          Text(
+                            email.subject ?? 'No Content',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.7)),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -112,11 +168,15 @@ class _EmailListPageState extends State<EmailListPage> {
                         children: [
                           Text(
                             '${date.day}/${date.month}/${date.year}',
-                            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.6)),
                           ),
                           Text(
                             time,
-                            style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 10),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.textTheme.bodyLarge?.color
+                                    ?.withOpacity(0.6)),
                           ),
                         ],
                       ),
@@ -130,12 +190,15 @@ class _EmailListPageState extends State<EmailListPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ComposeEmailPage(username: widget.username, password: widget.password),
+              builder: (context) => ComposeEmailPage(
+                  username: widget.username, password: widget.password),
             ),
           );
         },
-        backgroundColor: Colors.blueGrey.shade600,
-        child: const Icon(Icons.edit, color: Colors.white),
+        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ??
+            theme.primaryColor,
+        child: Icon(Icons.edit,
+            color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
       ),
     );
   }

@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:test_drive/pages/login_page.dart';
 import 'package:test_drive/pages/email_list.dart';
-import 'services/auth_service.dart';
-import 'services/secure_storage_service.dart';
-import 'package:provider/provider.dart';
+import 'package:test_drive/services/auth_service.dart';
+import 'package:test_drive/services/secure_storage_service.dart';
+import 'package:test_drive/theme_notifier.dart'; 
+import './EmailCache/initializeobjectbox.dart' ;
 import 'models/advanced_settings_model.dart';
 
+/// Encryption Commit
+/// When the app starts, it retrieves the credentials from storage.
+/// If they are null, it navigates to the login page. Otherwise, it authenticates
+/// the saved credentials and navigates to the email view page if correct, otherwise to the login page.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeObjectBox() ;
   final emailSettings = await SecureStorageService.loadSettings();
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();
-
+  
   String initialRoute = '/login';
   String? validUsername;
   String? validPassword;
 
-  if (savedUsername != null && savedPassword != null) {
+ if (savedUsername != null && savedPassword != null) {
     String? authResult = await AuthService.authenticate(
       emailSettings: emailSettings,
       username: savedUsername,
@@ -30,14 +38,21 @@ void main() async {
     }
   }
 
-  runApp(MyApp(
-    initialRoute: initialRoute,
-    savedUsername: validUsername,
-    savedPassword: validPassword,
-    emailSettings: emailSettings,
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => EmailSettingsModel()),
+      ],
+      child: MyApp(
+        initialRoute: initialRoute,
+        savedUsername: validUsername,
+        savedPassword: validPassword,
+        emailSettings: emailSettings,
+      ),
+    ),
+  );
 }
-
 class MyApp extends StatelessWidget {
   final String initialRoute;
   final String? savedUsername;
@@ -54,23 +69,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => emailSettings,
-      child: MaterialApp(
-        title: 'IITK Mail-Client',
-        theme: ThemeData(
-          useMaterial3: true,
-        ),
-        initialRoute: initialRoute,
-        routes: {
-          '/login': (context) => const LoginPage(),
-          '/emailList': (context) => EmailListPage(
-                username: savedUsername!,
-                password: savedPassword!,
-              ),
-        },
-        debugShowCheckedModeBanner: false,
-      ),
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
+    return MaterialApp(
+      title: 'IITK Mail-Client',
+      theme: themeNotifier.getTheme(),
+      initialRoute: initialRoute,
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/emailList': (context) => EmailListPage(
+              username: savedUsername!,
+              password: savedPassword!,
+            ),
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

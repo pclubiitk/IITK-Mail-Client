@@ -68,45 +68,46 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(43, 39, 39, 1),
+        backgroundColor: theme.appBarTheme.backgroundColor,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:  Icon(Icons.arrow_back, color:  theme.appBarTheme.iconTheme?.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.send, color: Colors.white),
+           icon:  Icon(Icons.send, color: theme.appBarTheme.iconTheme?.color),
             onPressed: _isLoading ? null : _sendEmail,
           ),
         ],
       ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
-        color: Colors.black,
+        color: theme.scaffoldBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const SizedBox(
+                 SizedBox(
                   width: 50,
                   child: Text(
                     'To:',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _toController,
-                    style: const TextStyle(color: Colors.white),
+                   style: TextStyle(color: theme.colorScheme.onSurface),
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade800),
+                         borderSide: BorderSide(color: theme.dividerColor),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade900),
+                        borderSide: BorderSide(color: theme.primaryColor),
                       ),
                     ),
                   ),
@@ -116,23 +117,23 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 50,
                   child: Text(
                     'From:',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: Colors.grey[850],
+                    color: theme.cardColor,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey[700]!),
+                    border: Border.all(),
                   ),
                   child: Text(
                     "${widget.username}@iitk.ac.in",
-                    style: const TextStyle(color: Colors.white70),
+                    style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6)),
                   ),
                 ),
               ],
@@ -140,23 +141,23 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                const SizedBox(
+                 SizedBox(
                   width: 70,
                   child: Text(
                     'Subject:',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                     style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.6), fontSize: 16),
                   ),
                 ),
                 Expanded(
                   child: TextField(
                     controller: _subjectController,
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: theme.colorScheme.onSurface),
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade800),
+                        borderSide: BorderSide(color: theme.dividerColor),
                       ),
                       focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade900),
+                        borderSide: BorderSide(color: theme.primaryColor),
                       ),
                     ),
                   ),
@@ -164,11 +165,11 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
               ],
             ),
             const SizedBox(height: 16),
-            const Divider(),
+            const Divider(color: Colors.grey),
             Expanded(
               child: TextField(
                 controller: _bodyController,
-                style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: theme.colorScheme.onSurface),
                 maxLines: null,
                 expands: true,
                 decoration: const InputDecoration(
