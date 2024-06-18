@@ -14,6 +14,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'EmailCache/models/address.dart';
 import 'EmailCache/models/email.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -58,6 +59,25 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(7, 4260523706248214418),
             name: 'uniqueId',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 6256951143984616053),
+      name: 'Address',
+      lastPropertyId: const IdUid(2, 3736889626014911024),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7722912678837494629),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 3736889626014911024),
+            name: 'mailAddress',
             type: 9,
             flags: 0)
       ],
@@ -85,7 +105,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 7075052845957833006),
+      lastEntityId: const IdUid(2, 6256951143984616053),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -111,7 +131,6 @@ ModelDefinition getObjectBoxModel() {
           final toOffset = fbb.writeString(object.to);
           final subjectOffset = fbb.writeString(object.subject);
           final bodyOffset = fbb.writeString(object.body);
-          final uniqueIdOffset = fbb.writeString(object.uniqueId);
           fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, fromOffset);
@@ -119,7 +138,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(3, subjectOffset);
           fbb.addOffset(4, bodyOffset);
           fbb.addInt64(5, object.receivedDate.millisecondsSinceEpoch);
-          fbb.addOffset(6, uniqueIdOffset);
+          fbb.addInt64(6, object.uniqueId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -139,8 +158,35 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 12, ''),
               receivedDate: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0)),
-              uniqueId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 16, ''));
+              uniqueId:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0));
+
+          return object;
+        }),
+    Address: EntityDefinition<Address>(
+        model: _entities[1],
+        toOneRelations: (Address object) => [],
+        toManyRelations: (Address object) => {},
+        getId: (Address object) => object.id,
+        setId: (Address object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Address object, fb.Builder fbb) {
+          final mailAddressOffset = fbb.writeString(object.mailAddress);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, mailAddressOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Address(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              mailAddress: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''));
 
           return object;
         })
@@ -172,5 +218,15 @@ class Email_ {
 
   /// see [Email.uniqueId]
   static final uniqueId =
-      QueryStringProperty<Email>(_entities[0].properties[6]);
+      QueryIntegerProperty<Email>(_entities[0].properties[6]);
+}
+
+/// [Address] entity fields to define ObjectBox queries.
+class Address_ {
+  /// see [Address.id]
+  static final id = QueryIntegerProperty<Address>(_entities[1].properties[0]);
+
+  /// see [Address.mailAddress]
+  static final mailAddress =
+      QueryStringProperty<Address>(_entities[1].properties[1]);
 }

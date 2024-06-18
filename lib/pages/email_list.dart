@@ -25,10 +25,12 @@ class EmailListPage extends StatefulWidget {
 class _EmailListPageState extends State<EmailListPage> {
   List<Email> emails = [];
   bool _isLoading = true;
+  ScrollController controller = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    controller.addListener(_loadmore);
     _fetchEmails();
   }
 
@@ -47,6 +49,21 @@ class _EmailListPageState extends State<EmailListPage> {
       });
     } catch (e) {
       debugPrint("Failed to fetch emails: $e");
+    }
+  }
+
+  Future<void> _loadmore() async {
+    if (controller.position.pixels >=
+        (controller.position.maxScrollExtent - 10)) {
+      try {
+        await EmailService.fetchNewEmails(
+            username: widget.username, password: widget.password);
+        setState(() {
+          emails = objectbox.emailBox.getAll();
+        });
+      } catch (e) {
+        debugPrint("Failed to fetch emails: $e");
+      }
     }
   }
 
@@ -93,97 +110,104 @@ class _EmailListPageState extends State<EmailListPage> {
         ),
       ),
       drawer: const Drawer(child: DrawerItems()),
-      body: Container(
-        color: theme.scaffoldBackgroundColor,
-        child: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
-                ),
-              )
-            : ListView.separated(
-                padding: const EdgeInsets.all(16.0),
-                itemCount: emails.length,
-                separatorBuilder: (context, index) =>
-                    Divider(color: theme.dividerColor),
-                itemBuilder: (context, index) {
-                  final email = emails[index];
-                  final subject = email.subject ?? 'No Subject';
-                  final sender = email.from ?? 'Unknown Sender';
-                  final date = email.receivedDate ?? DateTime.now();
-                  final time =
-                      '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EmailViewPage(
-                            email: email,
-                            username: widget.username,
-                            password: widget.password,
+
+      body: RefreshIndicator(
+        onRefresh: _fetchEmails,
+        child: Container(
+          color: theme.scaffoldBackgroundColor,
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(16.0),
+                  controller: controller,
+                  itemCount: emails.length,
+                  separatorBuilder: (context, index) =>
+                      Divider(color: theme.dividerColor),
+                  itemBuilder: (context, index) {
+                    final email = emails[index];
+                    final subject = email.subject ?? 'No Subject';
+                    final sender = email.from ?? 'Unknown Sender';
+                    final date = email.receivedDate ?? DateTime.now();
+                    final time =
+                        '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmailViewPage(
+                              email: email,
+                              username: widget.username,
+                              password: widget.password,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: theme.primaryColor,
+                          child: Text(
+                            sender[0].toUpperCase(),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                                color: themeNotifier.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white),
+
                           ),
                         ),
-                      );
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: theme.primaryColor,
-                        child: Text(
-                          sender[0].toUpperCase(),
+                        title: Text(
+                          sender,
                           style: theme.textTheme.titleMedium?.copyWith(
-                              color: themeNotifier.isDarkMode
-                                  ? Colors.black
-                                  : Colors.white),
+                            color: theme.textTheme.bodyLarge?.color,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              subject,
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.textTheme.bodyLarge?.color),
+                            ),
+                            Text(
+                              email.subject ?? 'No Content',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.textTheme.bodyLarge?.color
+                                      ?.withOpacity(0.7)),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${date.day}/${date.month}/${date.year}',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.textTheme.bodyLarge?.color
+                                      ?.withOpacity(0.6)),
+                            ),
+                            Text(
+                              time,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.textTheme.bodyLarge?.color
+                                      ?.withOpacity(0.6)),
+                            ),
+                          ],
                         ),
                       ),
-                      title: Text(
-                        sender,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          color: theme.textTheme.bodyLarge?.color,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            subject,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.textTheme.bodyLarge?.color),
-                          ),
-                          Text(
-                            email.subject ?? 'No Content',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.textTheme.bodyLarge?.color
-                                    ?.withOpacity(0.7)),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      trailing: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${date.day}/${date.month}/${date.year}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.textTheme.bodyLarge?.color
-                                    ?.withOpacity(0.6)),
-                          ),
-                          Text(
-                            time,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.textTheme.bodyLarge?.color
-                                    ?.withOpacity(0.6)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
+                    );
+                  },
+                ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
