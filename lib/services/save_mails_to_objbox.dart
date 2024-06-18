@@ -36,7 +36,48 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           subject: message.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
-          uniqueId: "Soon to add", // Add unique ID logic if needed
+          uniqueId: message.sequenceId!, // Add unique ID logic if needed
+        );
+
+        // Save Email object to the database
+        objectbox.emailBox.put(email);
+        logger.i('Email from ${email.from} to ${email.to} saved successfully.');
+      } catch (e) {
+        logger.e('Failed to save email: ${e.toString()}');
+      }
+    }
+  } catch (e) {
+    logger.e('Error during saving emails to database: ${e.toString()}');
+  }
+}
+
+Future<void> UpdateDatabase(List<MimeMessage> messages) async {
+
+  try {
+    // Iterate over each message and save to database
+    for (final message in messages) {
+      try {
+        String? body;
+        String? plainText = message.decodeTextPlainPart();
+        String? htmlText = message.decodeTextHtmlPart();
+
+        // Determine the body content
+        if (plainText != null && plainText.isNotEmpty) {
+          body = plainText;
+        } else if (htmlText != null && htmlText.isNotEmpty) {
+          body = htmlText;
+        } else {
+          body = 'No Text Body';
+        }
+
+        // Create Email object
+        final email = Email(
+          from: message.from?.isNotEmpty == true ? message.from!.first.email : 'Unknown',
+          to: message.to?.isNotEmpty == true ? message.to!.first.email : 'Unknown',
+          subject: message.decodeSubject() ?? 'No Subject',
+          body: body,
+          receivedDate: message.decodeDate() ?? DateTime.now(),
+          uniqueId: message.sequenceId!, // Add unique ID logic if needed
         );
 
         // Save Email object to the database
