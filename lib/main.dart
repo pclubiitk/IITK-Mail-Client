@@ -4,8 +4,8 @@ import 'package:test_drive/pages/login_page.dart';
 import 'package:test_drive/pages/email_list.dart';
 import 'package:test_drive/services/auth_service.dart';
 import 'package:test_drive/services/secure_storage_service.dart';
-import 'package:test_drive/theme_notifier.dart'; 
-import './EmailCache/initializeobjectbox.dart' ;
+import 'package:test_drive/theme_notifier.dart';
+import './EmailCache/initializeobjectbox.dart';
 import 'models/advanced_settings_model.dart';
 
 /// Encryption Commit
@@ -15,16 +15,16 @@ import 'models/advanced_settings_model.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initializeObjectBox() ;
+  await initializeObjectBox();
   final emailSettings = await SecureStorageService.loadSettings();
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();
-  
+
   String initialRoute = '/login';
   String? validUsername;
   String? validPassword;
 
- if (savedUsername != null && savedPassword != null) {
+  if (savedUsername != null && savedPassword != null) {
     String? authResult = await AuthService.authenticate(
       emailSettings: emailSettings,
       username: savedUsername,
@@ -53,6 +53,7 @@ void main() async {
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   final String initialRoute;
   final String? savedUsername;

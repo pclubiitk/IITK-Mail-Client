@@ -5,6 +5,7 @@ import 'dart:convert';
 ///We first create an instance of storage and then use save credentials function to save them
 ///Call the functions getUsername and getPassword whenever we want to use saved credentials
 ///for reference, go to main.dart where I have used the stored credentials
+///The email settings key stores the configuration of advanced settings in a model named emailSettings.
 
 class SecureStorageService {
   static const _storage = FlutterSecureStorage();
@@ -38,6 +39,6 @@ class SecureStorageService {
       settings.fromJson(settingsJson);
       return settings;
     }
-    return EmailSettingsModel(); // Default values
+    return EmailSettingsModel(); 
   }
 }

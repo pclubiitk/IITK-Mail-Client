@@ -2,8 +2,11 @@ import 'package:enough_mail/enough_mail.dart';
 import 'dart:io';
 import 'dart:async';
 import '../models/advanced_settings_model.dart';
-/// The authenticate method of AuthService verifies the credentials from IMTP server of iitk
-/// Throws an [ImapException] if there is an error during the connection or authentication process.
+
+/// The authenticate method of AuthService verifies the credentials
+/// Throws the respective errors during the connection or authentication process.
+/// It uses either IMAP or SMTP to authenticate based on preference in advanced settings
+/// By default, it uses IMAP secure server to login
 class AuthService {
   static Future<String?> authenticate({
     required EmailSettingsModel emailSettings,
@@ -45,17 +48,18 @@ class AuthService {
   }) async {
     final client = ImapClient(isLogEnabled: false);
     try {
-      await client.connectToServer(serverName, port, isSecure: port == 993);
+      await client.connectToServer(serverName, port, isSecure: port == 993);  //if port name is 993 then isSecure=True otherwise false
       await client.login(username, password);
       await client.logout();
+      print("Imap Login");
 
       return null; // No error message on success
     } on ImapException {
-      return 'IMAP Authentication failed: Enter valid username or password';
+      return 'IMAP Authentication failed: Enter valid username or password'; //When credentials are incorrect
     } on SocketException {
-      return 'SocketException: Invalid server name';
+      return 'SocketException: Invalid server name'; //When server name is incorrect
     } on TimeoutException {
-      return 'TimeoutException: Connection timed out';
+      return 'TimeoutException: Connection timed out'; //When port name is incorrect
     }
   }
 
@@ -70,6 +74,7 @@ class AuthService {
       await client.connectToServer(serverName, port, isSecure: port == 465);
       await client.ehlo();
       await client.authenticate(username, password, AuthMechanism.plain);
+      print("SMTP login");
 
       return null; // No error message on success
     } on SmtpException {

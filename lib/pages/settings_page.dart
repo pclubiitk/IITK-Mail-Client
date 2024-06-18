@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:test_drive/pages/advanced_settings_page.dart'; // Import AdvancedSettingsPage
+import 'package:provider/provider.dart';
+import 'package:test_drive/pages/advanced_settings_page.dart';
+import 'package:test_drive/theme_notifier.dart'; 
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        title: Text(
           'Settings',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white, // Setting text color to white
-          ),
+          style: theme.appBarTheme.titleTextStyle,
         ),
-        iconTheme: IconThemeData(
-            color: Colors.white), // Setting back arrow color to white
+        iconTheme: theme.appBarTheme.iconTheme,
+        actions: [
+          IconButton(
+            icon: Icon(
+              themeNotifier.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: theme.primaryColor,
+            ),
+            onPressed: () {
+              themeNotifier.toggleTheme();
+            },
+          ),
+        ],
       ),
-      backgroundColor: Colors.black, // Setting background color to black
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Column(
         children: [
           GestureDetector(
@@ -33,26 +44,25 @@ class SettingsPage extends StatelessWidget {
               );
             },
             child: Card(
-              margin: EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 8), // Adjusting vertical margin
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 8), 
               elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
-              color: Colors.grey[900], // Setting card color to dark grey
+              color: theme.inputDecorationTheme.fillColor,
               child: ListTile(
                 title: Text(
                   'Advanced Settings',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white, // Setting text color to white
-                  ),
                 ),
-                leading: Icon(Icons.settings,
-                    color: Colors.white), // Setting icon color to white
-                trailing: Icon(Icons.arrow_forward_ios,
-                    color: Colors.white), // Setting icon color to white
+                leading: Icon(
+                  Icons.settings,
+                  color: theme.iconTheme.color,
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  color: theme.iconTheme.color,
+                ),
               ),
             ),
           ),

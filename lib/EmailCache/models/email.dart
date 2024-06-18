@@ -8,7 +8,7 @@ class Email {
   String subject;
   String body;
   DateTime receivedDate;
-  int uniqueId  ;
+  String uniqueId  ;
 
   Email({
     this.id = 0,

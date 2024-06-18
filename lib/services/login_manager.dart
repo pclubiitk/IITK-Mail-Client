@@ -9,6 +9,7 @@ import 'secure_storage_service.dart';
 /// if credentials are verified, it navigates to Email list page and 
 /// also save the credentials to flutter secure storage
 
+
 class LoginManager {
   static Future<void> login({
     required BuildContext context,
