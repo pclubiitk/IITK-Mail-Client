@@ -13,7 +13,7 @@ int getHighestUidFromDatabase() {
       final highestUidEmail = query.findFirst();
       query.close();
       if (highestUidEmail != null) {
-        return int.parse(highestUidEmail.uniqueId);
+        return int.parse('${highestUidEmail.uniqueId}');
       }
       return 0; // If no emails are found, return 0
     }
