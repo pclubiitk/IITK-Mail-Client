@@ -48,7 +48,9 @@ class AuthService {
   }) async {
     final client = ImapClient(isLogEnabled: false);
     try {
-      await client.connectToServer(serverName, port, isSecure: port == 993);  //if port name is 993 then isSecure=True otherwise false
+      await client.connectToServer(serverName, port,
+          isSecure: port ==
+              993); //if port name is 993 then isSecure=True otherwise false
       await client.login(username, password);
       await client.logout();
       print("Imap Login");
@@ -57,9 +59,9 @@ class AuthService {
     } on ImapException {
       return 'IMAP Authentication failed: Enter valid username or password'; //When credentials are incorrect
     } on SocketException {
-      return 'SocketException: Invalid server name'; //When server name is incorrect
+      return 'Invalid server name'; //When server name is incorrect
     } on TimeoutException {
-      return 'TimeoutException: Connection timed out'; //When port name is incorrect
+      return 'Incorrect Port Name'; //When port name is incorrect
     }
   }
 
@@ -80,9 +82,9 @@ class AuthService {
     } on SmtpException {
       return 'SMTP Authentication failed: Enter valid username or password';
     } on SocketException {
-      return 'SocketException: Invalid server name';
+      return 'Invalid server name';
     } on TimeoutException {
-      return 'TimeoutException: Connection timed out';
+      return 'Incorrect Port Name';
     }
   }
 }
