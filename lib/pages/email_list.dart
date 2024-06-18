@@ -1,14 +1,13 @@
-import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:test_drive/pages/compose_mail_page.dart';
 import 'package:test_drive/pages/emai_view_page.dart';
 import 'package:test_drive/services/drawer_item.dart';
 import 'package:test_drive/services/email_fetch.dart';
+import '../models/advanced_settings_model.dart';
 import 'package:test_drive/theme_notifier.dart';
 import '../EmailCache/initializeobjectbox.dart';
 import "../EmailCache/models/email.dart";
+import 'package:provider/provider.dart';
 
 class EmailListPage extends StatefulWidget {
   final String username;
@@ -36,12 +35,14 @@ class _EmailListPageState extends State<EmailListPage> {
   }
 
   Future<void> _fetchEmails() async {
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     try {
       await EmailService.fetchEmails(
+        emailSettings: emailSettings,
         username: widget.username,
         password: widget.password,
       );
-
       setState(() {
         emails = objectbox.emailBox.getAll();
         _isLoading = false;
@@ -109,6 +110,7 @@ class _EmailListPageState extends State<EmailListPage> {
         ),
       ),
       drawer: const Drawer(child: DrawerItems()),
+
       body: RefreshIndicator(
         onRefresh: _fetchEmails,
         child: Container(
@@ -155,6 +157,7 @@ class _EmailListPageState extends State<EmailListPage> {
                                 color: themeNotifier.isDarkMode
                                     ? Colors.black
                                     : Colors.white),
+
                           ),
                         ),
                         title: Text(

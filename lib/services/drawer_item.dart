@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_drive/Components/navbar_item.dart';
 import 'package:test_drive/pages/login_page.dart';
 import 'package:test_drive/services/secure_storage_service.dart';
+import '../pages/settings_page.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
 class DrawerItems extends StatelessWidget {
@@ -47,7 +48,13 @@ class DrawerItems extends StatelessWidget {
           NavbarItem(
             icon: Icons.settings,
             text: 'Settings',
-            onTap: () {},
+            onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) => const SettingsPage(),
+                ),
+              );},
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
@@ -55,6 +62,7 @@ class DrawerItems extends StatelessWidget {
             icon: Icons.login_sharp,
             text: 'Log Out',
             onTap: () {
+              SecureStorageService.clearCredentials();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

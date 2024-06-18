@@ -6,6 +6,7 @@ import 'package:test_drive/services/auth_service.dart';
 import 'package:test_drive/services/secure_storage_service.dart';
 import 'package:test_drive/theme_notifier.dart'; 
 import './EmailCache/initializeobjectbox.dart' ;
+import 'models/advanced_settings_model.dart';
 
 /// Encryption Commit
 /// When the app starts, it retrieves the credentials from storage.
@@ -15,20 +16,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeObjectBox() ;
-
+  final emailSettings = await SecureStorageService.loadSettings();
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();
-  bool isAuthenticated = false;
+  
   String initialRoute = '/login';
   String? validUsername;
   String? validPassword;
 
-  if (savedUsername != null && savedPassword != null) {
-    isAuthenticated = await AuthService.authenticate(
+ if (savedUsername != null && savedPassword != null) {
+    String? authResult = await AuthService.authenticate(
+      emailSettings: emailSettings,
       username: savedUsername,
       password: savedPassword,
     );
-    if (isAuthenticated) {
+
+    if (authResult == null) {
       initialRoute = '/emailList';
       validUsername = savedUsername;
       validPassword = savedPassword;
@@ -36,26 +39,31 @@ void main() async {
   }
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(), 
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => EmailSettingsModel()),
+      ],
       child: MyApp(
         initialRoute: initialRoute,
         savedUsername: validUsername,
         savedPassword: validPassword,
+        emailSettings: emailSettings,
       ),
     ),
   );
 }
-
 class MyApp extends StatelessWidget {
   final String initialRoute;
   final String? savedUsername;
   final String? savedPassword;
+  final EmailSettingsModel emailSettings;
 
   const MyApp({
     required this.initialRoute,
     this.savedUsername,
     this.savedPassword,
+    required this.emailSettings,
     Key? key,
   }) : super(key: key);
 

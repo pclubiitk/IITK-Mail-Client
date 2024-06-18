@@ -3,6 +3,8 @@ import 'package:test_drive/Components/address_book.dart';
 import 'package:test_drive/EmailCache/initializeobjectbox.dart';
 import 'package:test_drive/services/send_mail.dart';
 import 'package:test_drive/services/snackbar_navigate.dart';
+import 'package:provider/provider.dart';
+import '../models/advanced_settings_model.dart';
 
 class ComposeEmailPage extends StatefulWidget {
   final String username;
@@ -27,11 +29,13 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
   Color _snackBarColor = Colors.green;
 
   Future<void> _sendEmail() async {
+    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
     setState(() {
       _isLoading = true;
     });
 
     await EmailSender.sendEmail(
+      emailSettings: emailSettings,
       username: widget.username,
       password: widget.password,
       to: _toController.map((e) => e.text).toList(),
@@ -67,7 +71,6 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor,
@@ -78,7 +81,10 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         ),
         actions: [
           IconButton(
+
+
             icon: Icon(Icons.send, color: theme.appBarTheme.iconTheme?.color),
+
             onPressed: _isLoading ? null : _sendEmail,
           ),
         ],
@@ -101,6 +107,8 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                   ),
                 ),
                 Expanded(
+
+
                     child: InputChipField(
                         suggestionList: objectbox.addressBook
                             .getAll()
@@ -109,6 +117,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                             )
                             .toList(),
                         textControllers: _toController)),
+
               ],
             ),
             const SizedBox(height: 16),
@@ -129,7 +138,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                     color: theme.cardColor,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(),
-                    //border: Border.all(color: theme.borderColor),
+
                   ),
                   child: Text(
                     "${widget.username}@iitk.ac.in",
@@ -142,13 +151,15 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                SizedBox(
+                 SizedBox(
                   width: 70,
                   child: Text(
                     'Subject:',
+
                     style: TextStyle(
                         color: theme.colorScheme.onSurface.withOpacity(0.6),
                         fontSize: 16),
+
                   ),
                 ),
                 Expanded(
@@ -172,7 +183,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             Expanded(
               child: TextField(
                 controller: _bodyController,
-                style: TextStyle(color: theme.colorScheme.onSurface),
+                  style: TextStyle(color: theme.colorScheme.onSurface),
                 maxLines: null,
                 expands: true,
                 decoration: const InputDecoration(
