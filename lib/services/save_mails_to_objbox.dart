@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:enough_mail/enough_mail.dart';
 import 'package:logger/logger.dart';
 
-import 'package:test_drive/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
 import '../EmailCache/models/email.dart'; // Ensure correct import for Email model
 
 final logger = Logger();
@@ -41,6 +43,8 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
 
         // Save Email object to the database
         objectbox.emailBox.put(email);
+        final filename = '${DateTime.now().millisecondsSinceEpoch}_${email.uniqueId}';
+        await objectbox.maildir.writeEmail(filename, message);
         logger.i('Email from ${email.from} to ${email.to} saved successfully.');
       } catch (e) {
         logger.e('Failed to save email: ${e.toString()}');
@@ -82,6 +86,9 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
 
         // Save Email object to the database
         objectbox.emailBox.put(email);
+        // Save Email to mail dir 
+        final filename = '${DateTime.now().millisecondsSinceEpoch}_${email.uniqueId}';
+        await objectbox.maildir.writeEmail(filename, message);
         logger.i('Email from ${email.from} to ${email.to} saved successfully.');
       } catch (e) {
         logger.e('Failed to save email: ${e.toString()}');

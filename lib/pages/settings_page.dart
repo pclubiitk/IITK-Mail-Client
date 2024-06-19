@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_drive/pages/advanced_settings_page.dart';
-import 'package:test_drive/theme_notifier.dart'; 
+import 'package:iitk_mail_client/pages/advanced_settings_page.dart';
+import 'package:iitk_mail_client/theme_notifier.dart'; 
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);

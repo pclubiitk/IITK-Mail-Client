@@ -1,6 +1,6 @@
 import 'package:logger/logger.dart';
 
-import 'package:test_drive/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
 import '../EmailCache/models/address.dart';
 
 final logger = Logger();
