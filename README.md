@@ -29,9 +29,13 @@ There are three major features we have implemented up till now-
 ## Installation
 
 ### 1. Clone the repository 
- git clone <repo-ssh> 
+```
+ git clone <sshkey or web url>
+```
 ### 2. Resolving dependencies
+```
  flutter pub get
+```
 ### 3. Choose and run the emulator of your choice
 You can check the available emulators and devices by pressing `ctrl`+`shift`+`P` on windows and `cmd`+`shift`+`P` on mac and then select your device.
 To run on your own Phone you will first need to enable developers options and USB Debugging then 
