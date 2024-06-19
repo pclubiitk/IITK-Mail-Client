@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+///Model to handle advanced Settings
 class EmailSettingsModel extends ChangeNotifier {
   String _domain = 'iitk.ac.in';
   String _imapServer = 'qasid.iitk.ac.in';
   String _imapPort = '993';
   String _smtpServer = 'mmtp.iitk.ac.in';
   String _smtpPort = '465';
-  String _authServerType = 'IMAP'; // Default to IMAP
+  String _authServerType = 'IMAP';
 
   String get domain => _domain;
   String get imapServer => _imapServer;
