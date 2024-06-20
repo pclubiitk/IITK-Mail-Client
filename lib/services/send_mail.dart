@@ -8,6 +8,7 @@ import 'package:test_drive/services/save_address_to_objbox.dart';
 /// sends ehlo command to the server,builds a MIME message, wraps the body in plain text & html text,
 /// spefifies the from ,to and subject field and then send the message to recipient client
 /// we give out corresponding messages depending upon the outcome
+/// then the mail is also saved in INBOX.Sent mailbox using IMAP server
 
 class EmailSender {
   static Future<void> sendEmail({
@@ -19,13 +20,16 @@ class EmailSender {
     required Function(String, Color) onResult,
     required EmailSettingsModel emailSettings,
   }) async {
-    final String serverName=emailSettings.smtpServer;
-    final int port=int.parse(emailSettings.smtpPort);
+    final String smtpServerName=emailSettings.smtpServer;
+    final int smtpPort=int.parse(emailSettings.smtpPort);
+    final String imapServerName=emailSettings.imapServer;
+    final int imapPort=int.parse(emailSettings.imapPort);
     final String domainName=emailSettings.domain;
     
     final client = SmtpClient('enough_mail', isLogEnabled: true);
+    final imapClient = ImapClient(isLogEnabled: true);
     try {
-      await client.connectToServer(serverName, port, isSecure: port == 465);
+      await client.connectToServer(smtpServerName, smtpPort, isSecure: smtpPort == 465);
       await client.ehlo();
 
       await client.authenticate(username, password, AuthMechanism.plain);
@@ -43,6 +47,14 @@ class EmailSender {
 
       final mimeMessage = builder.buildMimeMessage();
       final sendResponse = await client.sendMessage(mimeMessage);
+    await imapClient.connectToServer(imapServerName, imapPort, isSecure: imapPort==993);
+    await imapClient.login(username, password);
+
+ 
+    final mailboxPath = 'INBOX.Sent';
+    final mailbox = await imapClient.selectMailboxByPath(mailboxPath);
+
+    await imapClient.appendMessage(mimeMessage, targetMailbox: mailbox);
 
       if (sendResponse.isOkStatus) {
         saveAddressToDatabase(to);
@@ -55,6 +67,7 @@ class EmailSender {
     } catch (e) {
       onResult('Failed to send email: $e', Colors.red);
     } finally {
+      await imapClient.logout();
       await client.quit();
     }
   }

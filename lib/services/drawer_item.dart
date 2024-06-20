@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:test_drive/Components/navbar_item.dart';
 import 'package:test_drive/pages/login_page.dart';
+import 'package:test_drive/pages/sent_mail_list.dart';
+import 'package:test_drive/pages/email_list.dart';
 import 'package:test_drive/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
 class DrawerItems extends StatelessWidget {
-  const DrawerItems({super.key});
+   final String username;
+  final String password;
+  const DrawerItems({
+    super.key,
+    required this.username,
+    required this.password,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +27,26 @@ class DrawerItems extends StatelessWidget {
           NavbarItem(
             icon: Icons.inbox,
             text: 'Inbox',
-            onTap: () {},
+            onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) => EmailListPage(username: username,password:password,),
+                ),
+              );},
+            textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
+            iconColor: theme.iconTheme.color,
+          ),
+           NavbarItem(
+            icon: Icons.send,
+            text: 'Sent',
+            onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) => SentEmailListPage(username: username,password:password,),
+                ),
+              );},
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
