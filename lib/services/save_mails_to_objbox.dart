@@ -1,7 +1,7 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:logger/logger.dart';
 
-import 'package:test_drive/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
 import '../EmailCache/models/email.dart'; // Ensure correct import for Email model
 
 final logger = Logger();

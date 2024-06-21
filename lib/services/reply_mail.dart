@@ -1,6 +1,6 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:test_drive/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/EmailCache/models/email.dart';
 
 class EmailReply {
   static Future<void> replyEmail({

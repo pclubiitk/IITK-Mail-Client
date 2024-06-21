@@ -1,4 +1,5 @@
 import 'package:enough_mail/enough_mail.dart';
+import "package:iitk_mail_client/EmailCache/cache_service.dart";
 import "../EmailCache/objectbox.dart";
 import "./save_mails_to_objbox.dart";
 import "../EmailCache/initializeobjectbox.dart" ;
@@ -25,8 +26,8 @@ class EmailService {
       await client.login(username, password);
       await client.selectInbox();
       final fetchMessages = await client.fetchRecentMessages(
-          messageCount: 15, criteria: 'BODY.PEEK[]');
-      await saveEmailsToDatabase(fetchMessages.messages.reversed.toList());
+          messageCount: 20, criteria: "(UID BODY.PEEK[])");
+      await saveEmailsToDatabase(fetchMessages.messages);
       await client.logout();
     } on ImapException catch (e) {
       throw Exception("IMAP failed with $e");
@@ -34,21 +35,33 @@ class EmailService {
   }
 
   static Future<void> fetchNewEmails({
+    required EmailSettingsModel emailSettings,
     required String username,
     required String password,
   }) async {
+    final String serverName=emailSettings.imapServer;
+    final int port=int.parse(emailSettings.imapPort);
     final client = ImapClient(isLogEnabled: false);
     try{
-      await client.connectToServer('qasid.iitk.ac.in', 993, isSecure: true);
+      await client.connectToServer(serverName, port, isSecure: port == 993);
       await client.login(username, password);
       await client.selectInbox();
-      final upperSequenceId = objectbox.emailBox.getAll().last.uniqueId - 1;
-      var lowerSequenceId = upperSequenceId - 30;
-      if(lowerSequenceId < 1){
-        lowerSequenceId = 1;
+      List<MimeMessage> allFetchedMessages = [];
+      int? highestUid = getHighestUidFromDatabase();
+      int fetchuid = highestUid + 1;
+
+      final fetchResult =  await client.uidFetchMessagesByCriteria("$fetchuid:* (UID BODY.PEEK[])");
+
+      if (fetchResult.messages.length == 1) {
+        if (fetchResult.messages[0].uid != highestUid) {
+          allFetchedMessages.addAll(fetchResult.messages);
+        }
       }
-      final fetchMessages = await client.fetchMessages(MessageSequence.fromRange(lowerSequenceId, upperSequenceId), "(FLAGS BODY[])");
-      await UpdateDatabase(fetchMessages.messages.reversed.toList());
+      else {
+        allFetchedMessages.addAll(fetchResult.messages);
+      }
+      if(allFetchedMessages.isNotEmpty) {await UpdateDatabase(allFetchedMessages);}
+      else{ logger.i("No new mails recieved");}
       await client.logout();
     } on ImapException catch (e) {
       throw Exception("IMAP failed with $e");

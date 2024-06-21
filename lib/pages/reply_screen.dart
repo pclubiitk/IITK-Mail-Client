@@ -1,8 +1,8 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:test_drive/EmailCache/models/email.dart';
-import 'package:test_drive/services/reply_mail.dart';
-import 'package:test_drive/services/snackbar_navigate.dart';
+import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/services/reply_mail.dart';
+import 'package:iitk_mail_client/services/snackbar_navigate.dart';
 
 class ReplyEmailPage extends StatefulWidget {
   final Email email;
