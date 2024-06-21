@@ -20,7 +20,7 @@ Future<void> saveAddressToDatabase(List<String> addresses) async {
 
         // Save Email object to the database
         if(check){
-          logger.i('Address $to_save_address saved successfully.');
+          logger.i('Address $to_save_address already saved.');
         }else {
           objectbox.addressBook.put(to_save_address);
           logger.i('Address $to_save_address saved successfully.');
