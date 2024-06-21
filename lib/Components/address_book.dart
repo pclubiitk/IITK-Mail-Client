@@ -224,15 +224,20 @@ class ChipsInputState<T> extends State<ChipsInput<T>> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     controller.updateValues(<T>[...widget.values]);
 
     return TextField(
       minLines: 1,
       maxLines: 3,
+      cursorColor: theme.colorScheme.onSurface.withOpacity(0.8),
       textInputAction: TextInputAction.done,
       style: widget.style,
       strutStyle: widget.strutStyle,
       controller: controller,
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+      ),
       onChanged: (String value) =>
           widget.onTextChanged?.call(controller.textWithoutReplacements),
       onSubmitted: (String value) =>

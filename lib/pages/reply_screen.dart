@@ -83,7 +83,8 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
+          icon:
+              Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
@@ -94,7 +95,7 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 18),
         color: theme.scaffoldBackgroundColor,
         child: SingleChildScrollView(
           child: Column(
@@ -102,84 +103,73 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
             children: [
               Row(
                 children: [
-                  SizedBox(
-                    width: 50,
-                    child: Text(
-                      'To:',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
-                      ),
+                  Text(
+                    'From',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(),
-                    ),
-                    child: Text(
-                      widget.email.from ?? 'Unknown Sender',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
+                  const SizedBox(width: 12),
+                  Text(
+                    '${widget.username}@iitk.ac.in',
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: theme.colorScheme.onSurface.withOpacity(0.8)),
                   ),
                 ],
               ),
-              const SizedBox(height: 9),
+              Divider(
+                thickness: 0.5,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
               Row(
                 children: [
-                  SizedBox(
-                    width: 50,
-                    child: Text(
-                      'From:',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
-                      ),
+                  Text(
+                    'To     ',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(),
-                    ),
-                    child: Text(
-                      '${widget.username}@iitk.ac.in',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
+                  const SizedBox(width: 12),
+                  Text(
+                    sender,
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: theme.colorScheme.onSurface.withOpacity(0.8)),
                   ),
                 ],
+              ),
+              Divider(
+                thickness: 0.5,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 60,
-                    child: Text(
-                      'Subject:',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
-                      ),
+                  Text(
+                    'Subject',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
+                  const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Re: $subject',
+                      subject,
                       maxLines: null,
                       style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
+                          fontSize: 14,
+                          color: theme.colorScheme.onSurface.withOpacity(0.8)),
                     ),
-                  ),
+                  )
                 ],
+              ),
+              Divider(
+                thickness: 0.5,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
               ),
               Container(
                 // decoration: BoxDecoration(border: Border.all()),
@@ -189,7 +179,8 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
                     children: [
                       TextField(
                         maxLines: null,
-                        cursorColor: theme.colorScheme.onSurface.withOpacity(0.6),
+                        cursorColor:
+                            theme.colorScheme.onSurface.withOpacity(0.6),
                         controller: _replyBodyController,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -206,13 +197,17 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              _isBodyVisible ? 'Hide Original Message' : 'Show Original Message',
+                              _isBodyVisible
+                                  ? 'Hide Original Message'
+                                  : 'Show Original Message',
                               style: TextStyle(
                                 color: theme.colorScheme.primary,
                               ),
                             ),
                             Icon(
-                              _isBodyVisible ? Icons.expand_less : Icons.expand_more,
+                              _isBodyVisible
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
                               color: theme.colorScheme.primary,
                             ),
                           ],
@@ -230,8 +225,7 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
                   ),
                 ),
               ),
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator()),
+              if (_isLoading) const Center(child: CircularProgressIndicator()),
             ],
           ),
         ),

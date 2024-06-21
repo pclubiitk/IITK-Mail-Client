@@ -85,7 +85,8 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
+          icon:
+              Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
@@ -96,147 +97,153 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 16),
         color: theme.scaffoldBackgroundColor,
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: Text(
-                      'To:',
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(18.0, 10.0, 18, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'From',
                       style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
+                        fontSize: 18,
+                        color: theme.colorScheme.onSurface.withOpacity(0.8),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: _forwardToController,
-                      style: TextStyle(color: theme.colorScheme.onSurface),
-                      decoration: InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: theme.dividerColor),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: theme.primaryColor),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 9),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    child: Text(
-                      'From:',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: theme.cardColor,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(),
-                    ),
-                    child: Text(
+                    const SizedBox(width: 12),
+                    Text(
                       '${widget.username}@iitk.ac.in',
                       style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
+                          fontSize: 17,
+                          color: theme.colorScheme.onSurface.withOpacity(0.8)),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 60,
-                    child: Text(
-                      'Subject:',
+                  ],
+                ),
+                Divider(
+                  thickness: 0.5,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'To     ',
                       style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16,
-                      ),
-                      
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      subject,
-                      maxLines: null,
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 18,
+                        color: theme.colorScheme.onSurface.withOpacity(0.8),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Container(
-               // decoration: BoxDecoration(border: Border.all()),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      TextField(
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: TextField(
+                        cursorColor:
+                            theme.colorScheme.onSurface.withOpacity(0.6),
+                        // Input recievers address here
                         maxLines: null,
-                        cursorColor: theme.colorScheme.onSurface.withOpacity(0.6),
-                        controller: _forwardBodyController,
-                         decoration: const InputDecoration(
-                         border: InputBorder.none,
-                        ),
-                       ),
-                      const SizedBox(height: 15),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isBodyVisible = !_isBodyVisible;
-                          });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _isBodyVisible ? 'Hide Original Message' : 'Show Original Message',
-                              style: TextStyle(
-                                color: theme.colorScheme.primary,
-                               
-                              ),
-                            ),
-                            Icon(
-                              _isBodyVisible ? Icons.expand_less : Icons.expand_more,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ],
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                        controller: _forwardToController,
+                        decoration: const InputDecoration(
+                          hintText: 'Forward To',
+                          hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                          border: InputBorder.none,
                         ),
                       ),
-                      if (_isBodyVisible)
-                        Text(
-                          body,
+                    ),
+                  ],
+                ),
+                Divider(
+                  thickness: 0.5,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Subject',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: theme.colorScheme.onSurface.withOpacity(0.8),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        subject,
+                        maxLines: null,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color:
+                                theme.colorScheme.onSurface.withOpacity(0.8)),
+                      ),
+                    )
+                  ],
+                ),
+                Divider(
+                  thickness: 0.5,
+                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                ),
+                Container(
+                  // decoration: BoxDecoration(border: Border.all()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        TextField(
                           maxLines: null,
-                          style: TextStyle(
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          cursorColor:
+                              theme.colorScheme.onSurface.withOpacity(0.6),
+                          controller: _forwardBodyController,
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
                           ),
                         ),
-                    ],
+                        const SizedBox(height: 15),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isBodyVisible = !_isBodyVisible;
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                _isBodyVisible
+                                    ? 'Hide Original Message'
+                                    : 'Show Original Message',
+                                style: TextStyle(
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                              Icon(
+                                _isBodyVisible
+                                    ? Icons.expand_less
+                                    : Icons.expand_more,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (_isBodyVisible)
+                          Text(
+                            body,
+                            maxLines: null,
+                            style: TextStyle(
+                              color:
+                                  theme.colorScheme.onSurface.withOpacity(0.6),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator()),
-            ],
+                if (_isLoading)
+                  const Center(child: CircularProgressIndicator()),
+              ],
+            ),
           ),
         ),
       ),
