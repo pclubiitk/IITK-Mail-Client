@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_drive/theme_notifier.dart';
+import 'package:iitk_mail_client/theme_notifier.dart';
 
 
 class NavbarItem extends StatefulWidget {

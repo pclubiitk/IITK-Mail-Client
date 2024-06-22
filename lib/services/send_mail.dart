@@ -1,7 +1,7 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import '../models/advanced_settings_model.dart';
-import 'package:test_drive/services/save_address_to_objbox.dart';
+import 'package:iitk_mail_client/services/save_address_to_objbox.dart';
 
 
 /// the sendEmail method of the class accepts the email components, connects to the SMTP client of iitk,

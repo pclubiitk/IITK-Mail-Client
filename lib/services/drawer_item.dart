@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:test_drive/Components/navbar_item.dart';
-import 'package:test_drive/pages/address_book.dart';
-import 'package:test_drive/pages/email_list.dart';
-import 'package:test_drive/pages/login_page.dart';
-import 'package:test_drive/pages/sent_mail_list.dart';
-import 'package:test_drive/pages/email_list.dart';
-import 'package:test_drive/services/secure_storage_service.dart';
+
+import 'package:iitk_mail_client/Components/navbar_item.dart';
+import 'package:iitk_mail_client/pages/address_book.dart';
+import 'package:iitk_mail_client/pages/email_list.dart';
+import 'package:iitk_mail_client/pages/login_page.dart';
+import 'package:iitk_mail_client/pages/sent_mail_list.dart';
+import 'package:iitk_mail_client/pages/email_list.dart';
+import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item

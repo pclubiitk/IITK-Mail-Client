@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:test_drive/Components/address_book.dart';
-import 'package:test_drive/EmailCache/initializeobjectbox.dart';
-import 'package:test_drive/services/send_mail.dart';
-import 'package:test_drive/services/snackbar_navigate.dart';
+import 'package:iitk_mail_client/Components/address_book.dart';
+import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/services/send_mail.dart';
+import 'package:iitk_mail_client/services/snackbar_navigate.dart';
 import 'package:provider/provider.dart';
 import '../models/advanced_settings_model.dart';
 
