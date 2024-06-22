@@ -93,7 +93,7 @@ class _EmailListPageState extends State<SentEmailListPage> {
           color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
-      drawer: Drawer(child: DrawerItems(username: widget.username,password: widget.password,)),
+      drawer: const Drawer(child: DrawerItems()),
       body: Container(
         color: theme.scaffoldBackgroundColor,
         child: _isLoading
