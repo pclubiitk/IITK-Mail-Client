@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:iitk_mail_client/Components/navbar_item.dart';
 import 'package:iitk_mail_client/pages/address_book.dart';
 import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
+import 'package:iitk_mail_client/pages/sent_mail_list.dart';
+import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
+
+
 class DrawerItems extends StatefulWidget {
   const DrawerItems({super.key});
 
@@ -48,8 +53,20 @@ class _DrawerItemsState extends State<DrawerItems> {
                       builder: (context) => EmailListPage(
                           username: username!, password: password!)));
             },
-            textStyle: theme.textTheme.bodyLarge
-                ?.copyWith(color: theme.colorScheme.onSurface),
+            textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
+            iconColor: theme.iconTheme.color,
+          ),
+           NavbarItem(
+            icon: Icons.send,
+            text: 'Sent',
+            onTap: () {Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) => SentEmailListPage(username: username!,password:password!,),
+                ),
+              );},
+            textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
           NavbarItem(
