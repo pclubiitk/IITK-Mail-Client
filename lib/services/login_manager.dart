@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_drive/pages/email_list.dart';
+import 'package:iitk_mail_client/pages/email_list.dart';
 import '../models/advanced_settings_model.dart';
 import 'auth_service.dart';
 import 'secure_storage_service.dart';

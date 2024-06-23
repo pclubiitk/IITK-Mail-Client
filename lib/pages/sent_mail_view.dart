@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
-import 'package:iitk_mail_client/pages/forward_screen.dart';
-import 'package:iitk_mail_client/pages/reply_screen.dart';
+import 'package:test_drive/EmailCache/models/email.dart';
+import 'package:test_drive/pages/forward_screen.dart';
+import 'package:test_drive/pages/reply_screen.dart';
 
-class EmailViewPage extends StatefulWidget {
+class SentEmailViewPage extends StatefulWidget {
   final Email email;
   final String username;
   final String password;
 
-  const EmailViewPage({
+  const SentEmailViewPage({
     super.key,
     required this.email,
     required this.username,
@@ -19,12 +19,13 @@ class EmailViewPage extends StatefulWidget {
   });
 
   @override
-  State<EmailViewPage> createState() => _EmailViewPageState();
+  State<SentEmailViewPage> createState() => _SentEmailViewPageState();
 }
 
-class _EmailViewPageState extends State<EmailViewPage> {
+class _SentEmailViewPageState extends State<SentEmailViewPage> {
   late final String subject;
   late final String sender;
+  late final String recipient;
   late final String body;
   late final DateTime date;
 
@@ -33,6 +34,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
     super.initState();
     subject = widget.email.subject ?? 'No Subject';
     sender = widget.email.from ?? 'Unknown Sender';
+    recipient=widget.email.to??'Unknown Recipient';
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
   }
@@ -87,7 +89,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                   children: [
                     CircleAvatar(
                       child: Text(
-                        sender[0].toUpperCase(),
+                        recipient[0].toUpperCase(),
                         style: theme.textTheme.titleMedium?.copyWith(
                             color: theme.brightness == Brightness.dark
                                 ? Colors.white
@@ -108,7 +110,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                                 fontSize: 14),
                           ),
                           Text(
-                            sender,
+                            recipient,
                             maxLines: null,
                             overflow: TextOverflow.fade,
                             style: theme.textTheme.bodyLarge?.copyWith(
@@ -134,58 +136,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                           : Colors.black87,
                       fontSize: 16),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.reply),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReplyEmailPage(
-                                    email: widget.email,
-                                    username: widget.username,
-                                    password: widget.password),
-                              ),
-                            );
-                          },
-                        ),
-                        Text('Reply',
-                            style: TextStyle(
-                              color: theme.appBarTheme.iconTheme?.color,
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.forward),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForwardEmailPage(
-                                    email: widget.email,
-                                    username: widget.username,
-                                    password: widget.password),
-                              ),
-                            );
-                          },
-                        ),
-                        Text('Forward',
-                            style: TextStyle(
-                              color:theme.appBarTheme.iconTheme?.color,
-                            )),
-                      ],
-                    )
-                  ],
-                )
+               
               ],
             ),
           )),

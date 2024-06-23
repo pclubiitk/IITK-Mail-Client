@@ -16,4 +16,4 @@ int getHighestUidFromDatabase() {
         return int.parse('${highestUidEmail.uniqueId}');
       }
       return 0; // If no emails are found, return 0
-    }
+}

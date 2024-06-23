@@ -1,7 +1,7 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:logger/logger.dart';
 
-import 'package:test_drive/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
 import '../EmailCache/models/email.dart'; // Ensure correct import for Email model
 
 final logger = Logger();
@@ -36,7 +36,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           subject: message.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
-          uniqueId: message.sequenceId!, // Add unique ID logic if needed
+          uniqueId: message.uid!, // Add unique ID logic if needed
         );
 
         // Save Email object to the database
@@ -77,7 +77,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
           subject: message.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
-          uniqueId: message.sequenceId!, // Add unique ID logic if needed
+          uniqueId: message.uid!, // Add unique ID logic if needed
         );
 
         // Save Email object to the database
