@@ -1,4 +1,4 @@
-import 'package:enough_mail/enough_mail.dart';
+
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/services/forward_mail.dart';
@@ -32,6 +32,9 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
   late final String body;
 
   void _showSnackBarAndNavigate() {
+    setState(() {
+      _isLoading = false;
+    });
     if (_snackBarMessage != null) {
       SnackbarHelper.showSnackBarAndNavigate(
         context: context,
@@ -50,7 +53,7 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
     });
 
     await EmailForward.forwardEmail(
-      username: '${widget.username}@iitk.ac.in',
+      username: widget.username,
       password: widget.password,
       originalMessage: widget.email,
       forwardTo: _forwardToController.text,
@@ -63,18 +66,14 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
         _showSnackBarAndNavigate();
       },
     );
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   void initState() {
     super.initState();
-    subject = widget.email.subject ?? 'No Subject';
-    sender = widget.email.from ?? 'Unknown Sender';
-    body = widget.email.body ?? 'No Content';
+    subject = widget.email.subject;
+    sender = widget.email.from;
+    body = widget.email.body;
   }
 
   @override

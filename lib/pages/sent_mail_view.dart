@@ -1,10 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:enough_mail/enough_mail.dart';
-import 'package:test_drive/EmailCache/models/email.dart';
-import 'package:test_drive/pages/forward_screen.dart';
-import 'package:test_drive/pages/reply_screen.dart';
+import 'package:iitk_mail_client/EmailCache/models/email.dart';
 
 class SentEmailViewPage extends StatefulWidget {
   final Email email;

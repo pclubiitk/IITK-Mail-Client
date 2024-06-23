@@ -31,6 +31,9 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
   late final String body;
 
   void _showSnackBarAndNavigate() {
+    setState(() {
+      _isLoading = false;
+    });
     if (_snackBarMessage != null) {
       SnackbarHelper.showSnackBarAndNavigate(
         context: context,
@@ -49,7 +52,7 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
     });
 
     await EmailReply.replyEmail(
-      username: '${widget.username}@iitk.ac.in',
+      username: widget.username,
       password: widget.password,
       originalMessage: widget.email,
       replyBody: _replyBodyController.text,
@@ -61,10 +64,6 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
         _showSnackBarAndNavigate();
       },
     );
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
@@ -127,17 +126,20 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
                 children: [
                   Text(
                     'To     ',
+                    maxLines: null,
                     style: TextStyle(
                       fontSize: 18,
                       color: theme.colorScheme.onSurface.withOpacity(0.8),
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    sender,
-                    style: TextStyle(
-                        fontSize: 17,
-                        color: theme.colorScheme.onSurface.withOpacity(0.8)),
+                  Expanded(
+                    child: Text(
+                      sender,
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: theme.colorScheme.onSurface.withOpacity(0.8)),
+                    ),
                   ),
                 ],
               ),
