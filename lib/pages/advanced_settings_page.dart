@@ -210,6 +210,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 dropdownColor: theme.inputDecorationTheme.fillColor,
                 value: tempSettings.authMechanism,
