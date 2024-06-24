@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Dependency_Injection.dart';
@@ -26,7 +27,24 @@ void main() async {
   String? validUsername;
   String? validPassword;
 
+  final _connectivityResult = await Connectivity().checkConnectivity();
+
  if (savedUsername != null && savedPassword != null) {
+   initialRoute = '/emailList';
+   validUsername = savedUsername;
+   validPassword = savedPassword;
+   if (_connectivityResult != ConnectivityResult.none){
+     String? authResult = await AuthService.authenticate(
+       emailSettings: emailSettings,
+       username: savedUsername,
+       password: savedPassword,
+     );
+
+     if (authResult != null) {
+       initialRoute = '/login';
+     }
+   }
+
     String? authResult = await AuthService.authenticate(
       emailSettings: emailSettings,
       username: savedUsername,
@@ -55,6 +73,7 @@ void main() async {
     ),
   );
   DependencyInjection.init();
+
 }
 class MyApp extends StatelessWidget {
   final String initialRoute;
