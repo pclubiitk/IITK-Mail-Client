@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:test_drive/pages/compose_mail_page.dart';
-import 'package:test_drive/pages/emai_view_page.dart';
-import 'package:test_drive/services/drawer_item.dart';
-import 'package:test_drive/services/email_fetch.dart';
+import 'package:iitk_mail_client/pages/compose_mail_page.dart';
+import 'package:iitk_mail_client/pages/emai_view_page.dart';
+import 'package:iitk_mail_client/services/drawer_item.dart';
+import 'package:iitk_mail_client/services/email_fetch.dart';
 import '../models/advanced_settings_model.dart';
-import 'package:test_drive/theme_notifier.dart';
+import 'package:iitk_mail_client/theme_notifier.dart';
 import '../EmailCache/initializeobjectbox.dart';
 import "../EmailCache/models/email.dart";
 import 'package:provider/provider.dart';
-import 'package:test_drive/services/fetch_sentmail.dart';
+import 'package:iitk_mail_client/services/fetch_sentmail.dart';
 import 'sent_mail_view.dart';
 class SentEmailListPage extends StatefulWidget {
   final String username;
