@@ -8,6 +8,7 @@ class EmailSettingsModel extends ChangeNotifier {
   String _smtpServer = 'mmtp.iitk.ac.in';
   String _smtpPort = '465';
   String _authServerType = 'IMAP';
+  String _authMechanism = "PLAIN";
 
   String get domain => _domain;
   String get imapServer => _imapServer;
@@ -15,6 +16,7 @@ class EmailSettingsModel extends ChangeNotifier {
   String get smtpServer => _smtpServer;
   String get smtpPort => _smtpPort;
   String get authServerType => _authServerType;
+  String get authMechanism => _authMechanism;
 
   void updateDomain(String domain) {
     _domain = domain;
@@ -46,6 +48,11 @@ class EmailSettingsModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateAuthMechanism(String authMechanism) {
+    _authMechanism = authMechanism;
+    notifyListeners();
+  }
+
   Map<String, dynamic> toJson() => {
         'domain': _domain,
         'imapServer': _imapServer,
@@ -53,6 +60,7 @@ class EmailSettingsModel extends ChangeNotifier {
         'smtpServer': _smtpServer,
         'smtpPort': _smtpPort,
         'authServerType': _authServerType,
+        'authMechanism': _authMechanism
       };
 
   void fromJson(Map<String, dynamic> json) {
@@ -62,6 +70,7 @@ class EmailSettingsModel extends ChangeNotifier {
     _smtpServer = json['smtpServer'];
     _smtpPort = json['smtpPort'];
     _authServerType = json['authServerType'];
+    _authMechanism = json['authMechanism'];
     notifyListeners();
   }
 }
