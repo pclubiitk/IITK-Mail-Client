@@ -14,8 +14,8 @@ import "../EmailCache/models/email.dart";
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
-
 final logger = Logger();
+
 class EmailListPage extends StatefulWidget {
   final String username;
   final String password;
@@ -42,7 +42,6 @@ class _EmailListPageState extends State<EmailListPage> {
     //controller.addListener(_loadmore);
     _initializeMaildir();
     _fetchEmails();
-
   }
 
   Future<void> _initializeMaildir() async {
@@ -66,14 +65,13 @@ class _EmailListPageState extends State<EmailListPage> {
         _isLoading = false;
       });
       logger.i("Writing mails to disk ...");
-      try{
+      try {
         _writeNewEmailsToMaildir();
         setState(() {
           oldHighestUid = getHighestUidFromDatabase();
         });
         logger.i("Writing emails to disk successfull!");
-      }
-      catch(e){
+      } catch (e) {
         logger.i("Writing mails to dish failed with error:\n$e");
       }
     } catch (e) {
@@ -86,46 +84,56 @@ class _EmailListPageState extends State<EmailListPage> {
 
     // if (controller.position.pixels >=
     //    (controller.position.maxScrollExtent - 10)) {
-      final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
+    try {
+      await EmailService.fetchNewEmails(
+          emailSettings: emailSettings,
+          username: widget.username,
+          password: widget.password);
+      setState(() {
+        emails = objectbox.emailBox.getAll();
+        emails = emails.reversed.toList();
+        logger.i("Emails after fetching: ${emails.length}");
+      });
       try {
-        await EmailService.fetchNewEmails(
-            emailSettings: emailSettings,
-            username: widget.username,
-            password: widget.password);
+        logger.i("Writing mails to disk ...");
+        _writeNewEmailsToMaildir();
         setState(() {
-          emails = objectbox.emailBox.getAll();
-          emails = emails.reversed.toList();
-          logger.i("Emails after fetching: ${emails.length}");
+          oldHighestUid = getHighestUidFromDatabase();
         });
-        try{
-          logger.i("Writing mails to disk ...");
-          _writeNewEmailsToMaildir();
-          setState(() {
-            oldHighestUid = getHighestUidFromDatabase();
-          });
-          logger.i("Writing emails to disk successfull!");
-        }
-        catch(e){
-          logger.i("Writing mails to dish failed with error:\n$e");
-        }
+        logger.i("Writing emails to disk successfull!");
       } catch (e) {
-        debugPrint("Failed to fetch emails: $e");
+        logger.i("Writing mails to dish failed with error:\n$e");
       }
+    } catch (e) {
+      debugPrint("Failed to fetch emails: $e");
+    }
     // }
   }
 
   Future<void> _writeNewEmailsToMaildir() async {
-  final newEmails = emails.where((email) => email.uniqueId > oldHighestUid).toList();
-  for (final email in newEmails) {
-    final filename = '${email.uniqueId}';
-    await maildir.writeEmail(filename, email);
+    final newEmails =
+        emails.where((email) => email.uniqueId > oldHighestUid).toList();
+    for (final email in newEmails) {
+      final filename = '${email.uniqueId}';
+      await maildir.writeEmail(filename, email);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    List<String> weekdays = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -165,105 +173,138 @@ class _EmailListPageState extends State<EmailListPage> {
         ),
       ),
       drawer: const Drawer(child: DrawerItems()),
-
       body: RefreshIndicator(
-        onRefresh: _loadmore,
-        child: Container(
-          color: theme.scaffoldBackgroundColor,
-          child: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(theme.primaryColor),
-                  ),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.all(16.0),
-                  // controller: controller,
-                  itemCount: emails.length,
-                  separatorBuilder: (context, index) =>
-                      Divider(color: theme.dividerColor),
-                  itemBuilder: (context, index) {
-                    final email = emails[index];
-                    final subject = email.subject ?? 'No Subject';
-                    final sender = email.from ?? 'Unknown Sender';
-                    final date = email.receivedDate ?? DateTime.now();
-                    final time =
-                        '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EmailViewPage(
-                              email: email,
-                              username: widget.username,
-                              password: widget.password,
-                            ),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: theme.primaryColor,
-                          child: Text(
-                            sender[0].toUpperCase(),
-                            style: theme.textTheme.titleMedium?.copyWith(
-                                color: themeNotifier.isDarkMode
-                                    ? Colors.black
-                                    : Colors.white),
+          onRefresh: _loadmore,
+          child: Container(
+            color: theme.scaffoldBackgroundColor,
+            child: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                    ),
+                  )
+                : ListView.separated(
+                    padding: const EdgeInsets.all(8.0),
+                    // controller: controller,
+                    itemCount: emails.length,
+                    separatorBuilder: (context, index) =>
+                        Divider(color: theme.dividerColor),
+                    itemBuilder: (context, index) {
+                      final email = emails[index];
+                      final subject = email.subject;
+                      final sender = email.senderName;
+                      final date = email.receivedDate;
+                      final time =
+                          '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                      DateTime now = DateTime.now();
+                      Duration difference = now.difference(date);
+                      final day;
 
-                          ),
-                        ),
-                        title: Text(
-                          sender,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.textTheme.bodyLarge?.color,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              subject,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color),
+                      if (difference.inDays == 0) {
+                        day = 'Today';
+                      } else if (difference.inDays <= 7) {
+                        day = weekdays[date.weekday - 1].substring(0, 3);
+                      } else {
+                        day = date;
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmailViewPage(
+                                email: email,
+                                username: widget.username,
+                                password: widget.password,
+                              ),
                             ),
-                            Text(
-                              email.body ?? 'No Content',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.7)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                          );
+                        },
+                        child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 18,
+                              backgroundColor: theme.primaryColor,
+                              child: Text(
+                                sender[0].toUpperCase(),
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.black
+                                        : Colors.white,
+                                    fontSize: 15),
+                              ),
                             ),
-                          ],
-                        ),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${date.day}/${date.month}/${date.year}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.6)),
+                            title: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        sender.length > 20
+                                            ? '${sender.substring(0, 20)}...'
+                                            : sender,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$day $time',
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Text(email.subject,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis)
+                                ])
+                            // subtitle: Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Text(
+                            //       subject,
+                            //       style: theme.textTheme.bodyMedium?.copyWith(
+                            //           color: theme.textTheme.bodyLarge?.color),
+                            //     ),
+                            //     Text(
+                            //       email.body ?? 'No Content',
+                            //       style: theme.textTheme.bodyMedium?.copyWith(
+                            //           color: theme.textTheme.bodyLarge?.color
+                            //               ?.withOpacity(0.7)),
+                            //       maxLines: 1,
+                            //       overflow: TextOverflow.ellipsis,
+                            //     ),
+                            //   ],
+                            // ),
+                            // trailing: Column(
+                            //   crossAxisAlignment: CrossAxisAlignment.end,
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   children: [
+                            //     Text(
+                            //       '${date.day}/${date.month}/${date.year}',
+                            //       style: theme.textTheme.bodySmall?.copyWith(
+                            //           color: theme.textTheme.bodyLarge?.color
+                            //               ?.withOpacity(0.6)),
+                            //     ),
+                            //     Text(
+                            //       time,
+                            //       style: theme.textTheme.bodySmall?.copyWith(
+                            //           color: theme.textTheme.bodyLarge?.color
+                            //               ?.withOpacity(0.6)),
+                            //     ),
+
                             ),
-                            Text(
-                              time,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.6)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-        ),
-      ),
+                      );
+                    },
+                  ),
+          )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

@@ -49,7 +49,7 @@ class EmailService {
       int fetchuid = highestUid + 1;
 
       final fetchResult =  await client.uidFetchMessagesByCriteria("$fetchuid:* (UID BODY.PEEK[])");
-
+         
       if (fetchResult.messages.length == 1) {
         if (fetchResult.messages[0].uid != highestUid) {
           allFetchedMessages.addAll(fetchResult.messages);

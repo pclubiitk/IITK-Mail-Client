@@ -1,6 +1,5 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/services/save_mails_to_objbox.dart';
