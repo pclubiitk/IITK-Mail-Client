@@ -47,14 +47,20 @@ class EmailSender {
 
       final mimeMessage = builder.buildMimeMessage();
       final sendResponse = await client.sendMessage(mimeMessage);
-    await imapClient.connectToServer(imapServerName, imapPort, isSecure: imapPort==993);
-    await imapClient.login(username, password);
+  
+      try {
+        await imapClient.connectToServer(imapServerName, imapPort, isSecure: imapPort == 993);
+        await imapClient.login(username, password);
 
- 
-    final mailboxPath = 'INBOX.Sent';
-    final mailbox = await imapClient.selectMailboxByPath(mailboxPath);
+        final mailboxPath = 'INBOX.Sent';
+        final mailbox = await imapClient.selectMailboxByPath(mailboxPath);
 
-    await imapClient.appendMessage(mimeMessage, targetMailbox: mailbox);
+        await imapClient.appendMessage(mimeMessage, targetMailbox: mailbox);
+      } on ImapException catch (e) {
+        onResult("Failed saving mail in sent mailbox: $e", Colors.red);
+      } finally {
+        await imapClient.logout();
+      }
 
       if (sendResponse.isOkStatus) {
         saveAddressToDatabase(to);
@@ -64,10 +70,15 @@ class EmailSender {
             'Failed to send email: Failed to establish connection with server',
             Colors.red);
       }
-    } catch (e) {
+    } 
+    on ImapException catch (e) {
+      onResult("Failed saving mail in sent mailbox $e",Colors.red);
+    }
+    catch (e) {
       onResult('Failed to send email: $e', Colors.red);
-    } finally {
-      await imapClient.logout();
+    } 
+ 
+    finally {
       await client.quit();
     }
   }
