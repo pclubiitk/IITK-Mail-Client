@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:7075052845957833006",
-      "lastPropertyId": "7:4260523706248214418",
+      "lastPropertyId": "8:1561888144957058185",
       "name": "Email",
       "properties": [
         {
@@ -43,6 +43,11 @@
           "id": "7:4260523706248214418",
           "name": "uniqueId",
           "type": 6
+        },
+        {
+          "id": "8:1561888144957058185",
+          "name": "senderName",
+          "type": 9
         }
       ],
       "relations": []
