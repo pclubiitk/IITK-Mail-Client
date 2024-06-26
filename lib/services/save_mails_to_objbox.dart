@@ -27,7 +27,10 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
         } else {
           body = 'No Text Body';
         }
-
+        String? personalName = message.from!.first.personalName;
+        String? senderEmail = message.from!.first.email;
+        String sender = personalName ?? senderEmail;
+        
         bool hasAttachments = message.hasAttachments();
 
         // Create Email object
@@ -42,6 +45,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
           uniqueId: message.uid!, // Add unique ID logic if needed
+          senderName: sender,
           hasAttachment: hasAttachments,
         );
 
@@ -74,7 +78,9 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
         } else {
           body = 'No Text Body';
         }
-
+        String? personalName = message.from!.first.personalName;
+        String? senderEmail = message.from!.first.email;
+        String sender = personalName ?? senderEmail;
         bool hasAttachments = message.hasAttachments();
 
         // Create Email object
@@ -89,6 +95,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
           uniqueId: message.uid!, // Add unique ID logic if needed
+          senderName: sender,
           hasAttachment: hasAttachments,
         );
 

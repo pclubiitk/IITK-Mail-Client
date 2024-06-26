@@ -33,14 +33,14 @@ class SentEmailService {
         } else {
           body = 'No Text Body';
         }
+        String? personalName = sentMessage.from!.first.personalName;
+          String? senderEmail = sentMessage.from!.first.email;
+          String sender = personalName ?? senderEmail;
 
-        final email = Email(
-          from: sentMessage.from?.isNotEmpty == true
-              ? sentMessage.from!.first.email
-              : 'Unknown',
-          to: sentMessage.to?.isNotEmpty == true
-              ? sentMessage.to!.first.email
-              : 'Unknown',
+         final email = Email(
+          senderName: sender,
+          from: sentMessage.from?.isNotEmpty == true ? sentMessage.from!.first.email : 'Unknown',
+          to: sentMessage.to?.isNotEmpty == true ? sentMessage.to!.first.email : 'Unknown',
           subject: sentMessage.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: sentMessage.decodeDate() ?? DateTime.now(),

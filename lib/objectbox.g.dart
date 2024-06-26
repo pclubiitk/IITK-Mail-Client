@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 7075052845957833006),
       name: 'Email',
-      lastPropertyId: const IdUid(8, 776701948814768806),
+      lastPropertyId: const IdUid(9, 776701948814768806),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -62,7 +62,12 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(8, 776701948814768806),
+            id: const IdUid(8, 1561888144957058185),
+            name: 'senderName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 776701948814768806),
             name: 'hasAttachment',
             type: 1,
             flags: 0)
@@ -136,7 +141,8 @@ ModelDefinition getObjectBoxModel() {
           final toOffset = fbb.writeString(object.to);
           final subjectOffset = fbb.writeString(object.subject);
           final bodyOffset = fbb.writeString(object.body);
-          fbb.startTable(9);
+          final senderNameOffset = fbb.writeString(object.senderName);
+          fbb.startTable(10);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, fromOffset);
           fbb.addOffset(2, toOffset);
@@ -144,7 +150,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, bodyOffset);
           fbb.addInt64(5, object.receivedDate.millisecondsSinceEpoch);
           fbb.addInt64(6, object.uniqueId);
-          fbb.addBool(7, object.hasAttachment);
+          fbb.addOffset(7, senderNameOffset);
+          fbb.addBool(8, object.hasAttachment);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -167,7 +174,9 @@ ModelDefinition getObjectBoxModel() {
               uniqueId:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
               hasAttachment: const fb.BoolReader()
-                  .vTableGet(buffer, rootOffset, 18, false));
+                  .vTableGet(buffer, rootOffset, 20, false),
+              senderName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''));
 
           return object;
         }),
@@ -228,9 +237,13 @@ class Email_ {
   static final uniqueId =
       QueryIntegerProperty<Email>(_entities[0].properties[6]);
 
+  /// see [Email.senderName]
+  static final senderName =
+      QueryStringProperty<Email>(_entities[0].properties[7]);
+
   /// see [Email.hasAttachment]
   static final hasAttachment =
-      QueryBooleanProperty<Email>(_entities[0].properties[7]);
+      QueryBooleanProperty<Email>(_entities[0].properties[8]);
 }
 
 /// [Address] entity fields to define ObjectBox queries.

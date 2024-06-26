@@ -1,4 +1,8 @@
+///incomplete at the moment, having trouble with mimeMessage in deciding which part is the Attachment
+
+
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:enough_mail/enough_mail.dart';
 import 'package:iitk_mail_client/EmailCache/models/attachment.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
@@ -21,9 +25,13 @@ class FetchAttachmentsService {
       // Process attachments if any
       if (message.hasAttachments()) {
         for (final part in message.mimeData?.parts ?? []) {
-          if (part.isAttachment) {
+          // Check if the part has a filename, which typically indicates an attachment
+          if (part.filename != null && part.filename!.isNotEmpty) {
             // Fetch attachment details
             final content = await part.decodeContentBinary();
+
+            // Log the filename
+            developer.log('Attachment found: ${part.filename}', name: 'FetchAttachmentsService');
 
             // Construct a download URL (or path) for the attachment
             // Note: You need to implement a mechanism to store the attachment and provide its URL/path.
@@ -37,7 +45,6 @@ class FetchAttachmentsService {
                   part.contentType?.mimeType ?? 'application/octet-stream',
               downloadUrl: downloadUrl,
             );
-
             attachments.add(attachment);
           }
         }

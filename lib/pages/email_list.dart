@@ -176,18 +176,30 @@ class _EmailListPageState extends State<EmailListPage> {
                   ),
                 )
               : ListView.separated(
-                  padding: const EdgeInsets.all(16.0),
-                  // controller: controller,
+                  padding: const EdgeInsets.all(8.0),
                   itemCount: emails.length,
                   separatorBuilder: (context, index) =>
                       Divider(color: theme.dividerColor),
                   itemBuilder: (context, index) {
                     final email = emails[index];
-                    final subject = email.subject ?? 'No Subject';
-                    final sender = email.from ?? 'Unknown Sender';
-                    final date = email.receivedDate ?? DateTime.now();
+                    final subject = email.subject;
+                    final sender = email.senderName;
+                    final date = email.receivedDate;
+                    final body = email.body;
                     final time =
                         '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                    DateTime now = DateTime.now();
+                    Duration difference = now.difference(date);
+                    final String day;
+                    String normalizeSpaces(String text) {
+                      return text.replaceAll(RegExp(r'\s+'), ' ');
+                    }
+
+                    if (difference.inDays == 0) {
+                      day = time;
+                    } else {
+                      day = '${date.day}/${date.month}/${date.year}';
+                    }
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -203,62 +215,71 @@ class _EmailListPageState extends State<EmailListPage> {
                       },
                       child: ListTile(
                         leading: CircleAvatar(
+                          radius: 18,
                           backgroundColor: theme.primaryColor,
                           child: Text(
                             sender[0].toUpperCase(),
                             style: theme.textTheme.titleMedium?.copyWith(
                                 color: themeNotifier.isDarkMode
                                     ? Colors.black
-                                    : Colors.white),
+                                    : Colors.white,
+                                fontSize: 15),
                           ),
                         ),
-                        title: Text(
-                          sender,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: theme.textTheme.bodyLarge?.color,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        title: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(
-                              subject,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  sender.length > 23
+                                      ? '${sender.substring(0, 23)}...'
+                                      : sender,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  day,
+                                  style: TextStyle(
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                if (email.hasAttachment)
+                                  Icon(
+                                    Icons.attach_file,
+                                    size: 15,
+                                    color: theme.iconTheme.color,
+                                  )
+                              ],
                             ),
+                            Text(subject.trim(),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: themeNotifier.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis),
                             Text(
-                              email.body ?? 'No Content',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.7)),
+                              normalizeSpaces(body),
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.7),
+                                fontSize: 12,
+                              ),
                               maxLines: 1,
+                              softWrap: false,
                               overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${date.day}/${date.month}/${date.year}',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.6)),
-                            ),
-                            Text(
-                              time,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.textTheme.bodyLarge?.color
-                                      ?.withOpacity(0.6)),
-                            ),
-                            if (email.hasAttachment)
-                              Icon(
-                                Icons.attach_file,
-                                color: theme.iconTheme.color,
-                                size: 20,
-                              ),
                           ],
                         ),
                       ),

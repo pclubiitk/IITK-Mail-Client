@@ -56,6 +56,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
 
   Future<void> _sendEmail() async {
     final emailSettings =
+       
         Provider.of<EmailSettingsModel>(context, listen: false);
     List<String> recipients = _toController
         .map((controller) => controller.text.trim())
@@ -138,22 +139,44 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 26.0, horizontal: 18),
         color: theme.scaffoldBackgroundColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                SizedBox(
-                  width: 50,
-                  child: Text(
-                    'To:',
-                    style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16),
+                Text(
+                  'From',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
+                const SizedBox(width: 12),
+                Text(
+                  '${widget.username}@iitk.ac.in',
+                  style: TextStyle(
+                      fontSize: 17,
+                      color: theme.colorScheme.onSurface.withOpacity(0.8)),
+                ),
+              ],
+            ),
+            Divider(
+              thickness: 0.5,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
+            Row(
+              children: [
+                Text(
+                  'To  ',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: InputChipField(
                     suggestionList: objectbox.addressBook
@@ -206,17 +229,15 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                         fontSize: 16),
                   ),
                 ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: TextField(
-                    controller: _subjectController,
+                    cursorColor: theme.colorScheme.onSurface.withOpacity(0.6),
+                    maxLines: null,
                     style: TextStyle(color: theme.colorScheme.onSurface),
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.dividerColor),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: theme.primaryColor),
-                      ),
+                    controller: _subjectController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
                     ),
                   ),
                 ),

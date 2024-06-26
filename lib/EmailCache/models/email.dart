@@ -10,6 +10,7 @@ class Email {
   DateTime receivedDate;
   int uniqueId;
   bool hasAttachment;
+  String senderName;
 
   Email({
     this.id = 0,
@@ -20,5 +21,6 @@ class Email {
     required this.receivedDate,
     required this.uniqueId,
     required this.hasAttachment,
+    required this.senderName,
   });
 }
