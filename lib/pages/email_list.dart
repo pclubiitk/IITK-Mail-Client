@@ -14,8 +14,8 @@ import "../EmailCache/models/email.dart";
 import 'package:provider/provider.dart';
 import 'package:path/path.dart' as p;
 
-
 final logger = Logger();
+
 class EmailListPage extends StatefulWidget {
   final String username;
   final String password;
@@ -42,7 +42,6 @@ class _EmailListPageState extends State<EmailListPage> {
     //controller.addListener(_loadmore);
     _initializeMaildir();
     _fetchEmails();
-
   }
 
   Future<void> _initializeMaildir() async {
@@ -66,14 +65,13 @@ class _EmailListPageState extends State<EmailListPage> {
         _isLoading = false;
       });
       logger.i("Writing mails to disk ...");
-      try{
+      try {
         _writeNewEmailsToMaildir();
         setState(() {
           oldHighestUid = getHighestUidFromDatabase();
         });
         logger.i("Writing emails to disk successfull!");
-      }
-      catch(e){
+      } catch (e) {
         logger.i("Writing mails to dish failed with error:\n$e");
       }
     } catch (e) {
@@ -86,41 +84,42 @@ class _EmailListPageState extends State<EmailListPage> {
 
     // if (controller.position.pixels >=
     //    (controller.position.maxScrollExtent - 10)) {
-      final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
+    try {
+      await EmailService.fetchNewEmails(
+          emailSettings: emailSettings,
+          username: widget.username,
+          password: widget.password);
+      setState(() {
+        emails = objectbox.emailBox.getAll();
+        emails = emails.reversed.toList();
+        logger.i("Emails after fetching: ${emails.length}");
+      });
       try {
-        await EmailService.fetchNewEmails(
-            emailSettings: emailSettings,
-            username: widget.username,
-            password: widget.password);
+        logger.i("Writing mails to disk ...");
+        _writeNewEmailsToMaildir();
         setState(() {
-          emails = objectbox.emailBox.getAll();
-          emails = emails.reversed.toList();
-          logger.i("Emails after fetching: ${emails.length}");
+          oldHighestUid = getHighestUidFromDatabase();
         });
-        try{
-          logger.i("Writing mails to disk ...");
-          _writeNewEmailsToMaildir();
-          setState(() {
-            oldHighestUid = getHighestUidFromDatabase();
-          });
-          logger.i("Writing emails to disk successfull!");
-        }
-        catch(e){
-          logger.i("Writing mails to dish failed with error:\n$e");
-        }
+        logger.i("Writing emails to disk successfull!");
       } catch (e) {
-        debugPrint("Failed to fetch emails: $e");
+        logger.i("Writing mails to dish failed with error:\n$e");
       }
+    } catch (e) {
+      debugPrint("Failed to fetch emails: $e");
+    }
     // }
   }
 
   Future<void> _writeNewEmailsToMaildir() async {
-  final newEmails = emails.where((email) => email.uniqueId > oldHighestUid).toList();
-  for (final email in newEmails) {
-    final filename = '${email.uniqueId}';
-    await maildir.writeEmail(filename, email);
+    final newEmails =
+        emails.where((email) => email.uniqueId > oldHighestUid).toList();
+    for (final email in newEmails) {
+      final filename = '${email.uniqueId}';
+      await maildir.writeEmail(filename, email);
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +164,6 @@ class _EmailListPageState extends State<EmailListPage> {
         ),
       ),
       drawer: const Drawer(child: DrawerItems()),
-
       body: RefreshIndicator(
         onRefresh: _loadmore,
         child: Container(
@@ -212,7 +210,6 @@ class _EmailListPageState extends State<EmailListPage> {
                                 color: themeNotifier.isDarkMode
                                     ? Colors.black
                                     : Colors.white),
-
                           ),
                         ),
                         title: Text(
@@ -256,6 +253,12 @@ class _EmailListPageState extends State<EmailListPage> {
                                   color: theme.textTheme.bodyLarge?.color
                                       ?.withOpacity(0.6)),
                             ),
+                            if (email.hasAttachment)
+                              Icon(
+                                Icons.attach_file,
+                                color: theme.iconTheme.color,
+                                size: 20,
+                              ),
                           ],
                         ),
                       ),

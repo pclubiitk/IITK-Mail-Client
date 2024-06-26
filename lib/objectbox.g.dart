@@ -23,7 +23,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(1, 7075052845957833006),
       name: 'Email',
-      lastPropertyId: const IdUid(7, 4260523706248214418),
+      lastPropertyId: const IdUid(8, 776701948814768806),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -60,6 +60,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(7, 4260523706248214418),
             name: 'uniqueId',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 776701948814768806),
+            name: 'hasAttachment',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -131,7 +136,7 @@ ModelDefinition getObjectBoxModel() {
           final toOffset = fbb.writeString(object.to);
           final subjectOffset = fbb.writeString(object.subject);
           final bodyOffset = fbb.writeString(object.body);
-          fbb.startTable(8);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, fromOffset);
           fbb.addOffset(2, toOffset);
@@ -139,6 +144,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(4, bodyOffset);
           fbb.addInt64(5, object.receivedDate.millisecondsSinceEpoch);
           fbb.addInt64(6, object.uniqueId);
+          fbb.addBool(7, object.hasAttachment);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -159,7 +165,9 @@ ModelDefinition getObjectBoxModel() {
               receivedDate: DateTime.fromMillisecondsSinceEpoch(
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0)),
               uniqueId:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0));
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
+              hasAttachment: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 18, false));
 
           return object;
         }),
@@ -219,6 +227,10 @@ class Email_ {
   /// see [Email.uniqueId]
   static final uniqueId =
       QueryIntegerProperty<Email>(_entities[0].properties[6]);
+
+  /// see [Email.hasAttachment]
+  static final hasAttachment =
+      QueryBooleanProperty<Email>(_entities[0].properties[7]);
 }
 
 /// [Address] entity fields to define ObjectBox queries.
