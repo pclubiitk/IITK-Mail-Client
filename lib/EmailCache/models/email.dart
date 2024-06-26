@@ -9,6 +9,7 @@ class Email {
   String body;
   DateTime receivedDate;
   int uniqueId  ;
+  String senderName;
 
   Email({
     this.id = 0,
@@ -18,5 +19,6 @@ class Email {
     required this.body,
     required this.receivedDate,
     required this.uniqueId ,
+    required this.senderName,
   });
 }
