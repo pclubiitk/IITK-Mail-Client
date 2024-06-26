@@ -57,7 +57,21 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
   Future<void> _sendEmail() async {
     final emailSettings =
         Provider.of<EmailSettingsModel>(context, listen: false);
-    final recipients = _toController.map((e) => e.text).toList();
+    List<String> recipients = _toController
+        .map((controller) => controller.text.trim())
+        .where((email) => email.isNotEmpty) // Filter out empty strings
+        .toList();
+
+    // Check if there are valid recipients
+    if (recipients.isEmpty) {
+      setState(() {
+        _snackBarMessage = 'No recipients specified';
+        _snackBarColor = Colors.red;
+        _isLoading = false;
+      });
+      _showSnackBarAndNavigate();
+      return;
+    }
 
     logger.i('Recipients: $recipients');
 
@@ -113,7 +127,8 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.attach_file, color: Colors.white),
+            icon: Icon(Icons.attach_file,
+                color: theme.appBarTheme.iconTheme?.color),
             onPressed: _isLoading ? null : _pickFiles,
           ),
           IconButton(
