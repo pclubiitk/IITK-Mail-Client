@@ -22,41 +22,31 @@ void main() async {
   final emailSettings = await SecureStorageService.loadSettings();
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();
-  
+  final isLogged = await SecureStorageService.getLoggedIn();
+
   String initialRoute = '/login';
   String? validUsername;
   String? validPassword;
 
   final _connectivityResult = await Connectivity().checkConnectivity();
 
- if (savedUsername != null && savedPassword != null) {
-   initialRoute = '/emailList';
-   validUsername = savedUsername;
-   validPassword = savedPassword;
-   if (_connectivityResult != ConnectivityResult.none){
-     String? authResult = await AuthService.authenticate(
-       emailSettings: emailSettings,
-       username: savedUsername,
-       password: savedPassword,
-     );
+  if(isLogged == "true"){
+    initialRoute = '/emailList';
+    validUsername = savedUsername;
+    validPassword = savedPassword;
+    if (_connectivityResult != ConnectivityResult.none){
+      String? authResult = await AuthService.authenticate(
+        emailSettings: emailSettings,
+        username: savedUsername!,
+        password: savedPassword!,
+      );
 
-     if (authResult != null) {
-       initialRoute = '/login';
-     }
-   }
-
-    String? authResult = await AuthService.authenticate(
-      emailSettings: emailSettings,
-      username: savedUsername,
-      password: savedPassword,
-    );
-
-    if (authResult == null) {
-      initialRoute = '/emailList';
-      validUsername = savedUsername;
-      validPassword = savedPassword;
+      if (authResult != null) {
+        initialRoute = '/login';
+      }
     }
   }
+
 
   runApp(
     MultiProvider(

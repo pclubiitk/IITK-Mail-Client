@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 ///Model to handle advanced Settings
@@ -52,6 +54,7 @@ class EmailSettingsModel extends ChangeNotifier {
     _authMechanism = authMechanism;
     notifyListeners();
   }
+
 
   Map<String, dynamic> toJson() => {
         'domain': _domain,
