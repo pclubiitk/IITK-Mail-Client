@@ -15,6 +15,14 @@ class SecureStorageService {
     await _storage.write(key: 'password', value: password);
   }
 
+  static Future<void> setLoggedIn(String loggedIn) async {
+    await _storage.write(key: 'isLogged', value: loggedIn);
+  }
+
+  static Future<String?> getLoggedIn() async {
+    return await _storage.read(key: 'isLogged');
+  }
+
   static Future<String?> getUsername() async {
     return await _storage.read(key: 'username');
   }

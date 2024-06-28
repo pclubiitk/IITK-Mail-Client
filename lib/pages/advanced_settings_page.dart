@@ -56,6 +56,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
     settings.updateSmtpServer(tempSettings.smtpServer);
     settings.updateSmtpPort(tempSettings.smtpPort);
     settings.updateAuthServerType(tempSettings.authServerType);
+    settings.updateAuthMechanism(tempSettings.authMechanism);
     SecureStorageService.saveSettings(settings);
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Settings saved')));
@@ -200,6 +201,44 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                 ],
                 decoration: InputDecoration(
                   labelText: 'Authenticate using',
+                  labelStyle: theme.textTheme.bodyMedium,
+                  filled: true,
+                  fillColor: theme.inputDecorationTheme.fillColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                dropdownColor: theme.inputDecorationTheme.fillColor,
+                value: tempSettings.authMechanism,
+                onChanged: (String? newValue) {
+                  if (newValue != null) {
+                    setState(() {
+                      tempSettings.updateAuthMechanism(newValue);
+                    });
+                  }
+                },
+                items: [
+                  DropdownMenuItem<String>(
+                    value: 'PLAIN',
+                    child: Text(
+                      'PLAIN',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                  DropdownMenuItem<String>(
+                    value: 'LOGIN',
+                    child: Text(
+                      'LOGIN',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+                decoration: InputDecoration(
+                  labelText: 'Authentication Mechanism (for SMTP)',
                   labelStyle: theme.textTheme.bodyMedium,
                   filled: true,
                   fillColor: theme.inputDecorationTheme.fillColor,
