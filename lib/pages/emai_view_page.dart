@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:enough_mail/enough_mail.dart';
+import 'package:iitk_mail_client/EmailCache/models/attachment.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
+import 'package:iitk_mail_client/services/download_files.dart';
+import 'package:iitk_mail_client/services/fetch_attachments.dart';
+import 'package:logger/logger.dart';
 
 class EmailViewPage extends StatefulWidget {
   final Email email;
@@ -27,6 +28,10 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final String sender;
   late final String body;
   late final DateTime date;
+  late final int uniqueId;
+  final logger = Logger();
+  List<Attachment> attachments = [];
+  late final DownloadFiles downloader = DownloadFiles();
 
   @override
   void initState() {
@@ -35,6 +40,22 @@ class _EmailViewPageState extends State<EmailViewPage> {
     sender = widget.email.from ?? 'Unknown Sender';
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
+    uniqueId = widget.email.uniqueId;
+    // Fetch attachments if the email has attachments
+    if (widget.email.hasAttachment) {
+      FetchAttachmentsService.fetchAttachments(
+              uniqueId: uniqueId,
+              username: widget.username,
+              password: widget.password)
+          .then((result) {
+        setState(() {
+          attachments = result;
+        });
+      }).catchError((error) {
+        // Handle error fetching attachments
+        logger.e('Error fetching attachments: $error');
+      });
+    }
   }
 
   @override
@@ -125,7 +146,97 @@ class _EmailViewPageState extends State<EmailViewPage> {
                 ),
                 SizedBox(height: 16),
                 Divider(color: Colors.grey),
-                SizedBox(height: 16),
+                if (widget.email.hasAttachment) ...[
+                  SizedBox(height: 8),
+                  Column(
+                    children: attachments.isEmpty
+                        ? [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black87,
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  'Attachment',
+                                  style: TextStyle(
+                                    color: theme.brightness == Brightness.dark
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  icon: Icon(
+                                    Icons.file_download,
+                                    color: theme.brightness == Brightness.dark
+                                        ? Colors.black
+                                        : Colors.white,
+                                  ),
+                                  onPressed: () async {
+                                    for (final attachment in attachments) {
+                                      // Download each attachment
+                                      final bytes = await attachment.download();
+                                      if (bytes != null) {
+                                        final savedPath = await downloader
+                                            .downloadFileFromBytes(
+                                          bytes,
+                                          attachment.fileName,
+                                          keepDuplicate: true,
+                                        );
+                                        if (savedPath != null) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Attachment downloaded: $savedPath'),
+                                              duration: Duration(seconds: 3),
+                                            ),
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                  'Failed to download attachment'),
+                                              duration: Duration(seconds: 3),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                          ]
+                        : attachments.map((attachment) {
+                            return ListTile(
+                              title: Text(attachment.fileName),
+                              subtitle: Text(attachment.size.toString()),
+                              trailing: IconButton(
+                                icon: Icon(Icons.file_download),
+                                onPressed: () {
+                                  // Handle download action
+                                },
+                              ),
+                              // Other attachment details and actions
+                            );
+                          }).toList(),
+                  ),
+                  SizedBox(height: 8),
+                  Divider(color: Colors.grey),
+                  SizedBox(height: 16),
+                ],
                 Text(
                   body,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -180,7 +291,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                         ),
                         Text('Forward',
                             style: TextStyle(
-                              color:theme.appBarTheme.iconTheme?.color,
+                              color: theme.appBarTheme.iconTheme?.color,
                             )),
                       ],
                     )

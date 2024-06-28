@@ -8,7 +8,8 @@ class Email {
   String subject;
   String body;
   DateTime receivedDate;
-  int uniqueId  ;
+  int uniqueId;
+  bool hasAttachment;
   String senderName;
 
   Email({
@@ -18,7 +19,8 @@ class Email {
     required this.subject,
     required this.body,
     required this.receivedDate,
-    required this.uniqueId ,
+    required this.uniqueId,
+    required this.hasAttachment,
     required this.senderName,
   });
 }

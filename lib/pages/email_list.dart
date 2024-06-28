@@ -165,119 +165,129 @@ class _EmailListPageState extends State<EmailListPage> {
       ),
       drawer: const Drawer(child: DrawerItems()),
       body: RefreshIndicator(
-          onRefresh: _loadmore,
-          child: Container(
-            color: theme.scaffoldBackgroundColor,
-            child: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(theme.primaryColor),
-                    ),
-                  )
-                : ListView.separated(
-                    padding: const EdgeInsets.all(8.0),
-                    itemCount: emails.length,
-                    separatorBuilder: (context, index) =>
-                        Divider(color: theme.dividerColor),
-                    itemBuilder: (context, index) {
-                      final email = emails[index];
-                      final subject = email.subject;
-                      final sender = email.senderName;
-                      final date = email.receivedDate;
-                      final body = email.body;
-                      final time =
-                          '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-                      DateTime now = DateTime.now();
-                      Duration difference = now.difference(date);
-                      final String day;
-                      String normalizeSpaces(String text) {
-                        return text.replaceAll(RegExp(r'\s+'), ' ');
-                      }
-
-                      if (difference.inDays == 0) {
-                        day = time;
-                      } else {
-                        day = '${date.day}/${date.month}/${date.year}';
-                      }
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EmailViewPage(
-                                email: email,
-                                username: widget.username,
-                                password: widget.password,
-                              ),
-                            ),
-                          );
-                        },
-                        child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 18,
-                              backgroundColor: theme.primaryColor,
-                              child: Text(
-                                sender[0].toUpperCase(),
-                                style: theme.textTheme.titleMedium?.copyWith(
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.black
-                                        : Colors.white,
-                                    fontSize: 15),
-                              ),
-                            ),
-                            title: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        sender.length > 23
-                                            ? '${sender.substring(0, 23)}...'
-                                            : sender,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: themeNotifier.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        day,
-                                        style: TextStyle(
-                                          color: themeNotifier.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                          fontSize: 11,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Text(subject.trim(),
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: themeNotifier.isDarkMode
-                                            ? Colors.white
-                                            : Colors.black,
-                                      ),
-                                      overflow: TextOverflow.ellipsis),
-                                  Text(normalizeSpaces(body),
-                                      style: TextStyle(
-                                        color: theme.colorScheme.onSurface
-                                            .withOpacity(0.7),
-                                        fontSize: 12,
-                                      ),
-                                      maxLines: 1,
-                                      softWrap: false,
-                                      overflow: TextOverflow.ellipsis)
-                                ])),
-                      );
-                    },
+        onRefresh: _loadmore,
+        child: Container(
+          color: theme.scaffoldBackgroundColor,
+          child: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(theme.primaryColor),
                   ),
-          )),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(8.0),
+                  itemCount: emails.length,
+                  separatorBuilder: (context, index) =>
+                      Divider(color: theme.dividerColor),
+                  itemBuilder: (context, index) {
+                    final email = emails[index];
+                    final subject = email.subject;
+                    final sender = email.senderName;
+                    final date = email.receivedDate;
+                    final body = email.body;
+                    final time =
+                        '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                    DateTime now = DateTime.now();
+                    Duration difference = now.difference(date);
+                    final String day;
+                    String normalizeSpaces(String text) {
+                      return text.replaceAll(RegExp(r'\s+'), ' ');
+                    }
+
+                    if (difference.inDays == 0) {
+                      day = time;
+                    } else {
+                      day = '${date.day}/${date.month}/${date.year}';
+                    }
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EmailViewPage(
+                              email: email,
+                              username: widget.username,
+                              password: widget.password,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: theme.primaryColor,
+                          child: Text(
+                            sender[0].toUpperCase(),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                                color: themeNotifier.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 15),
+                          ),
+                        ),
+                        title: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  sender.length > 23
+                                      ? '${sender.substring(0, 23)}...'
+                                      : sender,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  day,
+                                  style: TextStyle(
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                if (email.hasAttachment)
+                                  Icon(
+                                    Icons.attach_file,
+                                    size: 15,
+                                    color: theme.iconTheme.color,
+                                  )
+                              ],
+                            ),
+                            Text(subject.trim(),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: themeNotifier.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                                overflow: TextOverflow.ellipsis),
+                            Text(
+                              normalizeSpaces(body),
+                              style: TextStyle(
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.7),
+                                fontSize: 12,
+                              ),
+                              maxLines: 1,
+                              softWrap: false,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -296,4 +306,3 @@ class _EmailListPageState extends State<EmailListPage> {
     );
   }
 }
-
