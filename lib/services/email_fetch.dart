@@ -1,6 +1,9 @@
 import 'package:enough_mail/enough_mail.dart';
 import "package:iitk_mail_client/EmailCache/cache_service.dart";
 import "./save_mails_to_objbox.dart";
+import "../EmailCache/initializeobjectbox.dart";
+import "../EmailCache/models/email.dart";
+import "../objectbox.g.dart";
 import '../models/advanced_settings_model.dart';
 
 
@@ -16,8 +19,8 @@ class EmailService {
     required String username,
     required String password,
   }) async {
-    final String serverName=emailSettings.imapServer;
-    final int port=int.parse(emailSettings.imapPort);
+    final String serverName = emailSettings.imapServer;
+    final int port = int.parse(emailSettings.imapPort);
     final client = ImapClient(isLogEnabled: false);
     try {
       await client.connectToServer(serverName, port, isSecure: port == 993);
@@ -37,10 +40,10 @@ class EmailService {
     required String username,
     required String password,
   }) async {
-    final String serverName=emailSettings.imapServer;
-    final int port=int.parse(emailSettings.imapPort);
+    final String serverName = emailSettings.imapServer;
+    final int port = int.parse(emailSettings.imapPort);
     final client = ImapClient(isLogEnabled: false);
-    try{
+    try {
       await client.connectToServer(serverName, port, isSecure: port == 993);
       await client.login(username, password);
       await client.selectInbox();
@@ -48,18 +51,21 @@ class EmailService {
       int? highestUid = getHighestUidFromDatabase();
       int fetchuid = highestUid + 1;
 
-      final fetchResult =  await client.uidFetchMessagesByCriteria("$fetchuid:* (UID BODY.PEEK[])");
-         
+      final fetchResult = await client
+          .uidFetchMessagesByCriteria("$fetchuid:* (UID BODY.PEEK[])");
+
       if (fetchResult.messages.length == 1) {
         if (fetchResult.messages[0].uid != highestUid) {
           allFetchedMessages.addAll(fetchResult.messages);
         }
-      }
-      else {
+      } else {
         allFetchedMessages.addAll(fetchResult.messages);
       }
-      if(allFetchedMessages.isNotEmpty) {await UpdateDatabase(allFetchedMessages);}
-      else{ logger.i("No new mails recieved");}
+      if (allFetchedMessages.isNotEmpty) {
+        await UpdateDatabase(allFetchedMessages);
+      } else {
+        logger.i("No new mails recieved");
+      }
       await client.logout();
     } on ImapException catch (e) {
       throw Exception("IMAP failed with $e");

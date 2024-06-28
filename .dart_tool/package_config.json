@@ -3,685 +3,685 @@
   "packages": [
     {
       "name": "_fe_analyzer_shared",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-61.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-61.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "analyzer",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/analyzer-5.13.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/analyzer-5.13.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "args",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/args-2.5.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/args-2.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "asn1lib",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/asn1lib-1.5.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/asn1lib-1.5.3",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "async",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/async-2.11.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/async-2.11.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "basic_utils",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/basic_utils-5.7.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/basic_utils-5.7.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "boolean_selector",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "build",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build-2.4.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build-2.4.1",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "build_config",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build_config-1.1.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build_config-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "build_daemon",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build_daemon-4.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build_daemon-4.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "build_resolvers",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build_resolvers-2.4.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build_resolvers-2.4.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "build_runner",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build_runner-2.4.11",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build_runner-2.4.11",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "build_runner_core",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/build_runner_core-7.3.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/build_runner_core-7.3.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "built_collection",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/built_collection-5.1.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/built_collection-5.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "built_value",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/built_value-8.9.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/built_value-8.9.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "characters",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/characters-1.3.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/characters-1.3.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "checked_yaml",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "clock",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/clock-1.1.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/clock-1.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "code_builder",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/code_builder-4.10.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/code_builder-4.10.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "collection",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/collection-1.18.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/collection-1.18.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "connectivity_plus",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/connectivity_plus-5.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/connectivity_plus-5.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "connectivity_plus_platform_interface",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-1.2.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/connectivity_plus_platform_interface-1.2.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "convert",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/convert-3.1.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/convert-3.1.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "cross_file",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/cross_file-0.3.4+1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/cross_file-0.3.4+1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "crypto",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/crypto-3.0.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/crypto-3.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "csslib",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/csslib-0.17.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/csslib-0.17.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
     {
       "name": "dart_style",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/dart_style-2.3.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/dart_style-2.3.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "dbus",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/dbus-0.7.10",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/dbus-0.7.10",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "encrypt",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/encrypt-5.0.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/encrypt-5.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "enough_convert",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/enough_convert-1.6.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/enough_convert-1.6.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "enough_mail",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/enough_mail-2.1.6",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/enough_mail-2.1.6",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "event_bus",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/event_bus-2.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/event_bus-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "fake_async",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/fake_async-1.3.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/fake_async-1.3.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "ffi",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/ffi-2.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/ffi-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "file",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/file-7.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/file-7.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "file_picker",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/file_picker-8.0.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/file_picker-8.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "fixnum",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/fixnum-1.1.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/fixnum-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "flat_buffers",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/flat_buffers-2.0.5",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/flat_buffers-2.0.5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/sakshamagarwal/development/flutter/packages/flutter",
+      "rootUri": "file:///home/warrior/sdks/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_html",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/flutter_html-3.0.0-beta.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/flutter_html-3.0.0-beta.2",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "flutter_lints",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/flutter_lints-3.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/flutter_lints-3.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "flutter_secure_storage",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/flutter_secure_storage-4.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/flutter_secure_storage-4.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/sakshamagarwal/development/flutter/packages/flutter_test",
+      "rootUri": "file:///home/warrior/sdks/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/sakshamagarwal/development/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///home/warrior/sdks/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "frontend_server_client",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/frontend_server_client-4.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/frontend_server_client-4.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "get",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/get-4.6.6",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/get-4.6.6",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
     {
       "name": "glob",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/glob-2.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/glob-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "graphs",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/graphs-2.3.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/graphs-2.3.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "html",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/html-0.15.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/html-0.15.4",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "http",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/http-1.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/http-1.2.1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "http_multi_server",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/http_multi_server-3.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/http_multi_server-3.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "http_parser",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "intl",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/intl-0.19.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/intl-0.19.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "io",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/io-1.0.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/io-1.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "js",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/js-0.6.7",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/js-0.6.7",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "json_annotation",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/json_annotation-4.9.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/json_annotation-4.9.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "leak_tracker",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/leak_tracker-10.0.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/leak_tracker-10.0.4",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_flutter_testing",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.3",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_testing",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "lints",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/lints-3.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/lints-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "list_counter",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/list_counter-1.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/list_counter-1.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "logger",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/logger-1.4.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/logger-1.4.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "logging",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/logging-1.2.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/logging-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/matcher-0.12.16+1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/matcher-0.12.16+1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "material_color_utilities",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/material_color_utilities-0.8.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/material_color_utilities-0.8.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/meta-1.12.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/meta-1.12.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "mime",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/mime-1.0.5",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/mime-1.0.5",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "nested",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/nested-1.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/nested-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "nm",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/nm-0.5.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/nm-0.5.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "objectbox",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/objectbox-1.7.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/objectbox-1.7.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "objectbox_flutter_libs",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/objectbox_flutter_libs-1.7.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/objectbox_flutter_libs-1.7.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "objectbox_generator",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/objectbox_generator-1.7.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/objectbox_generator-1.7.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "package_config",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/package_config-2.1.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/package_config-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "path",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path-1.9.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path-1.9.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "path_provider",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider-2.1.3",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider-2.1.3",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider_android-2.2.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider_android-2.2.4",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "path_provider_foundation",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "path_provider_linux",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider_linux-2.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider_linux-2.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "path_provider_platform_interface",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider_platform_interface-2.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider_platform_interface-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "path_provider_windows",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/path_provider_windows-2.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/path_provider_windows-2.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "petitparser",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/petitparser-6.0.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/petitparser-6.0.2",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "platform",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/platform-3.1.5",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/platform-3.1.5",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "plugin_platform_interface",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "pointycastle",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/pointycastle-3.9.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/pointycastle-3.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "pool",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/pool-1.5.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/pool-1.5.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "provider",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/provider-6.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/provider-6.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "pub_semver",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/pub_semver-2.1.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/pub_semver-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "pubspec_parse",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/pubspec_parse-1.3.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/pubspec_parse-1.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "shelf",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/shelf-1.4.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/shelf-1.4.1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "shelf_web_socket",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/shelf_web_socket-2.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/shelf_web_socket-2.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/sakshamagarwal/development/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///home/warrior/sdks/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "source_gen",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/source_gen-1.5.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/source_gen-1.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "source_span",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/source_span-1.10.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/source_span-1.10.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "stack_trace",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/stack_trace-1.11.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/stack_trace-1.11.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "stream_channel",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/stream_channel-2.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/stream_channel-2.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
     {
       "name": "stream_transform",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/stream_transform-2.1.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/stream_transform-2.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "string_scanner",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/string_scanner-1.2.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/string_scanner-1.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "synchronized",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/synchronized-3.1.0+1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/synchronized-3.1.0+1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "term_glyph",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/term_glyph-1.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/term_glyph-1.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/test_api-0.7.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/test_api-0.7.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "timing",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/timing-1.0.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/timing-1.0.1",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "typed_data",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/typed_data-1.3.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/typed_data-1.3.2",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
     {
       "name": "vector_math",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
       "languageVersion": "2.14"
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/vm_service-14.2.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/vm_service-14.2.1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "watcher",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/watcher-1.1.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/watcher-1.1.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "web",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/web-0.5.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/web-0.5.1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "web_socket",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/web_socket-0.1.5",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/web_socket-0.1.5",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "web_socket_channel",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/web_socket_channel-3.0.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/web_socket_channel-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "win32",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/win32-5.5.1",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/win32-5.5.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
     {
       "name": "xdg_directories",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/xdg_directories-1.0.4",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/xdg_directories-1.0.4",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     },
     {
       "name": "xml",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/xml-6.5.0",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/xml-6.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "yaml",
-      "rootUri": "file:///Users/sakshamagarwal/.pub-cache/hosted/pub.dev/yaml-3.1.2",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/yaml-3.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
     },
@@ -692,10 +692,10 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-06-21T17:13:44.340496Z",
+  "generated": "2024-06-26T19:35:45.422652Z",
   "generator": "pub",
-  "generatorVersion": "3.4.1",
-  "flutterRoot": "file:///Users/sakshamagarwal/development/flutter",
-  "flutterVersion": "3.22.1",
-  "pubCache": "file:///Users/sakshamagarwal/.pub-cache"
+  "generatorVersion": "3.4.3",
+  "flutterRoot": "file:///home/warrior/sdks/flutter",
+  "flutterVersion": "3.22.2",
+  "pubCache": "file:///home/warrior/.pub-cache"
 }

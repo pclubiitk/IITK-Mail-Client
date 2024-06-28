@@ -31,6 +31,8 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
         String? senderEmail = message.from!.first.email;
         String sender = personalName ?? senderEmail;
         
+        bool hasAttachments = message.hasAttachments();
+
         // Create Email object
         final email = Email(
           from: message.from?.isNotEmpty == true
@@ -44,6 +46,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           receivedDate: message.decodeDate() ?? DateTime.now(),
           uniqueId: message.uid!, // Add unique ID logic if needed
           senderName: sender,
+          hasAttachment: hasAttachments,
         );
 
         // Save Email object to the database
@@ -78,6 +81,8 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
         String? personalName = message.from!.first.personalName;
         String? senderEmail = message.from!.first.email;
         String sender = personalName ?? senderEmail;
+        bool hasAttachments = message.hasAttachments();
+
         // Create Email object
         final email = Email(
           from: message.from?.isNotEmpty == true
@@ -91,6 +96,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
           receivedDate: message.decodeDate() ?? DateTime.now(),
           uniqueId: message.uid!, // Add unique ID logic if needed
           senderName: sender,
+          hasAttachment: hasAttachments,
         );
 
         // Save Email object to the database
