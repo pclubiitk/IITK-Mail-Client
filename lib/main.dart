@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Dependency_Injection.dart';
@@ -21,24 +22,31 @@ void main() async {
   final emailSettings = await SecureStorageService.loadSettings();
   final savedUsername = await SecureStorageService.getUsername();
   final savedPassword = await SecureStorageService.getPassword();
-  
+  final isLogged = await SecureStorageService.getLoggedIn();
+
   String initialRoute = '/login';
   String? validUsername;
   String? validPassword;
 
- if (savedUsername != null && savedPassword != null) {
-    String? authResult = await AuthService.authenticate(
-      emailSettings: emailSettings,
-      username: savedUsername,
-      password: savedPassword,
-    );
+  final _connectivityResult = await Connectivity().checkConnectivity();
 
-    if (authResult == null) {
-      initialRoute = '/emailList';
-      validUsername = savedUsername;
-      validPassword = savedPassword;
+  if(isLogged == "true"){
+    initialRoute = '/emailList';
+    validUsername = savedUsername;
+    validPassword = savedPassword;
+    if (_connectivityResult != ConnectivityResult.none){
+      String? authResult = await AuthService.authenticate(
+        emailSettings: emailSettings,
+        username: savedUsername!,
+        password: savedPassword!,
+      );
+
+      if (authResult != null) {
+        initialRoute = '/login';
+      }
     }
   }
+
 
   runApp(
     MultiProvider(
@@ -55,6 +63,7 @@ void main() async {
     ),
   );
   DependencyInjection.init();
+
 }
 class MyApp extends StatelessWidget {
   final String initialRoute;

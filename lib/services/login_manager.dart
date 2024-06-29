@@ -27,6 +27,7 @@ class LoginManager {
 
     if (errorMessage == null) {
       await SecureStorageService.saveCredentials(username, password);
+      await SecureStorageService.setLoggedIn("true");
       if (context.mounted) {
         Navigator.pushReplacement(
           context,

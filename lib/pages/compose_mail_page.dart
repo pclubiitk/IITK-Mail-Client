@@ -56,7 +56,6 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
 
   Future<void> _sendEmail() async {
     final emailSettings =
-       
         Provider.of<EmailSettingsModel>(context, listen: false);
     List<String> recipients = _toController
         .map((controller) => controller.text.trim())
@@ -190,43 +189,17 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                  child: Text(
-                    'From:',
-                    style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: theme.cardColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(),
-                  ),
-                  child: Text(
-                    "${widget.username}@iitk.ac.in",
-                    style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6)),
-                  ),
-                ),
-              ],
+            Divider(
+              thickness: 0.5,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
             ),
-            const SizedBox(height: 16),
             Row(
               children: [
-                SizedBox(
-                  width: 70,
-                  child: Text(
-                    'Subject:',
-                    style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                        fontSize: 16),
+                Text(
+                  'Subject',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: theme.colorScheme.onSurface.withOpacity(0.8),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -243,9 +216,11 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            Divider(
+              thickness: 0.5,
+              color: theme.colorScheme.onSurface.withOpacity(0.6),
+            ),
             if (_attachmentFileNames.isNotEmpty) ...[
-              const Divider(color: Colors.grey),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: _attachmentFileNames
@@ -255,8 +230,11 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                         ))
                     .toList(),
               ),
+              Divider(
+                thickness: 0.5,
+                color: theme.colorScheme.onSurface.withOpacity(0.6),
+              ),
             ],
-            const Divider(color: Colors.grey),
             Expanded(
               child: TextField(
                 controller: _bodyController,

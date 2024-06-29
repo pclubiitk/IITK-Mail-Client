@@ -16,6 +16,7 @@ class AuthService {
     final String serverName;
     final int port;
     final String authType = emailSettings.authServerType.toLowerCase();
+    final String authMech = emailSettings.authMechanism.toLowerCase();
 
     if (authType == 'imap') {
       serverName = emailSettings.imapServer;
@@ -34,6 +35,7 @@ class AuthService {
         port: port,
         username: username,
         password: password,
+        mech: authMech
       );
     } else {
       return 'Unsupported authentication type';
@@ -70,13 +72,20 @@ class AuthService {
     required int port,
     required String username,
     required String password,
+    required String mech
   }) async {
     final client = SmtpClient(serverName, isLogEnabled: false);
     try {
       await client.connectToServer(serverName, port, isSecure: port == 465);
       await client.ehlo();
-      await client.authenticate(username, password, AuthMechanism.plain);
-      print("SMTP login");
+      if (mech == "plain"){
+        await client.authenticate(username, password, AuthMechanism.plain);
+        print("SMTP login using PLAIN");
+      }
+      if ( mech == "login"){
+        await client.authenticate(username, password, AuthMechanism.login);
+        print("SMTP login using LOGIN");
+      }
 
       return null; // No error message on success
     } on SmtpException {
