@@ -596,6 +596,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "open_file",
+      "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/open_file-3.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "package_config",
       "rootUri": "file:///home/warrior/.pub-cache/hosted/pub.dev/package_config-2.1.0",
       "packageUri": "lib/",
@@ -992,7 +998,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-06-29T10:11:30.226340Z",
+  "generated": "2024-06-30T12:12:09.117322Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///home/warrior/sdks/flutter",

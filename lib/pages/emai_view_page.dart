@@ -1,16 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:typed_data';
-
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/EmailCache/models/message.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
+import 'package:iitk_mail_client/services/download_files.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
-import 'package:iitk_mail_client/services/attachment_chip.dart';
 import 'package:iitk_mail_client/services/fetch_attachment.dart';
+import 'package:iitk_mail_client/services/open_files.dart';
 import 'package:logger/logger.dart';
 
 class EmailViewPage extends StatefulWidget {
@@ -36,8 +36,11 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final DateTime date;
   late final int uniqueId;
   final logger = Logger();
+  final downloader = DownloadFiles();
+  final opener = OpenFiles();
   Message? message;
   List<ContentInfo>? attachments;
+  List<MimePart>? mimeParts;
 
   @override
   void initState() {
@@ -58,6 +61,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
         setState(() {
           message = fetchedMessage;
           attachments = fetchedMessage.attachments;
+          mimeParts = fetchedMessage.mimeparts;
         });
         for (var attachment in attachments!) {
           logger.i(
@@ -68,15 +72,6 @@ class _EmailViewPageState extends State<EmailViewPage> {
       });
     }
   }
-
-  // Widget _buildAttachments(List<ContentInfo> attachments) {
-  //   return Wrap(
-  //     children: [
-  //       for (final attachment in attachments)
-  //         AttachmentChip(info: attachment, message: message!) as Widget,
-  //     ],
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,32 +164,96 @@ class _EmailViewPageState extends State<EmailViewPage> {
               Divider(color: Colors.grey),
               //attachment
               if (widget.email.hasAttachment && attachments != null) ...[
-                for (var attachment in attachments!)
+                for (var i = 0; i < attachments!.length; i++)
                   Column(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: theme.brightness == Brightness.dark
-                              ? Colors.grey[800]
-                              : Colors.grey[200],
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            attachment.fileName ?? 'Unnamed',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              color: theme.brightness == Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
+                      GestureDetector(
+                        onTap: () async {
+                          if (mimeParts != null && i < mimeParts!.length) {
+                            final mimePart = mimeParts![i];
+                            // Download the file
+                            final Uint8List? fileBytes =
+                                mimePart.decodeContentBinary();
+                            if (fileBytes != null) {
+                              final String fileName =
+                                  attachments![i].fileName ?? 'Unnamed';
+                              final String? filePath =
+                                  await DownloadFiles().downloadFileFromBytes(
+                                fileBytes,
+                                fileName,
+                                keepDuplicate: true,
+                              );
+
+                              // Open the file
+                              if (filePath != null) {
+                                await opener.open(filePath);
+                              } else {
+                                logger.i('Failed to download file.');
+                              }
+                            } else {
+                              logger.i('Failed to decode attachment content.');
+                            }
+                          } else {
+                            logger.e(
+                              'MimePart or attachments list is null or out of bounds',
+                            );
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.grey[800]
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                          trailing: IconButton(
-                            icon: Icon(Icons.download),
-                            onPressed: () {
-                              // Handle download action for this attachment
-                            },
+                          child: ListTile(
+                            title: Text(
+                              attachments![i].fileName ?? 'Unnamed',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                color: theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.download),
+                              onPressed: () async {
+                                // Handle download action for this attachment
+                                if (mimeParts != null &&
+                                    i < mimeParts!.length) {
+                                  final mimePart = mimeParts![i];
+                                  final data = mimePart.decodeContentBinary();
+                                  final fileName =
+                                      attachments![i].fileName ?? 'Unnamed';
+                                  final path =
+                                      await downloader.downloadFileFromBytes(
+                                    data!,
+                                    fileName,
+                                  );
+                                  if (path != null) {
+                                    logger.i('File downloaded to: $path');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Downloaded to: $path',
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    logger.e('Failed to download file');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Failed to download file',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ),
