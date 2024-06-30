@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/services/reply_mail.dart';
 import 'package:iitk_mail_client/services/snackbar_navigate.dart';
-
+import 'package:provider/provider.dart';
+import '../models/advanced_settings_model.dart';
 class ReplyEmailPage extends StatefulWidget {
   final Email email;
   final String username;
@@ -50,8 +51,10 @@ class _ReplyEmailPageState extends State<ReplyEmailPage> {
     setState(() {
       _isLoading = true;
     });
-
+     final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     await EmailReply.replyEmail(
+      emailSettings: emailSettings,
       username: widget.username,
       password: widget.password,
       originalMessage: widget.email,

@@ -1,11 +1,13 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/services/save_mails_to_objbox.dart';
 
 class EmailReply {
   static Future<void> replyEmail({
+    required EmailSettingsModel emailSettings,
     required String username,
     required String password,
     required Email originalMessage,
@@ -13,9 +15,11 @@ class EmailReply {
     required Function(String, Color) onResult,
   }) async {
     logger.i('Starting replyEmail function');
+    final String serverName = emailSettings.smtpServer;
+    final int port = int.parse(emailSettings.smtpPort);
     final client = SmtpClient('enough_mail', isLogEnabled: false);
     try {
-      await client.connectToServer('mmtp.iitk.ac.in', 465, isSecure: true);
+      await client.connectToServer(serverName, port, isSecure: port == 465);
       await client.ehlo();
       logger.i('Connected and authenticated');
 
@@ -28,7 +32,7 @@ class EmailReply {
       logger.i(originalMimeMessage);
       final builder = MessageBuilder.prepareReplyToMessage(
         originalMimeMessage,
-        MailAddress(username, '$username@iitk.ac.in'),
+        MailAddress(username, '$username@${emailSettings.domain}'),
       );
       final originalBody = originalMessage.body;
       final newBody = "$replyBody\n\n----Original Message----\n\n$originalBody";
