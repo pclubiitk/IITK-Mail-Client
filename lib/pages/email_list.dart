@@ -260,15 +260,18 @@ class _EmailListPageState extends State<EmailListPage> {
                                   )
                               ],
                             ),
-                            Text(subject.trim(),
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: themeNotifier.isDarkMode
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                                overflow: TextOverflow.ellipsis),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(subject.trim(),
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis),
+                            ),
                             Text(
                               normalizeSpaces(body),
                               style: TextStyle(
