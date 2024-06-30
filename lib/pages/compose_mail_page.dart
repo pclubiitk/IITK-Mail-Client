@@ -146,19 +146,31 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  'From',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                  child: Text(
+                    'From:',
+                    style: TextStyle(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 16),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  '${widget.username}@iitk.ac.in',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: theme.colorScheme.onSurface.withOpacity(0.8)),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: theme.cardColor,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(),
+                  ),
+                  child: Text(
+                    "${widget.username}@iitk.ac.in",
+                    style: TextStyle(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6)),
+                  ),
+                ),
+              ],
                 ),
               ],
             ),
