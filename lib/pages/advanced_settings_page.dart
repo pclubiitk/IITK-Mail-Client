@@ -202,8 +202,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                 decoration: InputDecoration(
                   hintText: 'Authenticate using',
       helperText: 'Authenticate using',
-                  // labelText: 'Authenticate using',
-                  // labelStyle: theme.textTheme.bodyMedium,
+                  
                   filled: true,
                   fillColor: theme.inputDecorationTheme.fillColor,
                   border: OutlineInputBorder(
@@ -242,8 +241,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                 decoration: InputDecoration(
                    hintText: 'Authentication Mechanism (for SMTP)',
       helperText: 'Authentication Mechanism (for SMTP)',
-                  // labelText: 'Authentication Mechanism (for SMTP)',
-                  // labelStyle: theme.textTheme.bodyMedium,
+                 
                   filled: true,
                   fillColor: theme.inputDecorationTheme.fillColor,
                   border: OutlineInputBorder(

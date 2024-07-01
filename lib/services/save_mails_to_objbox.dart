@@ -8,18 +8,18 @@ final logger = Logger();
 
 Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
   try {
-    // Clear existing emails
+    /// Clear existing emails
     objectbox.emailBox.removeAll();
     logger.i('All previous emails removed from the database.');
 
-    // Iterate over each message and save to database
+    /// Iterate over each message and save to database
     for (final message in messages) {
       try {
         String? body;
         String? plainText = message.decodeTextPlainPart();
         String? htmlText = message.decodeTextHtmlPart();
 
-        // Determine the body content
+        /// Determine the body content
         if (plainText != null && plainText.isNotEmpty) {
           body = plainText;
         } else if (htmlText != null && htmlText.isNotEmpty) {
@@ -33,7 +33,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
         
         bool hasAttachments = message.hasAttachments();
 
-        // Create Email object
+        /// Create Email object
         final email = Email(
           from: message.from?.isNotEmpty == true
               ? message.from!.first.email
@@ -49,7 +49,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           hasAttachment: hasAttachments,
         );
 
-        // Save Email object to the database
+        /// Save Email object to the database
         objectbox.emailBox.put(email);
         logger.i('Email from ${email.from} to ${email.to} saved successfully.');
       } catch (e) {
@@ -63,14 +63,14 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
 
 Future<void> UpdateDatabase(List<MimeMessage> messages) async {
   try {
-    // Iterate over each message and save to database
+    /// Iterate over each message and save to database
     for (final message in messages) {
       try {
         String? body;
         String? plainText = message.decodeTextPlainPart();
         String? htmlText = message.decodeTextHtmlPart();
 
-        // Determine the body content
+        /// Determine the body content
         if (plainText != null && plainText.isNotEmpty) {
           body = plainText;
         } else if (htmlText != null && htmlText.isNotEmpty) {
@@ -83,7 +83,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
         String sender = personalName ?? senderEmail;
         bool hasAttachments = message.hasAttachments();
 
-        // Create Email object
+        /// Create Email object
         final email = Email(
           from: message.from?.isNotEmpty == true
               ? message.from!.first.email
@@ -99,7 +99,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
           hasAttachment: hasAttachments,
         );
 
-        // Save Email object to the database
+        /// Save Email object to the database
         objectbox.emailBox.put(email);
         logger.i('Email from ${email.from} to ${email.to} saved successfully.');
       } catch (e) {

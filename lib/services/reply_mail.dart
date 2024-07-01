@@ -37,11 +37,11 @@ class EmailReply {
       final originalBody = originalMessage.body;
       final newBody = "$replyBody\n\n----Original Message----\n\n$originalBody";
 
-      // Combine reply body with the quoted original message
+      /// Combine reply body with the quoted original message
       builder.text = newBody;
 
       logger.i('Combined Body:\n${builder.text}');
-      //builder.text=replyBody;
+      ///builder.text=replyBody;
 
       final mimeMessage = builder.buildMimeMessage();
 

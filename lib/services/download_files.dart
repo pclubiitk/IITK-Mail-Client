@@ -1,5 +1,5 @@
-//android 29+
-// ignore_for_file: unnecessary_null_comparison, avoid_print
+///android 29+
+/// ignore_for_file: unnecessary_null_comparison, avoid_print
 
 import 'dart:io';
 import 'dart:typed_data';
@@ -35,16 +35,16 @@ class DownloadFiles extends ChangeNotifier {
     bool keepDuplicate = false,
   }) async {
     try {
-      // Get the app-specific directory for storing files
+      /// Get the app-specific directory for storing files
       Directory? appDir = await getExternalStorageDirectory();
       if (appDir == null) {
         throw Exception('External storage directory not found');
       }
 
-      // Create the file path within the app-specific directory
+      /// Create the file path within the app-specific directory
       String filePath = '${appDir.path}/$fileName';
 
-      // Handle file duplicates
+      /// Handle file duplicates
       if (keepDuplicate) {
         int count = 1;
         while (await File(filePath).exists()) {
@@ -57,7 +57,7 @@ class DownloadFiles extends ChangeNotifier {
         }
       }
 
-      // Save the file
+      /// Save the file
       File file = File(filePath);
       await file.writeAsBytes(bytes);
 

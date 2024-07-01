@@ -40,7 +40,7 @@ class EmailForward {
       final newBody =
           "$forwardBody\n\n----Original Message----\n\n$originalBody";
 
-      // Combine reply body with the quoted original message
+      /// Combine reply body with the quoted original message
       builder.text = newBody;
       builder.to = [MailAddress(null, forwardTo)];
       builder.subject = forwardSubject;
