@@ -5,7 +5,7 @@ import "../objectbox.g.dart" ;
 
 
 int getHighestUidFromDatabase() {
-      // Assuming objectbox.emailBox contains the Email entities
+      /// Assuming objectbox.emailBox contains the Email entities
       final query = objectbox.emailBox
           .query()
           .order(Email_.uniqueId, flags: Order.descending)
@@ -15,5 +15,5 @@ int getHighestUidFromDatabase() {
       if (highestUidEmail != null) {
         return int.parse('${highestUidEmail.uniqueId}');
       }
-      return 0; // If no emails are found, return 0
+      return 0; /// If no emails are found, return 0
 }

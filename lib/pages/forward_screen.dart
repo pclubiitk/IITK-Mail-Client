@@ -144,7 +144,7 @@ class _ForwardEmailPageState extends State<ForwardEmailPage> {
                       child: TextField(
                         cursorColor:
                             theme.colorScheme.onSurface.withOpacity(0.6),
-                        // Input recievers address here
+                        /// Input recievers address here
                         maxLines: null,
                         style: TextStyle(color: theme.colorScheme.onSurface),
                         controller: _forwardToController,

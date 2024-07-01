@@ -147,7 +147,7 @@ class _AddressBookState extends State<AddressBook> {
 }
 
 showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
-  // set up the buttons
+  /// set up the buttons
   Widget cancelButton = GestureDetector(
     child: Text("Cancel"),
     onTap: () {
@@ -162,7 +162,7 @@ showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
       }
     },
   );
-  // set up the AlertDialog
+  /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Delete Address"),
     content: Text("Are you sure you want to delete the address?"),
@@ -197,7 +197,7 @@ addAddressDialog(BuildContext context, bool Function(Address) add) {
       }
     },
   );
-  // set up the AlertDialog
+  /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("Add Address"),
     content: TextField(

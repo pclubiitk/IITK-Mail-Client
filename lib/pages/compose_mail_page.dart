@@ -47,9 +47,9 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
           .toList();
 
       setState(() {
-        _attachmentPaths.addAll(paths); // Append new paths
+        _attachmentPaths.addAll(paths); /// Append new paths
         _attachmentFileNames.addAll(paths.map((path) =>
-            File(path).path.split('/').last)); // Append new file names
+            File(path).path.split('/').last)); /// Append new file names
       });
     }
   }
@@ -59,10 +59,10 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         Provider.of<EmailSettingsModel>(context, listen: false);
     List<String> recipients = _toController
         .map((controller) => controller.text.trim())
-        .where((email) => email.isNotEmpty) // Filter out empty strings
+        .where((email) => email.isNotEmpty) /// Filter out empty strings
         .toList();
 
-    // Check if there are valid recipients
+    /// Check if there are valid recipients
     if (recipients.isEmpty) {
       setState(() {
         _snackBarMessage = 'No recipients specified';

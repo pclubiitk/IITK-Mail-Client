@@ -41,7 +41,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
     uniqueId = widget.email.uniqueId;
-    // Fetch attachments if the email has attachments
+    /// Fetch attachments if the email has attachments
     if (widget.email.hasAttachment) {
       FetchAttachmentsService.fetchAttachments(
               uniqueId: uniqueId,
@@ -52,7 +52,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
           attachments = result;
         });
       }).catchError((error) {
-        // Handle error fetching attachments
+        /// Handle error fetching attachments
         logger.e('Error fetching attachments: $error');
       });
     }
@@ -75,13 +75,13 @@ class _EmailViewPageState extends State<EmailViewPage> {
           IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // delete request logic to implemented
+              /// delete request logic to implemented
             },
           ),
           IconButton(
             icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // add email to flag or starred
+              /// add email to flag or starred
             },
           ),
         ],
@@ -184,7 +184,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                                   ),
                                   onPressed: () async {
                                     for (final attachment in attachments) {
-                                      // Download each attachment
+                                      /// Download each attachment
                                       final bytes = await attachment.download();
                                       if (bytes != null) {
                                         final savedPath = await downloader
@@ -226,10 +226,10 @@ class _EmailViewPageState extends State<EmailViewPage> {
                               trailing: IconButton(
                                 icon: Icon(Icons.file_download),
                                 onPressed: () {
-                                  // Handle download action
+                                  /// Handle download action
                                 },
                               ),
-                              // Other attachment details and actions
+                              /// Other attachment details and actions
                             );
                           }).toList(),
                   ),

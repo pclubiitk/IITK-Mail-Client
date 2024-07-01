@@ -22,22 +22,22 @@ class FetchAttachmentsService {
         password: password,
       );
 
-      // Process attachments if any
+      /// Process attachments if any
       if (message.hasAttachments()) {
         for (final part in message.mimeData?.parts ?? []) {
-          // Check if the part has a filename, which typically indicates an attachment
+          /// Check if the part has a filename, which typically indicates an attachment
           if (part.filename != null && part.filename!.isNotEmpty) {
-            // Fetch attachment details
+            /// Fetch attachment details
             final content = await part.decodeContentBinary();
 
-            // Log the filename
+            /// Log the filename
             developer.log('Attachment found: ${part.filename}', name: 'FetchAttachmentsService');
 
-            // Construct a download URL (or path) for the attachment
-            // Note: You need to implement a mechanism to store the attachment and provide its URL/path.
+            /// Construct a download URL (or path) for the attachment
+            /// Note: You need to implement a mechanism to store the attachment and provide its URL/path.
             final downloadUrl = '/path/to/attachments/${part.filename}';
 
-            // Create an Attachment object with relevant details
+            /// Create an Attachment object with relevant details
             final attachment = Attachment(
               fileName: part.filename ?? 'Unknown',
               size: content.length,
