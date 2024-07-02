@@ -47,9 +47,9 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
           .toList();
 
       setState(() {
-        _attachmentPaths.addAll(paths); // Append new paths
+        _attachmentPaths.addAll(paths); /// Append new paths
         _attachmentFileNames.addAll(paths.map((path) =>
-            File(path).path.split('/').last)); // Append new file names
+            File(path).path.split('/').last)); /// Append new file names
       });
     }
   }
@@ -59,10 +59,10 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         Provider.of<EmailSettingsModel>(context, listen: false);
     List<String> recipients = _toController
         .map((controller) => controller.text.trim())
-        .where((email) => email.isNotEmpty) // Filter out empty strings
+        .where((email) => email.isNotEmpty) /// Filter out empty strings
         .toList();
 
-    // Check if there are valid recipients
+    /// Check if there are valid recipients
     if (recipients.isEmpty) {
       setState(() {
         _snackBarMessage = 'No recipients specified';
@@ -146,19 +146,31 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  'From',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: theme.colorScheme.onSurface.withOpacity(0.8),
+                Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                  child: Text(
+                    'From:',
+                    style: TextStyle(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        fontSize: 16),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Text(
-                  '${widget.username}@iitk.ac.in',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: theme.colorScheme.onSurface.withOpacity(0.8)),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: theme.cardColor,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(),
+                  ),
+                  child: Text(
+                    "${widget.username}@iitk.ac.in",
+                    style: TextStyle(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6)),
+                  ),
+                ),
+              ],
                 ),
               ],
             ),

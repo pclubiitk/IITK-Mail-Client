@@ -32,14 +32,14 @@ class EmailListPage extends StatefulWidget {
 class _EmailListPageState extends State<EmailListPage> {
   List<Email> emails = [];
   bool _isLoading = true;
-  //ScrollController controller = ScrollController();
+  ///ScrollController controller = ScrollController();
   late Maildir maildir;
   int oldHighestUid = 0;
 
   @override
   void initState() {
     super.initState();
-    //controller.addListener(_loadmore);
+    ///controller.addListener(_loadmore);
     _initializeMaildir();
     _fetchEmails();
   }
@@ -260,15 +260,18 @@ class _EmailListPageState extends State<EmailListPage> {
                                   )
                               ],
                             ),
-                            Text(subject.trim(),
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: themeNotifier.isDarkMode
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
-                                overflow: TextOverflow.ellipsis),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(subject.trim(),
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ),
+                                  overflow: TextOverflow.ellipsis),
+                            ),
                             Text(
                               normalizeSpaces(body),
                               style: TextStyle(

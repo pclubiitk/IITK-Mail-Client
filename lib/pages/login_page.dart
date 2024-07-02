@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:iitk_mail_client/pages/advanced_settings_page.dart';
 import 'package:iitk_mail_client/services/login_manager.dart';
@@ -54,8 +55,9 @@ class _LoginPageState extends State<LoginPage> {
     final theme = Theme.of(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
 
-    return Scaffold(
+   return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.canvasColor,
         actions: [
           IconButton(
             icon: Icon(
@@ -68,42 +70,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12.0, top: 25),
-              child: ElevatedButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AdvancedSettingsPage(),
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  child: Text(
-                    'Advanced Settings',
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      color: theme.primaryColor,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Center(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child : Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -152,10 +124,10 @@ class _LoginPageState extends State<LoginPage> {
                           Icon(Icons.lock, color: theme.iconTheme.color),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
                   Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.symmetric(horizontal: 110),
+                    // width: double.infinity, 
+                    // margin: const EdgeInsets.symmetric(horizontal: 110),
                     child: _isLoading
                         ? const Center(
                             child: CircularProgressIndicator(),
@@ -163,7 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                         : ElevatedButton(
                             onPressed: _login,
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              elevation: 4,
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -172,12 +145,25 @@ class _LoginPageState extends State<LoginPage> {
                               'Login',
                               style: theme.textTheme.labelLarge?.copyWith(
                                 color: theme.primaryColor,
-                                fontSize: 18,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                   ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      foregroundColor: theme.primaryColor
+                    ),
+                  onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AdvancedSettingsPage(),
+                  ),
+                ),
+                child: Text('Advanced Settings'),
+              ),
                   const SizedBox(height: 16),
                   if (_errorMessage != null && !_isLoading)
                     Text(
@@ -185,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         color: theme.colorScheme.error,
                         fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                        fontSize: 14 ,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -193,8 +179,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-        ],
       ),
-    );
+    ));
   }
 }

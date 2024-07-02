@@ -52,18 +52,18 @@ class AuthService {
     try {
       await client.connectToServer(serverName, port,
           isSecure: port ==
-              993); //if port name is 993 then isSecure=True otherwise false
+              993); ///if port name is 993 then isSecure=True otherwise false
       await client.login(username, password);
       await client.logout();
       print("Imap Login");
 
-      return null; // No error message on success
+      return null; /// No error message on success
     } on ImapException {
       return 'IMAP Authentication failed: Enter valid username or password'; //When credentials are incorrect
     } on SocketException {
-      return 'Invalid server name'; //When server name is incorrect
+      return 'Invalid server name'; ///When server name is incorrect
     } on TimeoutException {
-      return 'Incorrect Port Name'; //When port name is incorrect
+      return 'Incorrect Port Name'; ///When port name is incorrect
     }
   }
 
@@ -87,7 +87,7 @@ class AuthService {
         print("SMTP login using LOGIN");
       }
 
-      return null; // No error message on success
+      return null; /// No error message on success
     } on SmtpException {
       return 'SMTP Authentication failed: Enter valid username or password';
     } on SocketException {

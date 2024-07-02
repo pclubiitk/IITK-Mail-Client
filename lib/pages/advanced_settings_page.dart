@@ -15,8 +15,8 @@ class CustomInputDecoration {
     return InputDecoration(
       filled: true,
       fillColor: theme.inputDecorationTheme.fillColor,
-      labelText: labelText,
-      labelStyle: theme.textTheme.bodyMedium,
+      hintText: labelText,
+      helperText: labelText,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -200,8 +200,9 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                   ),
                 ],
                 decoration: InputDecoration(
-                  labelText: 'Authenticate using',
-                  labelStyle: theme.textTheme.bodyMedium,
+                  hintText: 'Authenticate using',
+      helperText: 'Authenticate using',
+                  
                   filled: true,
                   fillColor: theme.inputDecorationTheme.fillColor,
                   border: OutlineInputBorder(
@@ -238,8 +239,9 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
                   ),
                 ],
                 decoration: InputDecoration(
-                  labelText: 'Authentication Mechanism (for SMTP)',
-                  labelStyle: theme.textTheme.bodyMedium,
+                   hintText: 'Authentication Mechanism (for SMTP)',
+      helperText: 'Authentication Mechanism (for SMTP)',
+                 
                   filled: true,
                   fillColor: theme.inputDecorationTheme.fillColor,
                   border: OutlineInputBorder(

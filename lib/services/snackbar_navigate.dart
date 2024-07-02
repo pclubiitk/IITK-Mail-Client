@@ -7,7 +7,6 @@ import 'package:flutter/scheduler.dart';
 /// The current screen navigates back (pops) immediately after scheduling the snackbar, 
 /// but because the snackbar was scheduled to be shown after the frame is rendered, 
 /// it gets displayed even though the current screen is no longer visible.
-/// 
 class SnackbarHelper {
   static void showSnackBarAndNavigate({
     required BuildContext context,

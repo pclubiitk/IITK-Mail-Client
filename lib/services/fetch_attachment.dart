@@ -43,10 +43,6 @@ class FetchAttachments {
         }
       }
 
-      // Decode binary content if needed
-      // List<Uint8List?> binaryContents =
-      //     mimeParts.map((part) => part!.decodeContentBinary()).toList();
-
       return Message.fromMimeMessage(
         uniqueId: uniqueId,
         mimeMessage: mimeMessage,

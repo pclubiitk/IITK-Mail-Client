@@ -90,13 +90,13 @@ class _EmailViewPageState extends State<EmailViewPage> {
           IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // delete request logic to implemented
+              /// delete request logic to implemented
             },
           ),
           IconButton(
             icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              // add email to flag or starred
+              /// add email to flag or starred
             },
           ),
         ],
