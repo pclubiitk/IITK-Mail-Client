@@ -1,7 +1,7 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:logger/logger.dart';
-
 import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
+import 'package:enough_mail_html/enough_mail_html.dart';
 import '../EmailCache/models/email.dart'; // Ensure correct import for Email model
 
 final logger = Logger();
@@ -23,18 +23,19 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
         if (plainText != null && plainText.isNotEmpty) {
           body = plainText;
         } else if (htmlText != null && htmlText.isNotEmpty) {
-          body = htmlText;
+          body = HtmlToPlainTextConverter.convert(htmlText);
         } else {
           body = 'No Text Body';
         }
         String? personalName = message.from!.first.personalName;
         String? senderEmail = message.from!.first.email;
         String sender = personalName ?? senderEmail;
-        
+
         bool hasAttachments = message.hasAttachments();
 
         /// Create Email object
-        final email = Email(
+         
+         final email = Email(
           from: message.from?.isNotEmpty == true
               ? message.from!.first.email
               : 'Unknown',
@@ -44,7 +45,7 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
           subject: message.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
-          uniqueId: message.uid!, // Add unique ID logic if needed
+          uniqueId: message.uid!,
           senderName: sender,
           hasAttachment: hasAttachments,
         );
@@ -94,7 +95,7 @@ Future<void> UpdateDatabase(List<MimeMessage> messages) async {
           subject: message.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: message.decodeDate() ?? DateTime.now(),
-          uniqueId: message.uid!, // Add unique ID logic if needed
+          uniqueId: message.uid!,
           senderName: sender,
           hasAttachment: hasAttachments,
         );
