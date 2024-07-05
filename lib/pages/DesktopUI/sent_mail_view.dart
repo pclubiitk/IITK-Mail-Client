@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
@@ -44,14 +42,8 @@ class _SentEmailViewPageState extends State<SentEmailViewPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,
-        leading: IconButton(
-          icon:
-              Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),

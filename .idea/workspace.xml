@@ -4,7 +4,61 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="649537e4-10a1-407a-9ce6-06a9f1ec00df" name="Changes" comment="" />
+    <list default="true" id="649537e4-10a1-407a-9ce6-06a9f1ec00df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/EmailCache/models/attachment.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/address_book.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/compose_mail_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/emai_view_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/email_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/forward_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/login_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/reply_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/settings_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/services/download_files.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/services/drawer_item_desktop.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/services/fetch_attachments.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/dartpad/web_plugin_registrant.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/extension_discovery/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/extension_discovery/vs_code.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/package_config_subset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.dart_tool/version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/IITK-Mail-Client-official.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/IITK-Mail-Client-official.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Components/address_book.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Components/address_book.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/EmailCache/cache_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/EmailCache/cache_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/EmailCache/mail_dir.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/EmailCache/mail_dir.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/EmailCache/models/email.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/EmailCache/models/email.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/EmailCache/objectbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/EmailCache/objectbox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/objectbox-model.json" beforeDir="false" afterPath="$PROJECT_DIR$/lib/objectbox-model.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/objectbox.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/objectbox.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/address_book.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/address_book.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/advanced_settings_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/advanced_settings_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/compose_mail_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/compose_mail_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/emai_view_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/emai_view_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/email_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/email_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/forward_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/forward_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/login_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/reply_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/reply_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pages/sent_mail_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pages/sent_mail_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/auth_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/auth_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/email_fetch.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/email_fetch.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/fetch_sentmail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/fetch_sentmail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/forward_mail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/forward_mail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/reply_mail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/reply_mail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/save_address_to_objbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/save_address_to_objbox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/save_mails_to_objbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/save_mails_to_objbox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/send_mail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/send_mail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/services/snackbar_navigate.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/snackbar_navigate.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,17 +91,25 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging main&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/krish/IITK Mail Client/official/IITK-Mail-Client-official/lib/services&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/krish/IITK Mail Client/official/IITK-Mail-Client-official/lib/pages/DesktopUI&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
     &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib/pages/DesktopUI" />
+      <recent name="$PROJECT_DIR$/lib/services" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/.idea/libraries" />
+      <recent name="$PROJECT_DIR$/.idea" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib/pages" />
+      <recent name="$PROJECT_DIR$/lib/pages/DesktopUI" />
     </key>
   </component>
   <component name="RunManager">

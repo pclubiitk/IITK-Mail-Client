@@ -63,14 +63,8 @@ class _EmailViewPageState extends State<EmailViewPage> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,
-        leading: IconButton(
-          icon:
-              Icon(Icons.arrow_back, color: theme.appBarTheme.iconTheme?.color),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),

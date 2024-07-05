@@ -8,7 +8,7 @@ import 'package:iitk_mail_client/services/send_mail.dart';
 import 'package:iitk_mail_client/services/snackbar_navigate.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import '../models/advanced_settings_model.dart';
+import 'package:iitk_mail_client/models/advanced_settings_model.dart';
 
 class ComposeEmailPage extends StatefulWidget {
   final String username;

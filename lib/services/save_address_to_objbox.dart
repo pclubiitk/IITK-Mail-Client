@@ -18,7 +18,7 @@ Future<void> saveAddressToDatabase(List<String> addresses) async {
           if(flag) check=true;
         });
 
-        // Save Email object to the database
+        /// Save Email object to the database
         if(check){
           logger.i('Address $to_save_address already saved.');
         }else {

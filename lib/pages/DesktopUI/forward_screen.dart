@@ -4,7 +4,7 @@ import 'package:iitk_mail_client/EmailCache/models/email.dart';
 import 'package:iitk_mail_client/services/forward_mail.dart';
 import 'package:iitk_mail_client/services/snackbar_navigate.dart';
 import 'package:provider/provider.dart';
-import '../models/advanced_settings_model.dart';
+import 'package:iitk_mail_client/models/advanced_settings_model.dart';
 class ForwardEmailPage extends StatefulWidget {
   final Email email;
   final String username;

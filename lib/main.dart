@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
 import 'package:provider/provider.dart';
 import 'Dependency_Injection.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
@@ -82,19 +83,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
-    return GetMaterialApp(
-      title: 'IITK Mail-Client',
-      theme: themeNotifier.getTheme(),
-      initialRoute: initialRoute,
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/emailList': (context) => EmailListPage(
-              username: savedUsername!,
-              password: savedPassword!,
-            ),
-      },
-      debugShowCheckedModeBanner: false,
-    );
+    if(screenWidth > screenHeight){
+      return GetMaterialApp(
+        title: 'IITK Mail-Client',
+        theme: themeNotifier.getTheme(),
+        initialRoute: initialRoute,
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/emailList': (context) => EmailListPageDesktop(
+            username: savedUsername!,
+            password: savedPassword!,
+          ),
+        },
+        debugShowCheckedModeBanner: false,
+      );
+    }else{
+      return GetMaterialApp(
+        title: 'IITK Mail-Client',
+        theme: themeNotifier.getTheme(),
+        initialRoute: initialRoute,
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/emailList': (context) => EmailListPage(
+            username: savedUsername!,
+            password: savedPassword!,
+          ),
+        },
+        debugShowCheckedModeBanner: false,
+      );
+    }
   }
 }
