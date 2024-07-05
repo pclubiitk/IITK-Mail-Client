@@ -1,6 +1,5 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/services/drawer_item_desktop.dart';
 import 'package:iitk_mail_client/services/drawer_item_tablet.dart';
 import 'package:provider/provider.dart';
 import 'package:iitk_mail_client/EmailCache/models/address.dart';
@@ -64,7 +63,6 @@ class _AddressBookState extends State<AddressBook> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -94,55 +92,49 @@ class _AddressBookState extends State<AddressBook> {
           color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
-      body: Row(
-        children: [
-          Container(width: screenWidth/8.8,
-              child: Drawer(child: DrawerItemsDesktop(),width: screenWidth/10,)),
-          Container(
-            width: screenWidth/1.2,
-            color: theme.scaffoldBackgroundColor,
-            child: _isLoading
-                ? Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
-              ),
-            )
-                : ListView.separated(
-              padding: const EdgeInsets.all(16.0),
-              itemCount: addresses.length,
-              separatorBuilder: (context, index) =>
-                  Divider(color: theme.dividerColor),
-              itemBuilder: (context, index) {
-                final address = addresses[index].mailAddress;
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: theme.primaryColor,
-                    child: Text(
-                      address[0].toUpperCase(),
-                      overflow: TextOverflow.ellipsis,
+      drawer: const Drawer(child: DrawerItemsTablet()),
+      body: Container(
+        color: theme.scaffoldBackgroundColor,
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                ),
+              )
+            : ListView.separated(
+                padding: const EdgeInsets.all(16.0),
+                itemCount: addresses.length,
+                separatorBuilder: (context, index) =>
+                    Divider(color: theme.dividerColor),
+                itemBuilder: (context, index) {
+                  final address = addresses[index].mailAddress;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: theme.primaryColor,
+                      child: Text(
+                        address[0].toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                            color: themeNotifier.isDarkMode
+                                ? Colors.black
+                                : Colors.white),
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.cancel_outlined),
+                      onPressed: () => showAlertDialog(
+                          context, deleteAddress, addresses[index].id),
+                    ),
+                    title: Text(
+                      address,
                       style: theme.textTheme.titleMedium?.copyWith(
-                          color: themeNotifier.isDarkMode
-                              ? Colors.black
-                              : Colors.white),
+                        color: theme.textTheme.bodyLarge?.color,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.cancel_outlined),
-                    onPressed: () => showAlertDialog(
-                        context, deleteAddress, addresses[index].id),
-                  ),
-                  title: Text(
-                    address,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.textTheme.bodyLarge?.color,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+                  );
+                },
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => addAddressDialog(context, addAddress),

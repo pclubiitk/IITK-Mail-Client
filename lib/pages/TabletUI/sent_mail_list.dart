@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
-import 'package:iitk_mail_client/services/drawer_item_desktop.dart';
 import 'package:iitk_mail_client/services/drawer_item_tablet.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/models/advanced_settings_model.dart';
@@ -11,21 +10,21 @@ import "package:iitk_mail_client/EmailCache/models/email.dart";
 import 'package:provider/provider.dart';
 import 'package:iitk_mail_client/services/fetch_sentmail.dart';
 import 'package:iitk_mail_client/pages/TabletUI/sent_mail_view.dart';
-class SentEmailListPageDesktop extends StatefulWidget {
+class SentEmailListPageTablet extends StatefulWidget {
   final String username;
   final String password;
 
-  const SentEmailListPageDesktop({
+  const SentEmailListPageTablet({
     super.key,
     required this.username,
     required this.password,
   });
 
   @override
-  State<SentEmailListPageDesktop> createState() => _EmailListPageState();
+  State<SentEmailListPageTablet> createState() => _EmailListPageState();
 }
 
-class _EmailListPageState extends State<SentEmailListPageDesktop> {
+class _EmailListPageState extends State<SentEmailListPageTablet> {
   List<Email> emails = [];
   bool _isLoading = true;
   late Email sent_email_showing;
@@ -98,12 +97,11 @@ class _EmailListPageState extends State<SentEmailListPageDesktop> {
           color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
+      drawer: const Drawer(child: DrawerItemsTablet()),
       body: Row(
         children: [
-          Container(width: screenWidth/8.8,
-              child: Drawer(child: DrawerItemsDesktop(),width: screenWidth/10,)),
           Container(
-            width: screenWidth/3.7,
+            width: screenWidth/3,
             color: theme.scaffoldBackgroundColor,
             child: _isLoading
                 ? Center(

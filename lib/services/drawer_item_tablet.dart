@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
 import 'package:iitk_mail_client/Components/navbar_item.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/address_book.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/login_page.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/sent_mail_list.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
+import 'package:iitk_mail_client/pages/TabletUI/address_book.dart';
+import 'package:iitk_mail_client/pages/TabletUI/email_list.dart';
+import 'package:iitk_mail_client/pages/TabletUI/login_page.dart';
+import 'package:iitk_mail_client/pages/TabletUI/sent_mail_list.dart';
+import 'package:iitk_mail_client/pages/TabletUI/email_list.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/settings_page.dart';
+import 'package:iitk_mail_client/pages/TabletUI/settings_page.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
 
 
-class DrawerItemsDesktop extends StatefulWidget {
-  const DrawerItemsDesktop({super.key});
+class DrawerItemsTablet extends StatefulWidget {
+  const DrawerItemsTablet({super.key});
 
   @override
-  State<DrawerItemsDesktop> createState() => _DrawerItemsState();
+  State<DrawerItemsTablet> createState() => _DrawerItemsState();
 }
 
-class _DrawerItemsState extends State<DrawerItemsDesktop> {
+class _DrawerItemsState extends State<DrawerItemsTablet> {
   String? username;
 
   String? password;
@@ -52,7 +52,7 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EmailListPageDesktop(
+                      builder: (context) => EmailListPageTablet(
                           username: username!, password: password!)));
             },
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
@@ -65,7 +65,7 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
                 context,
                 MaterialPageRoute(
                  
-                  builder: (context) => SentEmailListPageDesktop(username: username!,password:password!,),
+                  builder: (context) => SentEmailListPageTablet(username: username!,password:password!,),
                 ),
               );},
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),

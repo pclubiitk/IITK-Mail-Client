@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
+import 'package:iitk_mail_client/pages/TabletUI/email_list.dart';
 import 'package:provider/provider.dart';
 import 'Dependency_Injection.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
@@ -86,7 +87,21 @@ class MyApp extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    if(screenWidth > screenHeight){
+    if(screenWidth > screenHeight && screenWidth > 600 && screenWidth < 1000){
+      return GetMaterialApp(
+        title: 'IITK Mail-Client',
+        theme: themeNotifier.getTheme(),
+        initialRoute: initialRoute,
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/emailList': (context) => EmailListPageTablet(
+            username: savedUsername!,
+            password: savedPassword!,
+          ),
+        },
+        debugShowCheckedModeBanner: false,
+      );
+    }else if(screenWidth > screenHeight && screenWidth > 1000){
       return GetMaterialApp(
         title: 'IITK Mail-Client',
         theme: themeNotifier.getTheme(),
@@ -100,7 +115,8 @@ class MyApp extends StatelessWidget {
         },
         debugShowCheckedModeBanner: false,
       );
-    }else{
+    }
+    else{
       return GetMaterialApp(
         title: 'IITK Mail-Client',
         theme: themeNotifier.getTheme(),

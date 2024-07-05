@@ -4,7 +4,6 @@ import 'package:iitk_mail_client/EmailCache/mail_dir.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/TabletUI/emai_view_page.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
-import 'package:iitk_mail_client/services/drawer_item_desktop.dart';
 import 'package:iitk_mail_client/services/drawer_item_tablet.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:logger/logger.dart';
@@ -18,20 +17,20 @@ import 'package:path/path.dart' as p;
 
 final logger = Logger();
 
-class EmailListPageDesktop extends StatefulWidget {
+class EmailListPageTablet extends StatefulWidget {
   final String username;
   final String password;
-  const EmailListPageDesktop({
+  const EmailListPageTablet({
     super.key,
     required this.username,
     required this.password,
   });
 
   @override
-  State<EmailListPageDesktop> createState() => _EmailListPageState();
+  State<EmailListPageTablet> createState() => _EmailListPageState();
 }
 
-class _EmailListPageState extends State<EmailListPageDesktop> {
+class _EmailListPageState extends State<EmailListPageTablet> {
   List<Email> emails = [];
   late Email email_showing;
   bool _isLoading = true;
@@ -168,14 +167,13 @@ class _EmailListPageState extends State<EmailListPageDesktop> {
           color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
         ),
       ),
+      drawer: const Drawer(child: DrawerItemsTablet()),
       body: Row(
         children: [
-          Container(width: screenWidth/8.8,
-              child: Drawer(child: DrawerItemsDesktop(),width: screenWidth/10,)),
           RefreshIndicator(
             onRefresh: _loadmore,
             child: Container(
-              width: screenWidth/3.7,
+              width: screenWidth/3,
               color: theme.scaffoldBackgroundColor,
               child: _isLoading
                   ? Center(

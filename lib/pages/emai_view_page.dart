@@ -1,10 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:typed_data';
+import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/models/attachment.dart';
 import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/EmailCache/models/message.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 import 'package:iitk_mail_client/services/download_files.dart';
-import 'package:iitk_mail_client/services/fetch_attachments.dart';
+import 'package:iitk_mail_client/services/email_fetch.dart';
+import 'package:iitk_mail_client/services/fetch_attachment.dart';
+import 'package:iitk_mail_client/services/open_files.dart';
 import 'package:logger/logger.dart';
 
 class EmailViewPage extends StatefulWidget {
@@ -30,8 +36,11 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final DateTime date;
   late final int uniqueId;
   final logger = Logger();
-  List<Attachment> attachments = [];
-  late final DownloadFiles downloader = DownloadFiles();
+  final downloader = DownloadFiles();
+  final opener = OpenFiles();
+  Message? message;
+  List<ContentInfo>? attachments;
+  List<MimePart>? mimeParts;
 
   @override
   void initState() {
@@ -41,19 +50,25 @@ class _EmailViewPageState extends State<EmailViewPage> {
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
     uniqueId = widget.email.uniqueId;
-    /// Fetch attachments if the email has attachments
+
+    // Fetch attachments if the email has attachments\
     if (widget.email.hasAttachment) {
-      FetchAttachmentsService.fetchAttachments(
-              uniqueId: uniqueId,
-              username: widget.username,
-              password: widget.password)
-          .then((result) {
+      FetchAttachments.fetchMessageWithAttachments(
+        uniqueId: uniqueId,
+        username: widget.username,
+        password: widget.password,
+      ).then((Message fetchedMessage) {
         setState(() {
-          attachments = result;
+          message = fetchedMessage;
+          attachments = fetchedMessage.attachments;
+          mimeParts = fetchedMessage.mimeparts;
         });
+        for (var attachment in attachments!) {
+          logger.i(
+              'Attachment found: ${attachment.fileName ?? 'Unnamed attachment'}');
+        }
       }).catchError((error) {
-        /// Handle error fetching attachments
-        logger.e('Error fetching attachments: $error');
+        logger.e('Failed to fetch message: $error');
       });
     }
   }
@@ -87,219 +102,240 @@ class _EmailViewPageState extends State<EmailViewPage> {
         ],
       ),
       body: Container(
-          color: theme.scaffoldBackgroundColor,
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: theme.textTheme.titleLarge?.copyWith(
-                    color: theme.brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
+        color: theme.scaffoldBackgroundColor,
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                subject,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white
+                      : Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    CircleAvatar(
-                      child: Text(
-                        sender[0].toUpperCase(),
-                        style: theme.textTheme.titleMedium?.copyWith(
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  CircleAvatar(
+                    child: Text(
+                      sender[0].toUpperCase(),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${date.day}-${date.month}-${date.year}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.white70
+                                  : Colors.grey,
+                              fontSize: 14),
+                        ),
+                        Text(
+                          sender,
+                          maxLines: null,
+                          overflow: TextOverflow.fade,
+                          style: theme.textTheme.bodyLarge?.copyWith(
                             color: theme.brightness == Brightness.dark
                                 ? Colors.white
-                                : Colors.black),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${date.day}-${date.month}-${date.year}',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.brightness == Brightness.dark
-                                    ? Colors.white70
-                                    : Colors.grey,
-                                fontSize: 14),
+                                : Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Text(
-                            sender,
-                            maxLines: null,
-                            overflow: TextOverflow.fade,
-                            style: theme.textTheme.bodyLarge?.copyWith(
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 8),
+              Divider(color: Colors.grey),
+              //attachment
+              if (widget.email.hasAttachment && attachments != null) ...[
+                for (var i = 0; i < attachments!.length; i++)
+                  Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          if (mimeParts != null && i < mimeParts!.length) {
+                            final mimePart = mimeParts![i];
+                            // Download the file
+                            final Uint8List? fileBytes =
+                                mimePart.decodeContentBinary();
+                            if (fileBytes != null) {
+                              final String fileName =
+                                  attachments![i].fileName ?? 'Unnamed';
+                              final String? filePath =
+                                  await DownloadFiles().downloadFileFromBytes(
+                                fileBytes,
+                                fileName,
+                                keepDuplicate: true,
+                              );
+
+                              // Open the file
+                              if (filePath != null) {
+                                await opener.open(filePath);
+                              } else {
+                                logger.i('Failed to download file.');
+                              }
+                            } else {
+                              logger.i('Failed to decode attachment content.');
+                            }
+                          } else {
+                            logger.e(
+                              'MimePart or attachments list is null or out of bounds',
+                            );
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.grey[800]
+                                : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              attachments![i].fileName ?? 'Unnamed',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
                                 color: theme.brightness == Brightness.dark
                                     ? Colors.white
                                     : Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(height: 16),
-                Divider(color: Colors.grey),
-                if (widget.email.hasAttachment) ...[
-                  SizedBox(height: 8),
-                  Column(
-                    children: attachments.isEmpty
-                        ? [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: theme.brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black87,
-                                borderRadius: BorderRadius.circular(8.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 3,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  'Attachment',
-                                  style: TextStyle(
-                                    color: theme.brightness == Brightness.dark
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.file_download,
-                                    color: theme.brightness == Brightness.dark
-                                        ? Colors.black
-                                        : Colors.white,
-                                  ),
-                                  onPressed: () async {
-                                    for (final attachment in attachments) {
-                                      /// Download each attachment
-                                      final bytes = await attachment.download();
-                                      if (bytes != null) {
-                                        final savedPath = await downloader
-                                            .downloadFileFromBytes(
-                                          bytes,
-                                          attachment.fileName,
-                                          keepDuplicate: true,
-                                        );
-                                        if (savedPath != null) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Attachment downloaded: $savedPath'),
-                                              duration: Duration(seconds: 3),
-                                            ),
-                                          );
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                  'Failed to download attachment'),
-                                              duration: Duration(seconds: 3),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    }
-                                  },
-                                ),
                               ),
                             ),
-                          ]
-                        : attachments.map((attachment) {
-                            return ListTile(
-                              title: Text(attachment.fileName),
-                              subtitle: Text(attachment.size.toString()),
-                              trailing: IconButton(
-                                icon: Icon(Icons.file_download),
-                                onPressed: () {
-                                  /// Handle download action
-                                },
-                              ),
-                              /// Other attachment details and actions
-                            );
-                          }).toList(),
+                            trailing: IconButton(
+                              icon: Icon(Icons.download),
+                              onPressed: () async {
+                                // Handle download action for this attachment
+                                if (mimeParts != null &&
+                                    i < mimeParts!.length) {
+                                  final mimePart = mimeParts![i];
+                                  final data = mimePart.decodeContentBinary();
+                                  final fileName =
+                                      attachments![i].fileName ?? 'Unnamed';
+                                  final path =
+                                      await downloader.downloadFileFromBytes(
+                                    data!,
+                                    fileName,
+                                  );
+                                  if (path != null) {
+                                    logger.i('File downloaded to: $path');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Downloaded to: $path',
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    logger.e('Failed to download file');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Failed to download file',
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      )
+                    ],
                   ),
-                  SizedBox(height: 8),
-                  Divider(color: Colors.grey),
-                  SizedBox(height: 16),
-                ],
-                Text(
-                  body,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.brightness == Brightness.dark
-                          ? Colors.white70
-                          : Colors.black87,
-                      fontSize: 16),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.reply),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReplyEmailPage(
-                                    email: widget.email,
-                                    username: widget.username,
-                                    password: widget.password),
-                              ),
-                            );
-                          },
-                        ),
-                        Text('Reply',
-                            style: TextStyle(
-                              color: theme.appBarTheme.iconTheme?.color,
-                            )),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.forward),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ForwardEmailPage(
-                                    email: widget.email,
-                                    username: widget.username,
-                                    password: widget.password),
-                              ),
-                            );
-                          },
-                        ),
-                        Text('Forward',
-                            style: TextStyle(
-                              color: theme.appBarTheme.iconTheme?.color,
-                            )),
-                      ],
-                    )
-                  ],
-                )
+                const Divider(color: Colors.grey),
               ],
-            ),
-          )),
+              const SizedBox(height: 8),
+              Text(
+                body,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.white70
+                      : Colors.black87,
+                  fontSize: 16,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.reply),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReplyEmailPage(
+                                email: widget.email,
+                                username: widget.username,
+                                password: widget.password,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Text(
+                        'Reply',
+                        style: TextStyle(
+                          color: theme.appBarTheme.iconTheme?.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Column(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.forward),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForwardEmailPage(
+                                email: widget.email,
+                                username: widget.username,
+                                password: widget.password,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Text(
+                        'Forward',
+                        style: TextStyle(
+                          color: theme.appBarTheme.iconTheme?.color,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
