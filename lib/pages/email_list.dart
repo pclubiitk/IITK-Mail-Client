@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/EmailCache/cache_service.dart';
-import 'package:iitk_mail_client/EmailCache/mail_dir.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/emai_view_page.dart';
+import 'package:iitk_mail_client/route_provider.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:logger/logger.dart';
@@ -32,22 +32,28 @@ class EmailListPage extends StatefulWidget {
 class _EmailListPageState extends State<EmailListPage> {
   List<Email> emails = [];
   bool _isLoading = true;
-  ///ScrollController controller = ScrollController();
-  late Maildir maildir;
+  // ScrollController controller = ScrollController(); 
+  // late Maildir maildir;
   int oldHighestUid = 0;
 
   @override
   void initState() {
     super.initState();
-    ///controller.addListener(_loadmore);
-    _initializeMaildir();
-    _fetchEmails();
+    //controller.addListener(_fetchNewMail);
+    //_initializeMaildir();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final initialRoute = context.read<RouteProvider>().initialRoute;
+    //   if (initialRoute == '/emailList') {
+        _fetchEmails();
+    //   }
+    // });
+    
   }
 
-  Future<void> _initializeMaildir() async {
-    final docsDir = await getApplicationDocumentsDirectory();
-    maildir = await Maildir.create(p.join(docsDir.path, "maildir"));
-  }
+  // Future<void> _initializeMaildir() async {
+  //   final docsDir = await getApplicationDocumentsDirectory();
+  //   maildir = await Maildir.create(p.join(docsDir.path, "maildir"));
+  // }
 
   Future<void> _fetchEmails() async {
     logger.i("fetch emails got hit");
@@ -64,22 +70,22 @@ class _EmailListPageState extends State<EmailListPage> {
         emails = emails.reversed.toList();
         _isLoading = false;
       });
-      logger.i("Writing mails to disk ...");
-      try {
-        _writeNewEmailsToMaildir();
-        setState(() {
-          oldHighestUid = getHighestUidFromDatabase();
-        });
-        logger.i("Writing emails to disk successfull!");
-      } catch (e) {
-        logger.i("Writing mails to dish failed with error:\n$e");
-      }
+      // logger.i("Writing mails to disk ...");
+      // try {
+      //   _writeNewEmailsToMaildir();
+      //   setState(() {
+      //     oldHighestUid = getHighestUidFromDatabase();
+      //   });
+      //   logger.i("Writing emails to disk successfull!");
+      // } catch (e) {
+      //   logger.i("Writing mails to dish failed with error:\n$e");
+      // }
     } catch (e) {
       debugPrint("Failed to fetch emails: $e");
     }
   }
 
-  Future<void> _loadmore() async {
+  Future<void> _fetchNewMail() async {
     logger.i("loadmore got hit");
 
     // if (controller.position.pixels >=
@@ -96,30 +102,30 @@ class _EmailListPageState extends State<EmailListPage> {
         emails = emails.reversed.toList();
         logger.i("Emails after fetching: ${emails.length}");
       });
-      try {
-        logger.i("Writing mails to disk ...");
-        _writeNewEmailsToMaildir();
-        setState(() {
-          oldHighestUid = getHighestUidFromDatabase();
-        });
-        logger.i("Writing emails to disk successfull!");
-      } catch (e) {
-        logger.i("Writing mails to dish failed with error:\n$e");
-      }
+      // try {
+      //   logger.i("Writing mails to disk ...");
+      //   _writeNewEmailsToMaildir();
+      //   setState(() {
+      //     oldHighestUid = getHighestUidFromDatabase();
+      //   });
+      //   logger.i("Writing emails to disk successfull!");
+      // } catch (e) {
+      //   logger.i("Writing mails to dish failed with error:\n$e");
+      // }
     } catch (e) {
       debugPrint("Failed to fetch emails: $e");
     }
     // }
   }
 
-  Future<void> _writeNewEmailsToMaildir() async {
-    final newEmails =
-        emails.where((email) => email.uniqueId > oldHighestUid).toList();
-    for (final email in newEmails) {
-      final filename = '${email.uniqueId}';
-      await maildir.writeEmail(filename, email);
-    }
-  }
+  // Future<void> _writeNewEmailsToMaildir() async {
+  //   final newEmails =
+  //       emails.where((email) => email.uniqueId > oldHighestUid).toList();
+  //   for (final email in newEmails) {
+  //     final filename = '${email.uniqueId}';
+  //     await maildir.writeEmail(filename, email);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +171,7 @@ class _EmailListPageState extends State<EmailListPage> {
       ),
       drawer: const Drawer(child: DrawerItems()),
       body: RefreshIndicator(
-        onRefresh: _loadmore,
+        onRefresh: _fetchNewMail,
         child: Container(
           color: theme.scaffoldBackgroundColor,
           child: _isLoading
@@ -252,12 +258,6 @@ class _EmailListPageState extends State<EmailListPage> {
                                     fontSize: 11,
                                   ),
                                 ),
-                                if (email.hasAttachment)
-                                  Icon(
-                                    Icons.attach_file,
-                                    size: 15,
-                                    color: theme.iconTheme.color,
-                                  )
                               ],
                             ),
                             Align(
