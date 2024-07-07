@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/services/drawer_item_desktop.dart';
 import 'package:provider/provider.dart';
-import 'package:iitk_mail_client/pages/advanced_settings_page.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/advanced_settings_page.dart';
 import 'package:iitk_mail_client/theme_notifier.dart'; 
 
 class SettingsPage extends StatelessWidget {
