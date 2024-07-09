@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/models/message.dart';
 import 'package:iitk_mail_client/Storage/queries/toggle_flagged_status.dart';
+import 'package:iitk_mail_client/Storage/queries/toggle_trashed_status.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 import 'package:iitk_mail_client/services/download_files.dart';
@@ -38,6 +39,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final DateTime date;
   late final int uniqueId;
   late bool isFlagged;
+  late bool isTrashed;
   final logger = Logger();
   final downloader = DownloadFiles();
   final opener = OpenFiles();
@@ -57,6 +59,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
     date = widget.email.receivedDate ?? DateTime.now();
     uniqueId = widget.email.uniqueId;
     isFlagged = widget.email.isFlagged;
+    isTrashed = widget.email.isTrashed;
 
     // Fetch attachments if the email has attachments\
     if (widget.email.hasAttachment) {
@@ -86,13 +89,19 @@ class _EmailViewPageState extends State<EmailViewPage> {
   }
 
   Future<void> _handleFlagged() async{
-    await ImapService.markMailAsFlaggedOrUnflagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
+    await ImapService.toggleFlagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
     await toggleFlaggedStatus(widget.email.id);
     setState(() {
       isFlagged = !isFlagged;
     });
+  }
 
-
+  Future<void> _handleDeleted() async{
+    await ImapService.toggleTrashed(isTrashed: isTrashed, uniqueId : uniqueId, username: username!, password: password!);
+    await toggleTrashedStatus(widget.email.id);
+    setState(() {
+      isTrashed = !isTrashed;
+    });
   }
 
   @override
@@ -109,24 +118,29 @@ class _EmailViewPageState extends State<EmailViewPage> {
           },
         ),
         actions: [
-          IconButton(
+          !isTrashed
+          ? IconButton(
+            icon: Icon(Icons.delete_outline, color: theme.appBarTheme.iconTheme?.color),
+            onPressed: () {
+              _handleDeleted();
+            },
+          )
+          : IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              /// delete request logic to implemented
-            },
+              _handleDeleted();
+            }
           ),
           isFlagged
            ? IconButton(
             icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              /// add email to flag or starred
               _handleFlagged();
             },
           )
           : IconButton(
             icon: Icon(Icons.flag_outlined, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              /// add email to flag or starred
               _handleFlagged();
             },
           )

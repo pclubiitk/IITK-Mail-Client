@@ -71,7 +71,7 @@ class ImapService {
       int? highestUid = getHighestUidFromDatabase();
       int fetchuid = highestUid + 1;
 
-      final fetchResult = await client.uidFetchMessagesByCriteria("$fetchuid:* (UID FLAGS BODYSTRUCTURE BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)] BODY.PEEK[TEXT])");
+      final fetchResult = await client.uidFetchMessagesByCriteria("$fetchuid:* (UID FLAGS BODY.PEEK[])");
 
       if (fetchResult.messages.length == 1) {
         if (fetchResult.messages[0].uid != highestUid) {
@@ -153,7 +153,7 @@ class ImapService {
     }
   }
 
-  static Future<void> markMailAsFlaggedOrUnflagged({
+  static Future<void> toggleFlagged({
     required bool isFlagged,
     required int uniqueId,
     required String username,
@@ -180,5 +180,31 @@ class ImapService {
       throw Exception("IMAP failed with $e");
     }
   }
-
+  static Future<void> toggleTrashed({
+    required bool isTrashed,
+    required int uniqueId,
+    required String username,
+    required String password,
+    }) async {
+    final client = ImapClient(isLogEnabled: false);
+    try {
+      logger.i("UID : $uniqueId");
+      await client.connectToServer('qasid.iitk.ac.in', 993, isSecure: true);
+      await client.login(username, password);
+      await client.selectInbox();
+      
+      final sequence = MessageSequence.fromId(uniqueId, isUid: true);
+      if(isTrashed==false){
+      await client.uidMarkDeleted(sequence);
+      logger.i("flagged");
+      }
+      else {
+       await client.uidMarkUndeleted(sequence);
+       logger.i("unflagged");
+      }
+      await client.logout();
+    } on ImapException catch (e) {
+      throw Exception("IMAP failed with $e");
+    }
+  }
 }

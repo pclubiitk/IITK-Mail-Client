@@ -81,7 +81,7 @@ Future<void> _fetchInitialEmails() async {
 
     logger.i(routeProvider.initialRoute);
     
-    if (routeProvider.initialRoute == '/login') {
+    // if (routeProvider.initialRoute == '/login') {
 
       try {
         await ImapService.fetchEmails(
@@ -93,7 +93,7 @@ Future<void> _fetchInitialEmails() async {
       } catch (e) {
         logger.e("Failed to fetch new emails: $e");
       }
-    }
+    //}
   }
 
   Future<void> _fetchNewMail() async {
@@ -213,9 +213,9 @@ Future<void> _fetchPastMails() async {
                       );
                     }
                     final email = emails[index];
-                    if(email.isTrashed == true){
-                      return null;
-                    }
+                    // if(email.isTrashed == true){
+                    //   return null;
+                    // }
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;
