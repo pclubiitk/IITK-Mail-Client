@@ -1,9 +1,11 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
-import 'package:iitk_mail_client/services/save_mails_to_objbox.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class EmailReply {
   static Future<void> replyEmail({

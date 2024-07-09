@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:iitk_mail_client/Components/navbar_item.dart';
+import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
 import 'package:iitk_mail_client/pages/address_book.dart';
 import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
 import 'package:iitk_mail_client/pages/sent_mail_list.dart';
-import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
 
@@ -57,8 +57,8 @@ class _DrawerItemsState extends State<DrawerItems> {
             iconColor: theme.iconTheme.color,
           ),
            NavbarItem(
-            icon: Icons.send,
-            text: 'Sent',
+            icon: Icons.outbox,
+            text: 'Outbox',
             onTap: () {Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -67,14 +67,6 @@ class _DrawerItemsState extends State<DrawerItems> {
                 ),
               );},
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
-            iconColor: theme.iconTheme.color,
-          ),
-          NavbarItem(
-            icon: Icons.outbox,
-            text: 'Outbox',
-            onTap: () {},
-            textStyle: theme.textTheme.bodyLarge
-                ?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
           NavbarItem(
@@ -125,6 +117,7 @@ class _DrawerItemsState extends State<DrawerItems> {
             text: 'Log Out',
             onTap: () {
               SecureStorageService.clearCredentials();
+              objectbox.emailBox.removeAll();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

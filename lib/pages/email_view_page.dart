@@ -3,15 +3,18 @@
 import 'dart:typed_data';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
-import 'package:iitk_mail_client/EmailCache/models/message.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/message.dart';
+import 'package:iitk_mail_client/models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 import 'package:iitk_mail_client/services/download_files.dart';
 import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/services/fetch_attachment.dart';
 import 'package:iitk_mail_client/services/open_files.dart';
+import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 class EmailViewPage extends StatefulWidget {
   final Email email;
@@ -52,7 +55,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
     uniqueId = widget.email.uniqueId;
 
     // Fetch attachments if the email has attachments\
-    if (widget.email.hasAttachment) {
+    //if (widget.email.hasAttachment) {
       FetchAttachments.fetchMessageWithAttachments(
         uniqueId: uniqueId,
         username: widget.username,
@@ -70,9 +73,8 @@ class _EmailViewPageState extends State<EmailViewPage> {
       }).catchError((error) {
         logger.e('Failed to fetch message: $error');
       });
-    }
+    //}
   }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -172,17 +174,14 @@ class _EmailViewPageState extends State<EmailViewPage> {
                           if (mimeParts != null && i < mimeParts!.length) {
                             final mimePart = mimeParts![i];
                             // Download the file
-                            final Uint8List? fileBytes =
-                                mimePart.decodeContentBinary();
+                            final Uint8List? fileBytes =mimePart.decodeContentBinary();
                             if (fileBytes != null) {
-                              final String fileName =
-                                  attachments![i].fileName ?? 'Unnamed';
-                              final String? filePath =
-                                  await DownloadFiles().downloadFileFromBytes(
-                                fileBytes,
-                                fileName,
-                                keepDuplicate: true,
-                              );
+                              final String fileName = attachments![i].fileName ?? 'Unnamed';
+                              final String? filePath =await DownloadFiles().downloadFileFromBytes(
+                                  fileBytes,
+                                  fileName,
+                                  keepDuplicate: true,
+                                );
 
                               // Open the file
                               if (filePath != null) {

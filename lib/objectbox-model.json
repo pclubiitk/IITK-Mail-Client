@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:7075052845957833006",
-      "lastPropertyId": "9:776701948814768806",
+      "lastPropertyId": "13:6128485485393678008",
       "name": "Email",
       "properties": [
         {
@@ -53,6 +53,26 @@
           "id": "9:776701948814768806",
           "name": "hasAttachment",
           "type": 1
+        },
+        {
+          "id": "10:7075464916247645283",
+          "name": "isRead",
+          "type": 1
+        },
+        {
+          "id": "11:178470870363165349",
+          "name": "isFlagged",
+          "type": 1
+        },
+        {
+          "id": "12:2233865941418562763",
+          "name": "isTrashed",
+          "type": 1
+        },
+        {
+          "id": "13:6128485485393678008",
+          "name": "sequenceNumber",
+          "type": 6
         }
       ],
       "relations": []

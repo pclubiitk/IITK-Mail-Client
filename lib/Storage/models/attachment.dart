@@ -13,8 +13,8 @@ class Attachment {
     required this.downloadUrl,
   });
   Future<Uint8List?> download() async {
-    ///logic to download attachment content as Uint8List
-    ///fetching from a network URL or from local storage
+    /// logic to download attachment content as Uint8List
+    /// fetching from a network URL or from local storage
     /// Return null or throw an error if download fails
     return null; // Replace with actual data in bytes
   }

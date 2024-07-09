@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:enough_mail/enough_mail.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 

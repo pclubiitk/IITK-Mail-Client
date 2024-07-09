@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:enough_mail/enough_mail.dart';
-import 'package:iitk_mail_client/EmailCache/models/message.dart';
-import 'package:iitk_mail_client/pages/email_list.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart'; // Import your Message model
+import 'package:iitk_mail_client/Storage/models/message.dart';
+import 'package:iitk_mail_client/services/email_fetch.dart';
+import 'package:logger/logger.dart'; // Import your Message model
+
+final logger = Logger();
 
 class FetchAttachments {
   static Future<Message> fetchMessageWithAttachments({

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:iitk_mail_client/Components/address_book.dart';
-import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
 import 'package:iitk_mail_client/services/send_mail.dart';
 import 'package:iitk_mail_client/services/snackbar_navigate.dart';
 import 'package:logger/logger.dart';

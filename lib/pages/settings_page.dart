@@ -4,7 +4,7 @@ import 'package:iitk_mail_client/pages/advanced_settings_page.dart';
 import 'package:iitk_mail_client/theme_notifier.dart'; 
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
