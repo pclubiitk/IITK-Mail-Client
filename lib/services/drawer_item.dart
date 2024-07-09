@@ -4,8 +4,10 @@ import 'package:iitk_mail_client/Components/navbar_item.dart';
 import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
 import 'package:iitk_mail_client/pages/address_book.dart';
 import 'package:iitk_mail_client/pages/email_list.dart';
+import 'package:iitk_mail_client/pages/flagged_mails_page.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
 import 'package:iitk_mail_client/pages/sent_mail_list.dart';
+import 'package:iitk_mail_client/pages/trashed_mails_page.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
 
@@ -59,20 +61,30 @@ class _DrawerItemsState extends State<DrawerItems> {
            NavbarItem(
             icon: Icons.outbox,
             text: 'Outbox',
-            onTap: () {Navigator.push(
+            onTap: () {
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                  
                   builder: (context) => SentEmailListPage(username: username!,password:password!,),
                 ),
-              );},
+              );
+              },
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
           NavbarItem(
             icon: Icons.flag,
             text: 'Flagged',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) => FlaggedMailsPage(username: username!,password:password!,),
+                ),
+              );
+            },
             textStyle: theme.textTheme.bodyLarge
                 ?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
@@ -80,7 +92,15 @@ class _DrawerItemsState extends State<DrawerItems> {
           NavbarItem(
             icon: Icons.delete,
             text: 'Trash',
-            onTap: () {},
+            onTap: () {
+               Navigator.push(
+                context,
+                MaterialPageRoute(
+                 
+                  builder: (context) =>TrashedMailsPage(username: username!,password:password!,),
+                ),
+              );
+            },
             textStyle: theme.textTheme.bodyLarge
                 ?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,

@@ -5,7 +5,7 @@ import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
 import 'package:iitk_mail_client/route_provider.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import '../models/advanced_settings_model.dart';
@@ -60,7 +60,7 @@ class _EmailListPageState extends State<EmailListPage> {
     logger.i("fetch emails got hit");
     try {
       final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-      await EmailService.fetchEmails(
+      await ImapService.fetchEmails(
         emailSettings: emailSettings,
         username: widget.username,
         password: widget.password,
@@ -93,7 +93,7 @@ class _EmailListPageState extends State<EmailListPage> {
     final emailSettings =
         Provider.of<EmailSettingsModel>(context, listen: false);
     try {
-      await EmailService.fetchNewEmails(
+      await ImapService.fetchNewEmails(
           emailSettings: emailSettings,
           username: widget.username,
           password: widget.password);

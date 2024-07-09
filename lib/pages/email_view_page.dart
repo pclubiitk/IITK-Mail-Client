@@ -5,16 +5,15 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/models/message.dart';
-import 'package:iitk_mail_client/models/advanced_settings_model.dart';
+import 'package:iitk_mail_client/Storage/queries/toggle_flagged_status.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 import 'package:iitk_mail_client/services/download_files.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/services/fetch_attachment.dart';
 import 'package:iitk_mail_client/services/open_files.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 
 class EmailViewPage extends StatefulWidget {
   final Email email;
@@ -38,24 +37,29 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final String body;
   late final DateTime date;
   late final int uniqueId;
+  late bool isFlagged;
   final logger = Logger();
   final downloader = DownloadFiles();
   final opener = OpenFiles();
   Message? message;
   List<ContentInfo>? attachments;
   List<MimePart>? mimeParts;
+  String? username;
+  String? password;
 
   @override
   void initState() {
     super.initState();
+    _setCredentials();
     subject = widget.email.subject ?? 'No Subject';
     sender = widget.email.from ?? 'Unknown Sender';
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
     uniqueId = widget.email.uniqueId;
+    isFlagged = widget.email.isFlagged;
 
     // Fetch attachments if the email has attachments\
-    //if (widget.email.hasAttachment) {
+    if (widget.email.hasAttachment) {
       FetchAttachments.fetchMessageWithAttachments(
         uniqueId: uniqueId,
         username: widget.username,
@@ -73,8 +77,24 @@ class _EmailViewPageState extends State<EmailViewPage> {
       }).catchError((error) {
         logger.e('Failed to fetch message: $error');
       });
-    //}
+    }
   }
+
+  Future <void> _setCredentials() async{
+    username = await SecureStorageService.getUsername();
+    password = await SecureStorageService.getPassword();
+  }
+
+  Future<void> _handleFlagged() async{
+    await ImapService.markMailAsFlaggedOrUnflagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
+    await toggleFlaggedStatus(widget.email.id);
+    setState(() {
+      isFlagged = !isFlagged;
+    });
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -95,12 +115,21 @@ class _EmailViewPageState extends State<EmailViewPage> {
               /// delete request logic to implemented
             },
           ),
-          IconButton(
+          isFlagged
+           ? IconButton(
             icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
               /// add email to flag or starred
+              _handleFlagged();
             },
-          ),
+          )
+          : IconButton(
+            icon: Icon(Icons.flag_outlined, color: theme.appBarTheme.iconTheme?.color),
+            onPressed: () {
+              /// add email to flag or starred
+              _handleFlagged();
+            },
+          )
         ],
       ),
       body: Container(

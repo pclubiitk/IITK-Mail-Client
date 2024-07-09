@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
+import 'package:iitk_mail_client/Storage/queries/get_sorted_emails.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
 import 'package:iitk_mail_client/route_provider.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:logger/logger.dart';
 import '../models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/theme_notifier.dart';
-import '../Storage/initializeobjectbox.dart';
 import 'package:provider/provider.dart';
 
 final logger = Logger();
@@ -67,8 +67,7 @@ class _EmailListPageState extends State<EmailListPage> {
       logger.e("Error fetching initial emails: $e");
     } finally {
       setState(() {
-        emails = objectbox.emailBox.getAll();
-        emails = emails.reversed.toList();
+        emails = getEmailsOrderedByUniqueId();
         _isLoading = false;
         logger.i("loading set to false");
       });
@@ -79,31 +78,34 @@ Future<void> _fetchInitialEmails() async {
     logger.i("fetch initial mails got hit");
     final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
     final routeProvider = Provider.of<RouteProvider>(context, listen: false);
+
+    logger.i(routeProvider.initialRoute);
     
-    //if (routeProvider.initialRoute == '/login') {
+    if (routeProvider.initialRoute == '/login') {
+
       try {
-        await EmailService.fetchEmails(
+        await ImapService.fetchEmails(
           emailSettings: emailSettings,
           username: widget.username,
           password: widget.password,
         );
+        routeProvider.initialRoute = '/emailList';
       } catch (e) {
         logger.e("Failed to fetch new emails: $e");
       }
-    //}
+    }
   }
 
   Future<void> _fetchNewMail() async {
     logger.i("trying to fetch new mails...");
     final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
     try {
-      await EmailService.fetchNewEmails(
+      await ImapService.fetchNewEmails(
           emailSettings: emailSettings,
           username: widget.username,
           password: widget.password);
       setState(() {
-        emails = objectbox.emailBox.getAll();
-        emails = emails.reversed.toList();
+        emails = getEmailsOrderedByUniqueId();
         logger.i("Emails after fetching: ${emails.length}");
       });
     } catch (e) {
@@ -121,7 +123,7 @@ Future<void> _fetchPastMails() async {
   // });
   // try {
   //   final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-  //   await EmailService.fetchOlderEmails(
+  //   await ImapService.fetchOlderEmails(
   //     emailSettings: emailSettings,
   //     username: widget.username,
   //     password: widget.password,
@@ -211,6 +213,9 @@ Future<void> _fetchPastMails() async {
                       );
                     }
                     final email = emails[index];
+                    if(email.isTrashed == true){
+                      return null;
+                    }
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;

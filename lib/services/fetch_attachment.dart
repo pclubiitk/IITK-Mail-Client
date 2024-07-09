@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:enough_mail/enough_mail.dart';
 import 'package:iitk_mail_client/Storage/models/message.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:logger/logger.dart'; // Import your Message model
 
 final logger = Logger();
@@ -14,7 +14,7 @@ class FetchAttachments {
     required String password,
   }) async {
     try {
-      MimeMessage mimeMessage = await EmailService.fetchMailByUid(
+      MimeMessage mimeMessage = await ImapService.fetchMailByUid(
         uniqueId: uniqueId,
         username: username,
         password: password,
