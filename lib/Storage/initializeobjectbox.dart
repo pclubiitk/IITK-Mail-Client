@@ -1,4 +1,4 @@
-import "./objectbox.dart" ;
+import "objectbox.dart" ;
 
 late ObjectBox objectbox ;
 

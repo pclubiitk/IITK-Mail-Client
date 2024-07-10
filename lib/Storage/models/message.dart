@@ -1,5 +1,4 @@
 import 'package:enough_mail/enough_mail.dart';
-import 'package:intl/intl.dart';
 
 class Message {
   final int uniqueId;

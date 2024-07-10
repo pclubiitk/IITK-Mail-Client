@@ -1,15 +1,19 @@
+
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/Storage/models/email.dart';
-import 'package:iitk_mail_client/Storage/queries/get_sorted_emails.dart';
+import 'package:iitk_mail_client/Storage/queries/highest_uid.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
 import 'package:iitk_mail_client/route_provider.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
 import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
 import '../models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/theme_notifier.dart';
+import 'Storage/initializeobjectbox.dart';
+import "Storage/models/email.dart";
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 final logger = Logger();
 
@@ -29,117 +33,99 @@ class EmailListPage extends StatefulWidget {
 class _EmailListPageState extends State<EmailListPage> {
   List<Email> emails = [];
   bool _isLoading = true;
-  bool _isLoadingPastMails = false;
+  // ScrollController controller = ScrollController(); 
+  // late Maildir maildir;
   int oldHighestUid = 0;
-  late ScrollController _scrollController;
-
-  _EmailListPageState() {
-    _scrollController = ScrollController()
-      ..addListener(() {
-        if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
-          _fetchPastMails();
-        }
-      });
-  }
 
   @override
   void initState() {
     super.initState();
-    _fetchEmails();
+    //controller.addListener(_fetchNewMail);
+    //_initializeMaildir();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   final initialRoute = context.read<RouteProvider>().initialRoute;
+    //   if (initialRoute == '/emailList') {
+        _fetchEmails();
+    //   }
+    // });
+    
   }
 
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
+  // Future<void> _initializeMaildir() async {
+  //   final docsDir = await getApplicationDocumentsDirectory();
+  //   maildir = await Maildir.create(p.join(docsDir.path, "maildir"));
+  // }
 
   Future<void> _fetchEmails() async {
     logger.i("fetch emails got hit");
-    setState(() {
-      _isLoading = true;
-      logger.i("loading set to true");
-    });
-
     try {
-      await _fetchInitialEmails();
+      final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+      await ImapService.fetchEmails(
+        emailSettings: emailSettings,
+        username: widget.username,
+        password: widget.password,
+      );
+      // logger.i("Writing mails to disk ...");
+      // try {
+      //   _writeNewEmailsToMaildir();
+      //   setState(() {
+      //     oldHighestUid = getHighestUidFromDatabase();
+      //   });
+      //   logger.i("Writing emails to disk successfull!");
+      // } catch (e) {
+      //   logger.i("Writing mails to dish failed with error:\n$e");
+      // }
     } catch (e) {
-      logger.e("Error fetching initial emails: $e");
-    } finally {
-      setState(() {
-        emails = getEmailsOrderedByUniqueId();
+      debugPrint("Failed to fetch emails: $e");
+    }
+    setState(() {
+        emails = objectbox.emailBox.getAll();
+        emails = emails.reversed.toList();
         _isLoading = false;
-        logger.i("loading set to false");
       });
-    }
-  }
-
-Future<void> _fetchInitialEmails() async {
-    logger.i("fetch initial mails got hit");
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-    final routeProvider = Provider.of<RouteProvider>(context, listen: false);
-
-    logger.i(routeProvider.initialRoute);
-    
-    if (routeProvider.initialRoute == '/login') {
-
-      try {
-        await ImapService.fetchEmails(
-          emailSettings: emailSettings,
-          username: widget.username,
-          password: widget.password,
-        );
-        routeProvider.initialRoute = '/emailList';
-      } catch (e) {
-        logger.e("Failed to fetch new emails: $e");
-      }
-    }
   }
 
   Future<void> _fetchNewMail() async {
-    logger.i("trying to fetch new mails...");
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    logger.i("loadmore got hit");
+
+    // if (controller.position.pixels >=
+    //    (controller.position.maxScrollExtent - 10)) {
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     try {
       await ImapService.fetchNewEmails(
           emailSettings: emailSettings,
           username: widget.username,
           password: widget.password);
       setState(() {
-        emails = getEmailsOrderedByUniqueId();
+        emails = objectbox.emailBox.getAll();
+        emails = emails.reversed.toList();
         logger.i("Emails after fetching: ${emails.length}");
       });
+      // try {
+      //   logger.i("Writing mails to disk ...");
+      //   _writeNewEmailsToMaildir();
+      //   setState(() {
+      //     oldHighestUid = getHighestUidFromDatabase();
+      //   });
+      //   logger.i("Writing emails to disk successfull!");
+      // } catch (e) {
+      //   logger.i("Writing mails to dish failed with error:\n$e");
+      // }
     } catch (e) {
       debugPrint("Failed to fetch emails: $e");
     }
+    // }
   }
 
-Future<void> _fetchPastMails() async {
-  logger.i("trying to lazily load past mails");
-  // if (_isLoadingPastMails) {
-  //   return;
+  // Future<void> _writeNewEmailsToMaildir() async {
+  //   final newEmails =
+  //       emails.where((email) => email.uniqueId > oldHighestUid).toList();
+  //   for (final email in newEmails) {
+  //     final filename = '${email.uniqueId}';
+  //     await maildir.writeEmail(filename, email);
+  //   }
   // }
-  // setState(() {
-  //   _isLoadingPastMails = true;
-  // });
-  // try {
-  //   final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-  //   await ImapService.fetchOlderEmails(
-  //     emailSettings: emailSettings,
-  //     username: widget.username,
-  //     password: widget.password,
-  //   );
-  //   setState(() {
-  //     emails = objectbox.emailBox.getAll();
-  //     emails = emails.reversed.toList();
-  //   });
-  // } catch (e) {
-  //   logger.e("Failed to fetch past mails: $e");
-  // } finally {
-  //   setState(() {
-  //     _isLoadingPastMails = false;
-  //   });
-  // }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +150,8 @@ Future<void> _fetchPastMails() async {
               child: Text(
                 widget.username[0].toUpperCase(),
                 style: theme.textTheme.titleMedium?.copyWith(
-                    color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
+                    color:
+                        themeNotifier.isDarkMode ? Colors.black : Colors.white),
               ),
             ),
             IconButton(
@@ -190,37 +177,23 @@ Future<void> _fetchPastMails() async {
           child: _isLoading
               ? Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(theme.primaryColor),
                   ),
                 )
               : ListView.separated(
-                  controller: _scrollController,
                   padding: const EdgeInsets.all(8.0),
-                  itemCount: emails.length 
-                  //+ (_isLoadingPastMails ? 1 : 0)
-                  ,
-                  separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
+                  itemCount: emails.length,
+                  separatorBuilder: (context, index) =>
+                      Divider(color: theme.dividerColor),
                   itemBuilder: (context, index) {
-                    if (index == emails.length) {
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 10),
-                            Text('Loading Past Mails'),
-                          ],
-                        ),
-                      );
-                    }
                     final email = emails[index];
-                    // if(email.isTrashed == true){
-                    //   return null;
-                    // }
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;
                     final body = email.body;
-                    final time = '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                    final time =
+                        '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
                     DateTime now = DateTime.now();
                     Duration difference = now.difference(date);
                     final String day;
@@ -253,7 +226,9 @@ Future<void> _fetchPastMails() async {
                           child: Text(
                             sender[0].toUpperCase(),
                             style: theme.textTheme.titleMedium?.copyWith(
-                                color: themeNotifier.isDarkMode ? Colors.black : Colors.white,
+                                color: themeNotifier.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontSize: 15),
                           ),
                         ),
@@ -264,16 +239,22 @@ Future<void> _fetchPastMails() async {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  sender.length > 23 ? '${sender.substring(0, 23)}...' : sender,
+                                  sender.length > 23
+                                      ? '${sender.substring(0, 23)}...'
+                                      : sender,
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                                 Text(
                                   day,
                                   style: TextStyle(
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontSize: 11,
                                   ),
                                 ),
@@ -285,14 +266,17 @@ Future<void> _fetchPastMails() async {
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                   overflow: TextOverflow.ellipsis),
                             ),
                             Text(
                               normalizeSpaces(body),
                               style: TextStyle(
-                                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                                color: theme.colorScheme.onSurface
+                                    .withOpacity(0.7),
                                 fontSize: 12,
                               ),
                               maxLines: 1,
@@ -317,7 +301,8 @@ Future<void> _fetchPastMails() async {
             ),
           );
         },
-        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ?? theme.primaryColor,
+        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ??
+            theme.primaryColor,
         child: Icon(Icons.edit,
             color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
       ),

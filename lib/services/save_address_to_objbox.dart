@@ -1,7 +1,7 @@
 import 'package:logger/logger.dart';
 
-import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
-import '../EmailCache/models/address.dart';
+import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
+import '../Storage/models/address.dart';
 
 final logger = Logger();
 

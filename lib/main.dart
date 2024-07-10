@@ -9,7 +9,7 @@ import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/services/auth_service.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:iitk_mail_client/theme_notifier.dart'; 
-import './EmailCache/initializeobjectbox.dart' ;
+import 'Storage/initializeobjectbox.dart' ;
 import 'models/advanced_settings_model.dart';
 import 'package:get/get.dart';
 
@@ -55,9 +55,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => EmailSettingsModel()),
+        ChangeNotifierProvider(create: (_) => RouteProvider(initialRoute)),
       ],
       child: MyApp(
-        initialRoute: initialRoute,
         savedUsername: validUsername,
         savedPassword: validPassword,
         emailSettings: emailSettings,
@@ -68,18 +68,17 @@ void main() async {
 
 }
 class MyApp extends StatelessWidget {
-  final String initialRoute;
   final String? savedUsername;
   final String? savedPassword;
   final EmailSettingsModel emailSettings;
+  
 
   const MyApp({
-    required this.initialRoute,
+    super.key,
     this.savedUsername,
     this.savedPassword,
     required this.emailSettings,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

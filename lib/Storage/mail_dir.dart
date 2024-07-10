@@ -1,8 +1,9 @@
 import 'dart:io';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:path/path.dart' as p;
-import 'package:enough_mail/enough_mail.dart';
 import 'package:logger/logger.dart';
+
+/// DISCARDED!!! This class is not being used for any funcitonality in the latest verison of the application
 
 final logger = Logger();
 

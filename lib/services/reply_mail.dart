@@ -1,9 +1,11 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/models/advanced_settings_model.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
-import 'package:iitk_mail_client/services/save_mails_to_objbox.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
+import 'package:logger/logger.dart';
+
+final logger = Logger();
 
 class EmailReply {
   static Future<void> replyEmail({
@@ -25,7 +27,7 @@ class EmailReply {
 
       await client.authenticate(username, password, AuthMechanism.plain);
       // logger.i("email $username" );
-      MimeMessage originalMimeMessage = await EmailService.fetchMailByUid(
+      MimeMessage originalMimeMessage = await ImapService.fetchMailByUid(
           uniqueId: int.parse(originalMessage.uniqueId.toString()),
           username: username,
           password: password);

@@ -1,4 +1,5 @@
 import 'package:enough_mail/enough_mail.dart';
+import 'package:logger/logger.dart';
 import 'dart:io';
 import 'dart:async';
 import '../models/advanced_settings_model.dart';
@@ -7,6 +8,9 @@ import '../models/advanced_settings_model.dart';
 /// Throws the respective errors during the connection or authentication process.
 /// It uses either IMAP or SMTP to authenticate based on preference in advanced settings
 /// By default, it uses IMAP secure server to login
+
+final logger = Logger();
+
 class AuthService {
   static Future<String?> authenticate({
     required EmailSettingsModel emailSettings,
@@ -17,6 +21,8 @@ class AuthService {
     final int port;
     final String authType = emailSettings.authServerType.toLowerCase();
     final String authMech = emailSettings.authMechanism.toLowerCase();
+
+    logger.i("Auth");
 
     if (authType == 'imap') {
       serverName = emailSettings.imapServer;
@@ -55,7 +61,7 @@ class AuthService {
               993); ///if port name is 993 then isSecure=True otherwise false
       await client.login(username, password);
       await client.logout();
-      print("Imap Login");
+      logger.i("Imap Login");
 
       return null; /// No error message on success
     } on ImapException {
@@ -80,11 +86,11 @@ class AuthService {
       await client.ehlo();
       if (mech == "plain"){
         await client.authenticate(username, password, AuthMechanism.plain);
-        print("SMTP login using PLAIN");
+        logger.i("SMTP login using PLAIN");
       }
       if ( mech == "login"){
         await client.authenticate(username, password, AuthMechanism.login);
-        print("SMTP login using LOGIN");
+        logger.i("SMTP login using LOGIN");
       }
 
       return null; /// No error message on success

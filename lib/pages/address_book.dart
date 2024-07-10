@@ -1,15 +1,12 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:iitk_mail_client/EmailCache/models/address.dart';
+import 'package:iitk_mail_client/Storage/models/address.dart';
 
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
-import 'package:iitk_mail_client/pages/emai_view_page.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/theme_notifier.dart';
-import '../EmailCache/initializeobjectbox.dart';
-import "../EmailCache/models/email.dart";
+import '../Storage/initializeobjectbox.dart';
 
 class AddressBook extends StatefulWidget {
   const AddressBook({

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/initializeobjectbox.dart';
+import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
 
 class InputChipField extends StatefulWidget {
   const InputChipField(
