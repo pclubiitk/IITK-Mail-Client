@@ -89,16 +89,26 @@ class _EmailViewPageState extends State<EmailViewPage> {
   }
 
   Future<void> _handleFlagged() async{
+    try{
     await ImapService.toggleFlagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
     await toggleFlaggedStatus(widget.email.id);
+    } 
+    catch (e) {
+      logger.i("error in changing flag status :$e");
+    }
     setState(() {
       isFlagged = !isFlagged;
     });
   }
 
   Future<void> _handleDeleted() async{
+    try{
     await ImapService.toggleTrashed(isTrashed: isTrashed, uniqueId : uniqueId, username: username!, password: password!);
     await toggleTrashedStatus(widget.email.id);
+    }
+    catch (e) {
+      logger.i("error in changing trash status :$e");
+    }
     setState(() {
       isTrashed = !isTrashed;
     });
