@@ -59,7 +59,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
     settings.updateAuthMechanism(tempSettings.authMechanism);
     SecureStorageService.saveSettings(settings);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Settings saved')));
+        .showSnackBar(const SnackBar(content: Text('Settings saved')));
   }
 
   @override
@@ -78,7 +78,7 @@ class _AdvancedSettingsPageState extends State<AdvancedSettingsPage> {
           iconTheme: theme.appBarTheme.iconTheme,
         ),
         backgroundColor: theme.scaffoldBackgroundColor,
-        body: Center(
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );

@@ -68,11 +68,6 @@
           "id": "12:2233865941418562763",
           "name": "isTrashed",
           "type": 1
-        },
-        {
-          "id": "13:6128485485393678008",
-          "name": "sequenceNumber",
-          "type": 6
         }
       ],
       "relations": []
@@ -105,7 +100,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    6128485485393678008
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

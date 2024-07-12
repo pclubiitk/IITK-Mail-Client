@@ -1,6 +1,6 @@
 import 'package:enough_mail/enough_mail.dart';
 import "package:iitk_mail_client/Storage/queries/highest_uid.dart";
-import "package:iitk_mail_client/Storage/queries/lowest_sequence_number.dart";
+import "package:iitk_mail_client/Storage/queries/lowest_uid.dart";
 import "package:logger/logger.dart";
 import "./save_mails_to_objbox.dart";
 import '../models/advanced_settings_model.dart';
@@ -96,6 +96,7 @@ class ImapService {
     required String username,
     required String password,
   }) async {
+    logger.i("at fetch older mails");
     final String serverName = emailSettings.imapServer;
     final int port = int.parse(emailSettings.imapPort);
     final client = ImapClient(isLogEnabled: false);
@@ -105,19 +106,26 @@ class ImapService {
       await client.selectInbox();
       List<MimeMessage> allFetchedMessages = [];
 
-      int? oldestSequenceNumber = getOldestSequenceNumberFromDatabase();
+      final oldestUID = getLowestUidFromDatabase();
+      //final sequnceIDverifier = getOldestSequenceNumberFromDatabase();
 
-      logger.i("the oldest sequence numbers are : $oldestSequenceNumber");
+      final fetchMessageForSequenceId = await client.uidFetchMessage(oldestUID, "(UID)");
+
+      final seqId = fetchMessageForSequenceId.messages[0].sequenceId;
+
+      //logger.i("in db: $sequnceIDverifier\nfrom Imap: $seqId ");
 
       int fetchCount = 10;
-      int startSequenceNumber = max(1, oldestSequenceNumber - fetchCount);
+      int startSequenceNumber = max(1, seqId! - fetchCount);
+
+      final fetchResult = await client.fetchMessagesByCriteria("$startSequenceNumber:${startSequenceNumber+fetchCount-1} (UID FLAGS BODY.PEEK[])");
       
-      final fetchResult = await client.fetchMessages(
-        MessageSequence.fromRange(startSequenceNumber,oldestSequenceNumber - 1,isUidSequence: false)
-        ,
-        "BODY.PEEK[]"
-        //"UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)] BODY.PEEK[TEXT]",
-      );
+      // final fetchResult = await client.fetchMessages(
+      //   MessageSequence.fromRange(startSequenceNumber,oldestSequenceNumber - 1,isUidSequence: false)
+      //   ,
+      //   "BODY.PEEK[]"
+      //   //"UID FLAGS BODY.PEEK[HEADER.FIELDS (FROM TO SUBJECT DATE)] BODY.PEEK[TEXT]",
+      // );
 
        allFetchedMessages.addAll(fetchResult.messages);
 

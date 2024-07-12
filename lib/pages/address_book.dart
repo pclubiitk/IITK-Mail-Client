@@ -117,7 +117,7 @@ class _AddressBookState extends State<AddressBook> {
                       ),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.cancel_outlined),
+                      icon: const Icon(Icons.cancel_outlined),
                       onPressed: () => showAlertDialog(
                           context, deleteAddress, addresses[index].id),
                     ),
@@ -146,13 +146,13 @@ class _AddressBookState extends State<AddressBook> {
 showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
   /// set up the buttons
   Widget cancelButton = GestureDetector(
-    child: Text("Cancel"),
+    child: const Text("Cancel"),
     onTap: () {
       Navigator.of(context).pop();
     },
   );
   Widget continueButton = GestureDetector(
-    child: Text("Delete"),
+    child: const Text("Delete"),
     onTap: () {
       if (delete(id)) {
         Navigator.of(context).pop();
@@ -161,8 +161,8 @@ showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
   );
   /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Delete Address"),
-    content: Text("Are you sure you want to delete the address?"),
+    title: const Text("Delete Address"),
+    content: const Text("Are you sure you want to delete the address?"),
     actions: [
       cancelButton,
       continueButton,
@@ -180,13 +180,13 @@ addAddressDialog(BuildContext context, bool Function(Address) add) {
   final theme = Theme.of(context);
   TextEditingController _controller = TextEditingController();
   Widget cancelButton = GestureDetector(
-    child: Text("Cancel"),
+    child: const Text("Cancel"),
     onTap: () {
       Navigator.of(context).pop();
     },
   );
   Widget continueButton = GestureDetector(
-    child: Text("Add Address"),
+    child: const Text("Add Address"),
     onTap: () {
       Address address = Address(mailAddress: _controller.text);
       if (add(address)) {
@@ -196,7 +196,7 @@ addAddressDialog(BuildContext context, bool Function(Address) add) {
   );
   /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Add Address"),
+    title: const Text("Add Address"),
     content: TextField(
         controller: _controller,
         decoration: InputDecoration(
