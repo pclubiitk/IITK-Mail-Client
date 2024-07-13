@@ -92,7 +92,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 6256951143984616053),
       name: 'Address',
-      lastPropertyId: const IdUid(2, 3736889626014911024),
+      lastPropertyId: const IdUid(3, 3809527452118149822),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -103,6 +103,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(2, 3736889626014911024),
             name: 'mailAddress',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 3809527452118149822),
+            name: 'name',
             type: 9,
             flags: 0)
       ],
@@ -211,9 +216,12 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Address object, fb.Builder fbb) {
           final mailAddressOffset = fbb.writeString(object.mailAddress);
-          fbb.startTable(3);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          fbb.startTable(4);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, mailAddressOffset);
+          fbb.addOffset(2, nameOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -223,6 +231,8 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Address(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
               mailAddress: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''));
 
@@ -286,4 +296,7 @@ class Address_ {
   /// see [Address.mailAddress]
   static final mailAddress =
       QueryStringProperty<Address>(_entities[1].properties[1]);
+
+  /// see [Address.name]
+  static final name = QueryStringProperty<Address>(_entities[1].properties[2]);
 }

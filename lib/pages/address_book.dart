@@ -49,6 +49,14 @@ class _AddressBookState extends State<AddressBook> {
     return true;
   }
 
+  bool editAddress(Address address) {
+    objectbox.addressBook.put(address);
+    setState(() {
+      addresses = objectbox.addressBook.getAll();
+    });
+    return true;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -103,12 +111,14 @@ class _AddressBookState extends State<AddressBook> {
                 separatorBuilder: (context, index) =>
                     Divider(color: theme.dividerColor),
                 itemBuilder: (context, index) {
-                  final address = addresses[index].mailAddress;
+                  final address = addresses[index];
                   return ListTile(
+                    onTap: () =>
+                        editAddressDialog(context, editAddress, address),
                     leading: CircleAvatar(
                       backgroundColor: theme.primaryColor,
                       child: Text(
-                        address[0].toUpperCase(),
+                        address.mailAddress[0].toUpperCase(),
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.titleMedium?.copyWith(
                             color: themeNotifier.isDarkMode
@@ -122,7 +132,7 @@ class _AddressBookState extends State<AddressBook> {
                           context, deleteAddress, addresses[index].id),
                     ),
                     title: Text(
-                      address,
+                      address.name ?? address.mailAddress,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.textTheme.bodyLarge?.color,
                         fontWeight: FontWeight.bold,
@@ -159,6 +169,7 @@ showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
       }
     },
   );
+
   /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Delete Address"),
@@ -178,7 +189,8 @@ showAlertDialog(BuildContext context, bool Function(int) delete, int id) {
 
 addAddressDialog(BuildContext context, bool Function(Address) add) {
   final theme = Theme.of(context);
-  TextEditingController _controller = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
   Widget cancelButton = GestureDetector(
     child: const Text("Cancel"),
     onTap: () {
@@ -188,27 +200,131 @@ addAddressDialog(BuildContext context, bool Function(Address) add) {
   Widget continueButton = GestureDetector(
     child: const Text("Add Address"),
     onTap: () {
-      Address address = Address(mailAddress: _controller.text);
+      Address address = Address(
+          name: _nameController.text, mailAddress: _addressController.text);
       if (add(address)) {
         Navigator.of(context).pop();
       }
     },
   );
+
   /// set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: const Text("Add Address"),
-    content: TextField(
-        controller: _controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: theme.inputDecorationTheme.fillColor,
-          hintText: 'Address',
-          hintStyle: theme.textTheme.bodyMedium,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-        )),
+    content: Container(
+      height: 150,
+      alignment: Alignment.center,
+      child: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: theme.inputDecorationTheme.fillColor,
+                    hintText: 'Name',
+                    hintStyle: theme.textTheme.bodyMedium,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  )),
+            ),
+            TextField(
+                controller: _addressController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: theme.inputDecorationTheme.fillColor,
+                  hintText: 'Address',
+                  hintStyle: theme.textTheme.bodyMedium,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                )),
+          ],
+        ),
+      ),
+    ),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+editAddressDialog(
+    BuildContext context, bool Function(Address) edit, Address address) {
+  final theme = Theme.of(context);
+  TextEditingController _addressController =
+      TextEditingController(text: address.mailAddress);
+  TextEditingController _nameController =
+      TextEditingController(text: address.name);
+  Widget cancelButton = GestureDetector(
+    child: Text("Cancel"),
+    onTap: () {
+      Navigator.of(context).pop();
+    },
+  );
+  Widget continueButton = GestureDetector(
+    child: Text("Update Address"),
+    onTap: () {
+      address.name = _nameController.text;
+      address.mailAddress = _addressController.text;
+
+      if (edit(address)) {
+        Navigator.of(context).pop();
+      }
+    },
+  );
+
+  /// set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Update Address"),
+    content: Container(
+      height: 150,
+      child: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: theme.inputDecorationTheme.fillColor,
+                    hintText: 'Name',
+                    hintStyle: theme.textTheme.bodyMedium,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  )),
+            ),
+            TextField(
+                controller: _addressController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: theme.inputDecorationTheme.fillColor,
+                  hintText: 'Address',
+                  hintStyle: theme.textTheme.bodyMedium,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                )),
+          ],
+        ),
+      ),
+    ),
     actions: [
       cancelButton,
       continueButton,
