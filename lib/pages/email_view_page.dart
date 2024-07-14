@@ -325,7 +325,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                 const Divider(color: Colors.grey),
               ],
               const SizedBox(height: 8),
-              Text(
+              SelectableText(
                 body,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.brightness == Brightness.dark
