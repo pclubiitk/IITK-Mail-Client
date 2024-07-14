@@ -13,7 +13,7 @@ Future<void> toggleTrashedStatus(int emailId) async {
     logger.i(email.uniqueId);
     email.isTrashed = !email.isTrashed;
     objectbox.emailBox.put(email);
-    logger.i('Email with ID ${email.uniqueId} has its isFlagged status changed to ${email.isTrashed}');
+    logger.i('Email with ID ${email.uniqueId} has its isTrashed status changed to ${email.isTrashed}');
   } else {
     logger.e('Email with ID ${email!.uniqueId} not found');
   }

@@ -204,11 +204,11 @@ class ImapService {
       final sequence = MessageSequence.fromId(uniqueId, isUid: true);
       if(isTrashed==false){
       await client.uidMarkDeleted(sequence);
-      logger.i("flagged");
+      logger.i("deleted");
       }
       else {
        await client.uidMarkUndeleted(sequence);
-       logger.i("unflagged");
+       logger.i("undeleted");
       }
       await client.logout();
     } on ImapException catch (e) {
