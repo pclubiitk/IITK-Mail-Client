@@ -10,6 +10,8 @@ import 'package:iitk_mail_client/pages/sent_mail_list.dart';
 import 'package:iitk_mail_client/pages/trashed_mails_page.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import '../pages/settings_page.dart';
+import 'package:iitk_mail_client/route_provider.dart';
+import 'package:provider/provider.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
 
@@ -137,12 +139,12 @@ class _DrawerItemsState extends State<DrawerItems> {
             text: 'Log Out',
             onTap: () {
               SecureStorageService.clearCredentials();
+              final routeProvider = Provider.of<RouteProvider>(context, listen: false);
+              routeProvider.initialRoute = '/login';
               objectbox.emailBox.removeAll();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (Route<dynamic> route) => false,
               );
             },
             textStyle: theme.textTheme.bodyLarge
