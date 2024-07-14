@@ -149,7 +149,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                 Row(
               children: [
                 SizedBox(
-                  width: 50,
+                  width: 70,
                   child: Text(
                     'From:',
                     style: TextStyle(
