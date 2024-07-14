@@ -93,21 +93,7 @@ class _FlaggedMailsPageState extends State<FlaggedMailsPage> {
                 ,
                 separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
                 itemBuilder: (context, index) {
-                  if (index == emails.length) {
-                    return const Center(
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 10),
-                          Text('Loading Past Mails'),
-                        ],
-                      ),
-                    );
-                  }
                   final email = emails[index];
-                  if(email.isTrashed == true){
-                    return null;
-                  }
                   final subject = email.subject;
                   final sender = email.senderName;
                   final date = email.receivedDate;

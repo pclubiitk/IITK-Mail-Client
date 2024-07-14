@@ -35,7 +35,7 @@ class _TrashedMailsPageState extends State<TrashedMailsPage> {
 
 
   Future<void> _fetchEmails() async {
-    logger.i("fetch emails got hit");
+    logger.i("fetch trashed emails got hit");
     setState(() {
       emails = getTrashedAndSortedEmails();
     });
@@ -93,21 +93,7 @@ class _TrashedMailsPageState extends State<TrashedMailsPage> {
                 ,
                 separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
                 itemBuilder: (context, index) {
-                  if (index == emails.length) {
-                    return const Center(
-                      child: Column(
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 10),
-                          Text('Loading Past Mails'),
-                        ],
-                      ),
-                    );
-                  }
                   final email = emails[index];
-                  if(email.isTrashed == true){
-                    return null;
-                  }
                   final subject = email.subject;
                   final sender = email.senderName;
                   final date = email.receivedDate;
