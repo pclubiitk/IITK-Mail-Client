@@ -46,6 +46,7 @@ class _EmailListPageState extends State<EmailListPage> {
   void initState() {
     super.initState();
     _fetchEmails();
+    _fetchNewMail();
   }
 
   @override
@@ -74,15 +75,14 @@ class _EmailListPageState extends State<EmailListPage> {
     }
   }
 
-Future<void> _fetchInitialEmails() async {
+  Future<void> _fetchInitialEmails() async {
     logger.i("fetch initial mails got hit");
     final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
     final routeProvider = Provider.of<RouteProvider>(context, listen: false);
 
     logger.i(routeProvider.initialRoute);
-    
-    if (routeProvider.initialRoute == '/login') {
 
+    if (routeProvider.initialRoute == '/login') {
       try {
         await ImapService.fetchEmails(
           emailSettings: emailSettings,
@@ -113,33 +113,33 @@ Future<void> _fetchInitialEmails() async {
     }
   }
 
-Future<void> _fetchPastMails() async {
-  logger.i("trying to lazily load past mails");
-  if (_isLoadingPastMails) {
-    return;
-  }
-  setState(() {
-    _isLoadingPastMails = true;
-  });
-  try {
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-    await ImapService.fetchOlderEmails(
-      emailSettings: emailSettings,
-      username: widget.username,
-      password: widget.password,
-    );
+  Future<void> _fetchPastMails() async {
+    logger.i("trying to lazily load past mails");
+    if (_isLoadingPastMails) {
+      return;
+    }
     setState(() {
+      _isLoadingPastMails = true;
+    });
+    try {
+      final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+      await ImapService.fetchOlderEmails(
+        emailSettings: emailSettings,
+        username: widget.username,
+        password: widget.password,
+      );
+      setState(() {
         emails = getEmailsOrderedByUniqueId();
         logger.i("Emails after fetching: ${emails.length}");
       });
-  } catch (e) {
-    logger.e("Failed to fetch past mails: $e");
-  } finally {
-    setState(() {
-      _isLoadingPastMails = false;
-    });
+    } catch (e) {
+      logger.e("Failed to fetch past mails: $e");
+    } finally {
+      setState(() {
+        _isLoadingPastMails = false;
+      });
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -196,26 +196,20 @@ Future<void> _fetchPastMails() async {
               : ListView.separated(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8.0),
-                  itemCount: emails.length 
-                  //+ (_isLoadingPastMails ? 1 : 0)
-                  ,
+                  itemCount: emails.length + (_isLoadingPastMails ? 1 : 0),
                   separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
                   itemBuilder: (context, index) {
                     if (index == emails.length) {
-                      return const Center(
-                        child: Column(
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 10),
-                            Text('Loading Past Mails'),
-                          ],
-                        ),
+                      return const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(width: 30),
+                          Text('Loading...'),
+                        ],
                       );
                     }
                     final email = emails[index];
-                    // if(email.isTrashed == true){
-                    //   return null;
-                    // }
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;
@@ -244,7 +238,7 @@ Future<void> _fetchPastMails() async {
                               password: widget.password,
                             ),
                           ),
-                        );
+                        ).then((_) => _fetchEmails()); // Call _fetchEmails when returning
                       },
                       child: ListTile(
                         leading: CircleAvatar(
