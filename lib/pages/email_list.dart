@@ -45,14 +45,18 @@ class _EmailListPageState extends State<EmailListPage> {
   @override
   void initState() {
     super.initState();
-    _fetchEmails();
-    _fetchNewMail();
+    _initiatorWrapper();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _initiatorWrapper() async {
+    await  _fetchEmails();
+    await _fetchNewMail();
   }
 
   Future<void> _fetchEmails() async {
@@ -238,7 +242,7 @@ class _EmailListPageState extends State<EmailListPage> {
                               password: widget.password,
                             ),
                           ),
-                        ).then((_) => _fetchEmails()); // Call _fetchEmails when returning
+                        ).then((_) => _initiatorWrapper()); 
                       },
                       child: ListTile(
                         leading: CircleAvatar(
