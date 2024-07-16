@@ -90,28 +90,36 @@ class _EmailViewPageState extends State<EmailViewPage> {
 
   Future<void> _handleFlagged() async{
     try{
-    await ImapService.toggleFlagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
-    await toggleFlaggedStatus(widget.email.id);
+      await ImapService.toggleFlagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
+      await toggleFlaggedStatus(widget.email.id);
+      setState(() {
+        isFlagged = !isFlagged;
+      });
     } 
     catch (e) {
       logger.i("error in changing flag status :$e");
+      if(mounted){
+       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error occured in flagging')));
+      }
     }
-    setState(() {
-      isFlagged = !isFlagged;
-    });
+    
   }
 
   Future<void> _handleDeleted() async{
-    try{
-    await ImapService.toggleTrashed(isTrashed: isTrashed, uniqueId : uniqueId, username: username!, password: password!);
-    await toggleTrashedStatus(widget.email.id);
+    try {
+      await ImapService.toggleTrashed(isTrashed: isTrashed, uniqueId : uniqueId, username: username!, password: password!);
+      await toggleTrashedStatus(widget.email.id);
+      setState(() {
+        isTrashed = !isTrashed;
+      });
     }
     catch (e) {
       logger.i("error in changing trash status :$e");
+      if(mounted){
+       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error occured in deleting')));
+      }
     }
-    setState(() {
-      isTrashed = !isTrashed;
-    });
+    
   }
 
   @override
@@ -317,7 +325,7 @@ class _EmailViewPageState extends State<EmailViewPage> {
                 const Divider(color: Colors.grey),
               ],
               const SizedBox(height: 8),
-              Text(
+              SelectableText(
                 body,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.brightness == Brightness.dark

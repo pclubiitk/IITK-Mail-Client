@@ -149,7 +149,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                 Row(
               children: [
                 SizedBox(
-                  width: 50,
+                  width: 70,
                   child: Text(
                     'From:',
                     style: TextStyle(
@@ -190,12 +190,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: InputChipField(
-                    suggestionList: objectbox.addressBook
-                        .getAll()
-                        .map(
-                          (e) => e.mailAddress,
-                        )
-                        .toList(),
+                    suggestionList: objectbox.addressBook,
                     textControllers: _toController,
                   ),
                 ),

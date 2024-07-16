@@ -45,7 +45,6 @@ class SentEmailService {
           body: body,
           receivedDate: sentMessage.decodeDate() ?? DateTime.now(),
           uniqueId: sentMessage.uid!,
-          sequenceNumber: sentMessage.sequenceId!,
           hasAttachment: false,
           isRead: true,
           isFlagged: false,

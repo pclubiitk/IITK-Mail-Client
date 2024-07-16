@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context) => AdvancedSettingsPage(),
                   ),
                 ),
-                child: Text('Advanced Settings'),
+                child: const Text('Advanced Settings'),
               ),
                   const SizedBox(height: 16),
                   if (_errorMessage != null && !_isLoading)

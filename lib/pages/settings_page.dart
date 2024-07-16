@@ -52,7 +52,7 @@ class SettingsPage extends StatelessWidget {
               ),
               color: theme.inputDecorationTheme.fillColor,
               child: ListTile(
-                title: Text(
+                title: const Text(
                   'Advanced Settings',
                 ),
                 leading: Icon(

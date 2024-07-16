@@ -115,30 +115,30 @@ Future<void> _fetchInitialEmails() async {
 
 Future<void> _fetchPastMails() async {
   logger.i("trying to lazily load past mails");
-  // if (_isLoadingPastMails) {
-  //   return;
-  // }
-  // setState(() {
-  //   _isLoadingPastMails = true;
-  // });
-  // try {
-  //   final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
-  //   await ImapService.fetchOlderEmails(
-  //     emailSettings: emailSettings,
-  //     username: widget.username,
-  //     password: widget.password,
-  //   );
-  //   setState(() {
-  //     emails = objectbox.emailBox.getAll();
-  //     emails = emails.reversed.toList();
-  //   });
-  // } catch (e) {
-  //   logger.e("Failed to fetch past mails: $e");
-  // } finally {
-  //   setState(() {
-  //     _isLoadingPastMails = false;
-  //   });
-  // }
+  if (_isLoadingPastMails) {
+    return;
+  }
+  setState(() {
+    _isLoadingPastMails = true;
+  });
+  try {
+    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    await ImapService.fetchOlderEmails(
+      emailSettings: emailSettings,
+      username: widget.username,
+      password: widget.password,
+    );
+    setState(() {
+        emails = getEmailsOrderedByUniqueId();
+        logger.i("Emails after fetching: ${emails.length}");
+      });
+  } catch (e) {
+    logger.e("Failed to fetch past mails: $e");
+  } finally {
+    setState(() {
+      _isLoadingPastMails = false;
+    });
+  }
 }
 
   @override

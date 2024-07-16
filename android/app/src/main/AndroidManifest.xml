@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-        android:label="test_drive"
-        android:name="${applicationName}"
+        android:label="IITK Mail Client"
+        android:name="io.flutter.app.FlutterMultiDexApplication" 
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity

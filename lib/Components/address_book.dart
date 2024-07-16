@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
+import 'package:iitk_mail_client/Storage/models/address.dart';
+import 'package:objectbox/objectbox.dart';
 
 class InputChipField extends StatefulWidget {
   const InputChipField(
       {super.key, required this.suggestionList, required this.textControllers});
   final List<TextEditingController> textControllers;
-  final List<String> suggestionList;
+  final Box<Address> suggestionList;
 
   @override
   InputChipFieldState createState() {
@@ -117,11 +119,18 @@ class InputChipFieldState extends State<InputChipField> {
 
   FutureOr<List<String>> _suggestionCallback(String text) {
     if (text.isNotEmpty) {
-      return widget.suggestionList.where((String address) {
-        return address.toLowerCase().contains(text.toLowerCase());
-      }).toList();
+      List<String> result = <String>[];
+      widget.suggestionList.getAll().forEach((Address address) {
+        if (address.mailAddress.toLowerCase().contains(text.toLowerCase())) {
+          result.add(address.name != null
+              ? '${address.name}<${address.mailAddress}>'
+              : address.mailAddress);
+        }
+      });
+      result.insert(0, text.toLowerCase());
+      return result;
     }
-    return const <String>[];
+    return <String>[];
   }
 }
 
@@ -313,7 +322,10 @@ class AddressSuggestion extends StatelessWidget {
           address[0].toUpperCase(),
         ),
       ),
-      title: Text(address),
+      title: Text(
+        address,
+        overflow: TextOverflow.ellipsis,
+      ),
       onTap: () => onTap?.call(address),
     );
   }

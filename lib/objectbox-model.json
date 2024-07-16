@@ -68,18 +68,13 @@
           "id": "12:2233865941418562763",
           "name": "isTrashed",
           "type": 1
-        },
-        {
-          "id": "13:6128485485393678008",
-          "name": "sequenceNumber",
-          "type": 6
         }
       ],
       "relations": []
     },
     {
       "id": "2:6256951143984616053",
-      "lastPropertyId": "2:3736889626014911024",
+      "lastPropertyId": "3:3809527452118149822",
       "name": "Address",
       "properties": [
         {
@@ -91,6 +86,11 @@
         {
           "id": "2:3736889626014911024",
           "name": "mailAddress",
+          "type": 9
+        },
+        {
+          "id": "3:3809527452118149822",
+          "name": "name",
           "type": 9
         }
       ],
@@ -105,7 +105,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    6128485485393678008
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

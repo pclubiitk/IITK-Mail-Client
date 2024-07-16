@@ -85,11 +85,6 @@ final _entities = <ModelEntity>[
             id: const IdUid(12, 2233865941418562763),
             name: 'isTrashed',
             type: 1,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(13, 6128485485393678008),
-            name: 'sequenceNumber',
-            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -97,7 +92,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 6256951143984616053),
       name: 'Address',
-      lastPropertyId: const IdUid(2, 3736889626014911024),
+      lastPropertyId: const IdUid(3, 3809527452118149822),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -108,6 +103,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(2, 3736889626014911024),
             name: 'mailAddress',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 3809527452118149822),
+            name: 'name',
             type: 9,
             flags: 0)
       ],
@@ -141,7 +141,7 @@ ModelDefinition getObjectBoxModel() {
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [6128485485393678008],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -175,7 +175,6 @@ ModelDefinition getObjectBoxModel() {
           fbb.addBool(9, object.isRead);
           fbb.addBool(10, object.isFlagged);
           fbb.addBool(11, object.isTrashed);
-          fbb.addInt64(12, object.sequenceNumber);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -197,11 +196,10 @@ ModelDefinition getObjectBoxModel() {
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0)),
               uniqueId:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0),
-              sequenceNumber:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 28, 0),
               hasAttachment: const fb.BoolReader()
                   .vTableGet(buffer, rootOffset, 20, false),
-              senderName: const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 18, ''),
+              senderName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
               isRead: const fb.BoolReader().vTableGet(buffer, rootOffset, 22, false),
               isFlagged: const fb.BoolReader().vTableGet(buffer, rootOffset, 24, false),
               isTrashed: const fb.BoolReader().vTableGet(buffer, rootOffset, 26, false));
@@ -218,9 +216,12 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Address object, fb.Builder fbb) {
           final mailAddressOffset = fbb.writeString(object.mailAddress);
-          fbb.startTable(3);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          fbb.startTable(4);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, mailAddressOffset);
+          fbb.addOffset(2, nameOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -230,6 +231,8 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Address(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 8),
               mailAddress: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''));
 
@@ -283,10 +286,6 @@ class Email_ {
   /// see [Email.isTrashed]
   static final isTrashed =
       QueryBooleanProperty<Email>(_entities[0].properties[11]);
-
-  /// see [Email.sequenceNumber]
-  static final sequenceNumber =
-      QueryIntegerProperty<Email>(_entities[0].properties[12]);
 }
 
 /// [Address] entity fields to define ObjectBox queries.
@@ -297,4 +296,7 @@ class Address_ {
   /// see [Address.mailAddress]
   static final mailAddress =
       QueryStringProperty<Address>(_entities[1].properties[1]);
+
+  /// see [Address.name]
+  static final name = QueryStringProperty<Address>(_entities[1].properties[2]);
 }
