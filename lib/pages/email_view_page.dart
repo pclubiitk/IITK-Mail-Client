@@ -3,14 +3,17 @@
 import 'dart:typed_data';
 import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
-import 'package:iitk_mail_client/EmailCache/models/message.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/message.dart';
+import 'package:iitk_mail_client/Storage/queries/toggle_flagged_status.dart';
+import 'package:iitk_mail_client/Storage/queries/toggle_trashed_status.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
 import 'package:iitk_mail_client/pages/reply_screen.dart';
 import 'package:iitk_mail_client/services/download_files.dart';
-import 'package:iitk_mail_client/services/email_fetch.dart';
 import 'package:iitk_mail_client/services/fetch_attachment.dart';
 import 'package:iitk_mail_client/services/open_files.dart';
+import 'package:iitk_mail_client/services/imap_service.dart';
+import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:logger/logger.dart';
 
 class EmailViewPage extends StatefulWidget {
@@ -35,21 +38,28 @@ class _EmailViewPageState extends State<EmailViewPage> {
   late final String body;
   late final DateTime date;
   late final int uniqueId;
+  late bool isFlagged;
+  late bool isTrashed;
   final logger = Logger();
   final downloader = DownloadFiles();
   final opener = OpenFiles();
   Message? message;
   List<ContentInfo>? attachments;
   List<MimePart>? mimeParts;
+  String? username;
+  String? password;
 
   @override
   void initState() {
     super.initState();
+    _setCredentials();
     subject = widget.email.subject ?? 'No Subject';
     sender = widget.email.from ?? 'Unknown Sender';
     body = widget.email.body ?? 'No Content';
     date = widget.email.receivedDate ?? DateTime.now();
     uniqueId = widget.email.uniqueId;
+    isFlagged = widget.email.isFlagged;
+    isTrashed = widget.email.isTrashed;
 
     // Fetch attachments if the email has attachments\
     if (widget.email.hasAttachment) {
@@ -73,6 +83,37 @@ class _EmailViewPageState extends State<EmailViewPage> {
     }
   }
 
+  Future <void> _setCredentials() async{
+    username = await SecureStorageService.getUsername();
+    password = await SecureStorageService.getPassword();
+  }
+
+  Future<void> _handleFlagged() async{
+    try{
+    await ImapService.toggleFlagged(isFlagged: isFlagged, uniqueId : uniqueId, username: username!, password: password!);
+    await toggleFlaggedStatus(widget.email.id);
+    } 
+    catch (e) {
+      logger.i("error in changing flag status :$e");
+    }
+    setState(() {
+      isFlagged = !isFlagged;
+    });
+  }
+
+  Future<void> _handleDeleted() async{
+    try{
+    await ImapService.toggleTrashed(isTrashed: isTrashed, uniqueId : uniqueId, username: username!, password: password!);
+    await toggleTrashedStatus(widget.email.id);
+    }
+    catch (e) {
+      logger.i("error in changing trash status :$e");
+    }
+    setState(() {
+      isTrashed = !isTrashed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -87,18 +128,32 @@ class _EmailViewPageState extends State<EmailViewPage> {
           },
         ),
         actions: [
-          IconButton(
+          !isTrashed
+          ? IconButton(
+            icon: Icon(Icons.delete_outline, color: theme.appBarTheme.iconTheme?.color),
+            onPressed: () {
+              _handleDeleted();
+            },
+          )
+          : IconButton(
             icon: Icon(Icons.delete, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              /// delete request logic to implemented
-            },
+              _handleDeleted();
+            }
           ),
-          IconButton(
+          isFlagged
+           ? IconButton(
             icon: Icon(Icons.flag, color: theme.appBarTheme.iconTheme?.color),
             onPressed: () {
-              /// add email to flag or starred
+              _handleFlagged();
             },
-          ),
+          )
+          : IconButton(
+            icon: Icon(Icons.flag_outlined, color: theme.appBarTheme.iconTheme?.color),
+            onPressed: () {
+              _handleFlagged();
+            },
+          )
         ],
       ),
       body: Container(
@@ -172,17 +227,14 @@ class _EmailViewPageState extends State<EmailViewPage> {
                           if (mimeParts != null && i < mimeParts!.length) {
                             final mimePart = mimeParts![i];
                             // Download the file
-                            final Uint8List? fileBytes =
-                                mimePart.decodeContentBinary();
+                            final Uint8List? fileBytes =mimePart.decodeContentBinary();
                             if (fileBytes != null) {
-                              final String fileName =
-                                  attachments![i].fileName ?? 'Unnamed';
-                              final String? filePath =
-                                  await DownloadFiles().downloadFileFromBytes(
-                                fileBytes,
-                                fileName,
-                                keepDuplicate: true,
-                              );
+                              final String fileName = attachments![i].fileName ?? 'Unnamed';
+                              final String? filePath =await DownloadFiles().downloadFileFromBytes(
+                                  fileBytes,
+                                  fileName,
+                                  keepDuplicate: true,
+                                );
 
                               // Open the file
                               if (filePath != null) {

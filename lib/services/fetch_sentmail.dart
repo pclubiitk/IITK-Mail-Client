@@ -1,5 +1,5 @@
 import 'package:enough_mail/enough_mail.dart';
-import 'package:iitk_mail_client/EmailCache/models/email.dart';
+import 'package:iitk_mail_client/Storage/models/email.dart';
 import '../models/advanced_settings_model.dart';
 
 class SentEmailService {
@@ -44,8 +44,12 @@ class SentEmailService {
           subject: sentMessage.decodeSubject() ?? 'No Subject',
           body: body,
           receivedDate: sentMessage.decodeDate() ?? DateTime.now(),
-          uniqueId: 2,
+          uniqueId: sentMessage.uid!,
+          sequenceNumber: sentMessage.sequenceId!,
           hasAttachment: false,
+          isRead: true,
+          isFlagged: false,
+          isTrashed: false,
         );
         sentEmails.add(email);
       }

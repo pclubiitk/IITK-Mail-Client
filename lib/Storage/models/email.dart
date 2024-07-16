@@ -9,8 +9,12 @@ class Email {
   String body;
   DateTime receivedDate;
   int uniqueId;
+  int sequenceNumber;
   bool hasAttachment;
   String senderName;
+  bool isRead;
+  bool isFlagged;
+  bool isTrashed;
 
   Email({
     this.id = 0,
@@ -20,7 +24,11 @@ class Email {
     required this.body,
     required this.receivedDate,
     required this.uniqueId,
+    required this.sequenceNumber,
     required this.hasAttachment,
     required this.senderName,
+    required this.isRead,
+    required this.isFlagged,
+    required this.isTrashed,
   });
 }

@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
 import 'package:iitk_mail_client/pages/TabletUI/email_list.dart';
+import 'package:iitk_mail_client/route_provider.dart';
 import 'package:provider/provider.dart';
 import 'Dependency_Injection.dart';
 import 'package:iitk_mail_client/pages/login_page.dart';
@@ -9,7 +10,7 @@ import 'package:iitk_mail_client/pages/email_list.dart';
 import 'package:iitk_mail_client/services/auth_service.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:iitk_mail_client/theme_notifier.dart'; 
-import './EmailCache/initializeobjectbox.dart' ;
+import 'Storage/initializeobjectbox.dart' ;
 import 'models/advanced_settings_model.dart';
 import 'package:get/get.dart';
 
@@ -55,9 +56,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeNotifier()),
         ChangeNotifierProvider(create: (_) => EmailSettingsModel()),
+        ChangeNotifierProvider(create: (_) => RouteProvider(initialRoute)),
       ],
       child: MyApp(
-        initialRoute: initialRoute,
         savedUsername: validUsername,
         savedPassword: validPassword,
         emailSettings: emailSettings,
@@ -68,22 +69,22 @@ void main() async {
 
 }
 class MyApp extends StatelessWidget {
-  final String initialRoute;
   final String? savedUsername;
   final String? savedPassword;
   final EmailSettingsModel emailSettings;
+  
 
   const MyApp({
-    required this.initialRoute,
+    super.key,
     this.savedUsername,
     this.savedPassword,
     required this.emailSettings,
-    Key? key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    final routeProvider = Provider.of<RouteProvider>(context);
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -91,7 +92,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         title: 'IITK Mail-Client',
         theme: themeNotifier.getTheme(),
-        initialRoute: initialRoute,
+        initialRoute: routeProvider.initialRoute,
         routes: {
           '/login': (context) => const LoginPage(),
           '/emailList': (context) => EmailListPageTablet(
@@ -105,7 +106,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         title: 'IITK Mail-Client',
         theme: themeNotifier.getTheme(),
-        initialRoute: initialRoute,
+        initialRoute: routeProvider.initialRoute,
         routes: {
           '/login': (context) => const LoginPage(),
           '/emailList': (context) => EmailListPageDesktop(
@@ -120,7 +121,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         title: 'IITK Mail-Client',
         theme: themeNotifier.getTheme(),
-        initialRoute: initialRoute,
+        initialRoute: routeProvider.initialRoute,
         routes: {
           '/login': (context) => const LoginPage(),
           '/emailList': (context) => EmailListPage(

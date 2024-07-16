@@ -1,7 +1,5 @@
-import "./initializeobjectbox.dart" ;
-import "./models/email.dart" ;
-import "./objectbox.dart" ;
-import "../objectbox.g.dart" ;
+import "../initializeobjectbox.dart" ;
+import "../../objectbox.g.dart" ;
 
 
 int getHighestUidFromDatabase() {
