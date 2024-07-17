@@ -1,6 +1,9 @@
 import 'package:enough_mail/enough_mail.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
+import 'package:logger/logger.dart';
 import '../models/advanced_settings_model.dart';
+
+final logger = Logger();
 
 class SentEmailService {
   static Future<List<Email>> fetchSentEmails({
@@ -8,6 +11,7 @@ class SentEmailService {
     required String username,
     required String password,
   }) async {
+    logger.i("trying to fetch SENT mails...");
     final String serverName = emailSettings.imapServer;
     final int port = int.parse(emailSettings.imapPort);
     final client = ImapClient(isLogEnabled: false);
@@ -16,10 +20,9 @@ class SentEmailService {
     try {
       await client.connectToServer(serverName, port, isSecure: port == 993);
       await client.login(username, password);
-      final mailboxPath = 'INBOX.Sent';
+      const mailboxPath = 'INBOX.Sent';
       await client.selectMailboxByPath(mailboxPath);
-      final fetchMessages = await client.fetchRecentMessages(
-          messageCount: 50, criteria: 'BODY.PEEK[]');
+      final fetchMessages = await client.uidFetchMessagesByCriteria("1:* (UID FLAGS BODY.PEEK[])");
 
       for (final sentMessage in fetchMessages.messages.reversed.toList()) {
         String? body;

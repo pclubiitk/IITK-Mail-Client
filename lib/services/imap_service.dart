@@ -29,6 +29,7 @@ class ImapService {
       await client.connectToServer(serverName, port, isSecure: port == 993);
       await client.login(username, password);
       try{
+        logger.i("Lisitng mail boxes");
         final mailboxes = await client.listMailboxes();
         for (final mailbox in mailboxes) {
           logger.i('Folder: ${mailbox.name}');
