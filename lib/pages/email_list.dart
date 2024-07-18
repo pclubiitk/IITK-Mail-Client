@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/queries/get_sorted_emails.dart';
@@ -36,7 +38,8 @@ class _EmailListPageState extends State<EmailListPage> {
   _EmailListPageState() {
     _scrollController = ScrollController()
       ..addListener(() {
-        if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 100) {
+        if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 100) {
           _fetchPastMails();
         }
       });
@@ -55,7 +58,7 @@ class _EmailListPageState extends State<EmailListPage> {
   }
 
   Future<void> _initiatorWrapper() async {
-    await  _fetchEmails();
+    await _fetchEmails();
     await _fetchNewMail();
   }
 
@@ -81,7 +84,8 @@ class _EmailListPageState extends State<EmailListPage> {
 
   Future<void> _fetchInitialEmails() async {
     logger.i("fetch initial mails got hit");
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     final routeProvider = Provider.of<RouteProvider>(context, listen: false);
 
     logger.i(routeProvider.initialRoute);
@@ -102,7 +106,8 @@ class _EmailListPageState extends State<EmailListPage> {
 
   Future<void> _fetchNewMail() async {
     logger.i("trying to fetch new mails...");
-    final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+    final emailSettings =
+        Provider.of<EmailSettingsModel>(context, listen: false);
     try {
       await ImapService.fetchNewEmails(
           emailSettings: emailSettings,
@@ -126,7 +131,8 @@ class _EmailListPageState extends State<EmailListPage> {
       _isLoadingPastMails = true;
     });
     try {
-      final emailSettings = Provider.of<EmailSettingsModel>(context, listen: false);
+      final emailSettings =
+          Provider.of<EmailSettingsModel>(context, listen: false);
       await ImapService.fetchOlderEmails(
         emailSettings: emailSettings,
         username: widget.username,
@@ -168,7 +174,8 @@ class _EmailListPageState extends State<EmailListPage> {
               child: Text(
                 widget.username[0].toUpperCase(),
                 style: theme.textTheme.titleMedium?.copyWith(
-                    color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
+                    color:
+                        themeNotifier.isDarkMode ? Colors.black : Colors.white),
               ),
             ),
             IconButton(
@@ -194,14 +201,16 @@ class _EmailListPageState extends State<EmailListPage> {
           child: _isLoading
               ? Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(theme.primaryColor),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(theme.primaryColor),
                   ),
                 )
               : ListView.separated(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(8.0),
                   itemCount: emails.length + (_isLoadingPastMails ? 1 : 0),
-                  separatorBuilder: (context, index) => Divider(color: theme.dividerColor),
+                  separatorBuilder: (context, index) =>
+                      Divider(color: theme.dividerColor),
                   itemBuilder: (context, index) {
                     if (index == emails.length) {
                       return const Row(
@@ -218,15 +227,24 @@ class _EmailListPageState extends State<EmailListPage> {
                     final sender = email.senderName;
                     final date = email.receivedDate;
                     final body = email.body;
-                    final time = '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+                    final isSeen = email.isRead;
+                    final time =
+                        '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
                     DateTime now = DateTime.now();
-                    Duration difference = now.difference(date);
+
                     final String day;
                     String normalizeSpaces(String text) {
                       return text.replaceAll(RegExp(r'\s+'), ' ');
                     }
 
-                    if (difference.inDays == 0) {
+                    bool isSameDay(DateTime d1, DateTime d2) {
+                      if (d1.year == d2.year &&
+                          d1.month == d2.month &&
+                          d1.day == d2.day) return true;
+                      return false;
+                    }
+
+                    if (isSameDay(now, date)) {
                       day = time;
                     } else {
                       day = '${date.day}/${date.month}/${date.year}';
@@ -242,7 +260,7 @@ class _EmailListPageState extends State<EmailListPage> {
                               password: widget.password,
                             ),
                           ),
-                        ).then((_) => _initiatorWrapper()); 
+                        ).then((_) => _initiatorWrapper());
                       },
                       child: ListTile(
                         leading: CircleAvatar(
@@ -251,7 +269,9 @@ class _EmailListPageState extends State<EmailListPage> {
                           child: Text(
                             sender[0].toUpperCase(),
                             style: theme.textTheme.titleMedium?.copyWith(
-                                color: themeNotifier.isDarkMode ? Colors.black : Colors.white,
+                                color: themeNotifier.isDarkMode
+                                    ? Colors.black
+                                    : Colors.white,
                                 fontSize: 15),
                           ),
                         ),
@@ -262,16 +282,34 @@ class _EmailListPageState extends State<EmailListPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  sender.length > 23 ? '${sender.substring(0, 23)}...' : sender,
-                                  style: TextStyle(
+                                  sender.length > 23
+                                      ? '${sender.substring(0, 23)}...'
+                                      : sender,
+                                  style: isSeen?TextStyle(
                                     fontSize: 10,
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ): TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 10,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                                 Text(
                                   day,
-                                  style: TextStyle(
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                  style: isSeen?TextStyle(   
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 11,
+                                  ):TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                     fontSize: 11,
                                   ),
                                 ),
@@ -281,21 +319,38 @@ class _EmailListPageState extends State<EmailListPage> {
                               alignment: Alignment.centerLeft,
                               child: Text(subject.trim(),
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: isSeen?TextStyle(
                                     fontSize: 12,
-                                    color: themeNotifier.isDarkMode ? Colors.white : Colors.black,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                  ):TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                   overflow: TextOverflow.ellipsis),
                             ),
-                            Text(
-                              normalizeSpaces(body),
-                              style: TextStyle(
-                                color: theme.colorScheme.onSurface.withOpacity(0.7),
-                                fontSize: 12,
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                normalizeSpaces(body),
+                                style: isSeen?TextStyle(
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.7),
+                                  fontSize: 12,
+                                ):TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.7),
+                                  fontSize: 12,
+                                ),
+                                maxLines: 1,
+                                softWrap: false,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              softWrap: false,
-                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -315,7 +370,8 @@ class _EmailListPageState extends State<EmailListPage> {
             ),
           );
         },
-        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ?? theme.primaryColor,
+        backgroundColor: theme.floatingActionButtonTheme.backgroundColor ??
+            theme.primaryColor,
         child: Icon(Icons.edit,
             color: themeNotifier.isDarkMode ? Colors.black : Colors.white),
       ),
