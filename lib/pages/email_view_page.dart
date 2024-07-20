@@ -5,6 +5,7 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/models/message.dart';
+import 'package:iitk_mail_client/Storage/queries/mark_seen.dart';
 import 'package:iitk_mail_client/Storage/queries/toggle_flagged_status.dart';
 import 'package:iitk_mail_client/Storage/queries/toggle_trashed_status.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
@@ -64,7 +65,9 @@ class _EmailViewPageState extends State<EmailViewPage> {
     uniqueId = widget.email.uniqueId;
     isFlagged = widget.email.isFlagged;
     isTrashed = widget.email.isTrashed;
-
+    if(widget.email.isRead==false){
+      markRead();
+    }
     // Fetch attachments if the email has attachments\
     if (widget.email.hasAttachment) {
       FetchAttachments.fetchMessageWithAttachments(
@@ -87,12 +90,16 @@ class _EmailViewPageState extends State<EmailViewPage> {
     }
     else if(widget.email.isRead==false){
       try{
-        ImapService.markRead(uniqueId: uniqueId, username: widget.username, password: widget.password);
+          ImapService.markRead(uniqueId: uniqueId, username: widget.username, password: widget.password);
       }
       catch(e){
         logger.i("Failed to mark the mail as read");
       }
     }
+  }
+
+  Future <void> markRead() async{
+    await markSeen(widget.email.id);
   }
 
   Future <void> _setCredentials() async{
