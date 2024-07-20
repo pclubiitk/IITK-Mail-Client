@@ -36,8 +36,8 @@ Future<void> saveEmailsToDatabase(List<MimeMessage> messages) async {
         String? htmlText = message.decodeTextHtmlPart();
 
         // /// Determine the body content
-        if (htmlText != null && htmlText.isNotEmpty) {
-          body = HtmlToPlainTextConverter.convert(htmlText);
+        if (htmlText != null) {
+          body = htmlText;
           logger.i("html");
         }
         else if (plainText != null && plainText.isNotEmpty) {
@@ -95,11 +95,15 @@ Future<void> updateDatabase(List<MimeMessage> messages) async {
         String? htmlText = message.decodeTextHtmlPart();
 
         /// Determine the body content
-        if (plainText != null && plainText.isNotEmpty) {
-          body = plainText;
-        } else if (htmlText != null && htmlText.isNotEmpty) {
+         if (htmlText != null) {
           body = htmlText;
-        } else {
+          logger.i("html");
+        }
+        else if (plainText != null && plainText.isNotEmpty) {
+          body = plainText;
+          logger.i("plain text");
+        } 
+        else {
           body = 'No Text Body';
         }
         String? personalName = message.from!.first.personalName;

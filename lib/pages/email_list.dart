@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:enough_mail_html/enough_mail_html.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/queries/get_sorted_emails.dart';
@@ -226,7 +227,7 @@ class _EmailListPageState extends State<EmailListPage> {
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;
-                    final body = email.body;
+                    final body =HtmlToPlainTextConverter.convert(email.body);
                     final isSeen = email.isRead;
                     final time =
                         '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
