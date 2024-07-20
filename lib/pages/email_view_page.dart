@@ -85,6 +85,14 @@ class _EmailViewPageState extends State<EmailViewPage> {
         logger.e('Failed to fetch message: $error');
       });
     }
+    else if(widget.email.isRead==false){
+      try{
+        ImapService.markRead(uniqueId: uniqueId, username: widget.username, password: widget.password);
+      }
+      catch(e){
+        logger.i("Failed to mark the mail as read");
+      }
+    }
   }
 
   Future <void> _setCredentials() async{
