@@ -25,7 +25,7 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   String _from = '';
   DateTime? _dateFrom;
-  DateTime? _dateTo = DateTime.now();
+  DateTime? _dateTo;
   bool _unread = false;
   bool _flagged = false;
   bool _hasAttachment = false;
@@ -51,41 +51,58 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void _showFromBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        TextEditingController _fromController = TextEditingController(text: _from);
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _fromController,
-                decoration: const InputDecoration(labelText: 'From'),
-                onChanged: (value) {
-                  setState(() {
-                    _from = value;
-                  });
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _from = _fromController.text;
-                    _filterEmails();
-                  });
-                  Navigator.pop(context);
-                },
-                child: const Text('Apply'),
-              ),
-            ],
+  void fromBottomSheet() {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true, 
+    builder: (context) {
+      TextEditingController _fromController = TextEditingController(text: _from);
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom, 
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _fromController,
+                  decoration: InputDecoration(
+                    labelText: 'From',
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        _fromController.clear();
+                      },
+                    ),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _from = value;
+                    });
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _from = _fromController.text;
+                      _filterEmails();
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Apply'),
+                ),
+              ],
+            ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
+
 
   void _showDateBottomSheet() {
     showModalBottomSheet(
@@ -113,6 +130,8 @@ class _SearchPageState extends State<SearchPage> {
                     setState(() {
                       _dateFrom = picked;
                     });
+                    Navigator.pop(context);
+                    _showDateBottomSheet();
                   }
                 },
               ),
@@ -133,6 +152,8 @@ class _SearchPageState extends State<SearchPage> {
                     setState(() {
                       _dateTo = picked;
                     });
+                    Navigator.pop(context);
+                    _showDateBottomSheet();
                   }
                 },
               ),
@@ -143,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                     onPressed: () {
                       setState(() {
                         _dateFrom = null;
-                        _dateTo = DateTime.now();
+                        _dateTo = null;
                         _filterEmails();
                       });
                       Navigator.pop(context);
@@ -177,7 +198,13 @@ class _SearchPageState extends State<SearchPage> {
           controller: _searchController,
           decoration: InputDecoration(
             hintText: 'Search...',
-            border: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide.none,
+            ),
+            fillColor: theme.cardColor,
+            filled: true,
+            prefixIcon: const Icon(Icons.search),
             suffixIcon: IconButton(
               icon: const Icon(Icons.clear),
               onPressed: () {
@@ -190,7 +217,6 @@ class _SearchPageState extends State<SearchPage> {
             _filterEmails();
           },
         ),
-        leading: BackButton(),
       ),
       body: Column(
         children: [
@@ -202,7 +228,7 @@ class _SearchPageState extends State<SearchPage> {
                   label: const Text('From'),
                   selected: _from.isNotEmpty,
                   onSelected: (selected) {
-                    _showFromBottomSheet();
+                    fromBottomSheet();
                   },
                 ),
                 const SizedBox(width: 8),
@@ -260,7 +286,7 @@ class _SearchPageState extends State<SearchPage> {
                 final subject = email.subject;
                 final sender = email.senderName;
                 final date = email.receivedDate;
-                final body =HtmlToPlainTextConverter.convert(email.body);
+                final body = HtmlToPlainTextConverter.convert(email.body);
                 final isSeen = email.isRead;
                 final time =
                     '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
@@ -349,7 +375,6 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ],
                     ),
-                   
                   ),
                 );
               },

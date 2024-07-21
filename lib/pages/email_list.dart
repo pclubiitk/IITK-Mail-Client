@@ -172,7 +172,7 @@ class _EmailListPageState extends State<EmailListPage> {
             ),
             const Spacer(),
             IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -182,7 +182,9 @@ class _EmailListPageState extends State<EmailListPage> {
                       password: widget.password,
                     ),
                   ),
-                );
+                ).then((_) => setState(() {
+                  emails = getEmailsOrderedByUniqueId();
+                }));
               },
             ),
             CircleAvatar(
