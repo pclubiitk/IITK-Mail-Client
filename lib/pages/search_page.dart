@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/queries/get_filtered_emails.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:iitk_mail_client/theme_notifier.dart';
 import 'package:intl/intl.dart';
+
+final logger = Logger();
 
 class SearchPage extends StatefulWidget {
   final String username;
@@ -38,6 +41,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _filterEmails() {
+    logger.i("filtering emails...");
     setState(() {
       _filteredEmails = getFilteredEmails(
         searchText: _searchController.text,
@@ -51,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void fromBottomSheet() {
+  void _showFromBottomSheet() {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true, 
@@ -228,7 +232,7 @@ class _SearchPageState extends State<SearchPage> {
                   label: const Text('From'),
                   selected: _from.isNotEmpty,
                   onSelected: (selected) {
-                    fromBottomSheet();
+                    _showFromBottomSheet();
                   },
                 ),
                 const SizedBox(width: 8),

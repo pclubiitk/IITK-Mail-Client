@@ -1,6 +1,9 @@
 import "package:iitk_mail_client/Storage/models/email.dart";
+import "package:logger/logger.dart";
 import "../initializeobjectbox.dart";
 import "../../objectbox.g.dart";
+
+final logger = Logger();
 
 List<Email> getFilteredEmails({
   required String searchText,
@@ -11,6 +14,10 @@ List<Email> getFilteredEmails({
   required bool flagged,
   required bool hasAttachment,
 }) {
+
+  logger.i("db filtering emails");
+
+  logger.i("$searchText\t$from\t$dateFrom\t$dateTo");
 
   final adjustedDateTo = dateTo != null ? dateTo.add(const Duration(days: 1)).subtract(const Duration(seconds: 1)) : null;
 
