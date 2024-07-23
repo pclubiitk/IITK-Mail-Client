@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
+import 'package:iitk_mail_client/pages/search_page.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
 import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:logger/logger.dart';
@@ -73,6 +74,20 @@ class _EmailListPageState extends State<SentEmailListPage> {
               ),
             ),
             const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                      username: widget.username,
+                      password: widget.password,
+                    ),
+                  ),
+                );
+              },
+            ),
             CircleAvatar(
               backgroundColor: theme.primaryColor,
               child: Text(

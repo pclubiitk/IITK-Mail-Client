@@ -6,6 +6,7 @@ import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/queries/get_sorted_emails.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
+import 'package:iitk_mail_client/pages/search_page.dart';
 import 'package:iitk_mail_client/route_provider.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
 import 'package:iitk_mail_client/services/imap_service.dart';
@@ -170,6 +171,22 @@ class _EmailListPageState extends State<EmailListPage> {
               ),
             ),
             const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                      username: widget.username,
+                      password: widget.password,
+                    ),
+                  ),
+                ).then((_) => setState(() {
+                  emails = getEmailsOrderedByUniqueId();
+                }));
+              },
+            ),
             CircleAvatar(
               backgroundColor: theme.primaryColor,
               child: Text(
