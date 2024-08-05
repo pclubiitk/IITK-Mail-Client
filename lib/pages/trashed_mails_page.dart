@@ -1,3 +1,4 @@
+import 'package:enough_mail_html/enough_mail_html.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/queries/get_trashed_sorted_emails.dart';
@@ -113,7 +114,7 @@ class _TrashedMailsPageState extends State<TrashedMailsPage> {
             final subject = email.subject;
             final sender = email.senderName;
             final date = email.receivedDate;
-            final body = email.body;
+            final body = HtmlToPlainTextConverter.convert(email.body);
             final time =
                 '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
             DateTime now = DateTime.now();
