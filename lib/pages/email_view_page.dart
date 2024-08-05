@@ -5,6 +5,7 @@ import 'package:enough_mail/enough_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/Storage/models/email.dart';
 import 'package:iitk_mail_client/Storage/models/message.dart';
+import 'package:iitk_mail_client/Storage/queries/mark_seen.dart';
 import 'package:iitk_mail_client/Storage/queries/toggle_flagged_status.dart';
 import 'package:iitk_mail_client/Storage/queries/toggle_trashed_status.dart';
 import 'package:iitk_mail_client/pages/forward_screen.dart';
@@ -15,6 +16,10 @@ import 'package:iitk_mail_client/services/open_files.dart';
 import 'package:iitk_mail_client/services/imap_service.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/gestures.dart'; 
+
 
 class EmailViewPage extends StatefulWidget {
   final Email email;
@@ -60,7 +65,9 @@ class _EmailViewPageState extends State<EmailViewPage> {
     uniqueId = widget.email.uniqueId;
     isFlagged = widget.email.isFlagged;
     isTrashed = widget.email.isTrashed;
-
+    if(widget.email.isRead==false){
+      markRead();
+    }
     // Fetch attachments if the email has attachments\
     if (widget.email.hasAttachment) {
       FetchAttachments.fetchMessageWithAttachments(
@@ -81,6 +88,18 @@ class _EmailViewPageState extends State<EmailViewPage> {
         logger.e('Failed to fetch message: $error');
       });
     }
+    else if(widget.email.isRead==false){
+      try{
+          ImapService.markRead(uniqueId: uniqueId, username: widget.username, password: widget.password);
+      }
+      catch(e){
+        logger.i("Failed to mark the mail as read");
+      }
+    }
+  }
+
+  Future <void> markRead() async{
+    await markSeen(widget.email.id);
   }
 
   Future <void> _setCredentials() async{
@@ -121,10 +140,65 @@ class _EmailViewPageState extends State<EmailViewPage> {
     }
     
   }
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url); // Convert String to Uri
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Error occured in opening url')));
+    }
+  }
+  bool _containsHtml(String input) {
+    final htmlPattern = RegExp(r'<[^>]*>');
+    return htmlPattern.hasMatch(input);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textStyle = theme.textTheme.bodyMedium?.copyWith(
+      color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.black87,
+      fontSize: 16,
+    );
+
+    final backgroundColor =theme.scaffoldBackgroundColor ;
+  
+    Widget _buildRichText(String text) {
+      final RegExp linkPattern = RegExp(
+        r'(https?:\/\/[^\s]+)',
+        caseSensitive: false,
+      );
+
+      final List<TextSpan> spans = [];
+      final matches = linkPattern.allMatches(text);
+
+      int lastMatchEnd = 0;
+
+      for (final match in matches) {
+        if (match.start > lastMatchEnd) {
+          spans.add(TextSpan(text: text.substring(lastMatchEnd, match.start)));
+        }
+        spans.add(
+          TextSpan(
+            text: match.group(0),
+            style: TextStyle(color: Colors.blue),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                _launchURL(match.group(0)!);
+              },
+          ),
+        );
+        lastMatchEnd = match.end;
+      }
+
+      if (lastMatchEnd < text.length) {
+        spans.add(TextSpan(text: text.substring(lastMatchEnd)));
+      }
+
+      return SelectableText.rich(
+        TextSpan(children: spans, style: textStyle),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.appBarTheme.backgroundColor ?? Colors.black,
@@ -325,15 +399,119 @@ class _EmailViewPageState extends State<EmailViewPage> {
                 const Divider(color: Colors.grey),
               ],
               const SizedBox(height: 8),
-              SelectableText(
-                body,
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.brightness == Brightness.dark
-                      ? Colors.white70
-                      : Colors.black87,
-                  fontSize: 16,
+              // SelectableText(
+              //   body,
+              //   style: theme.textTheme.bodyMedium?.copyWith(
+              //     color: theme.brightness == Brightness.dark
+              //         ? Colors.white70
+              //         : Colors.black87,
+              //     fontSize: 16,
+              //   ),
+              // ),
+              _containsHtml(body)
+        ? Html(
+              data: body,
+              style: {
+                "body": Style(
+                  color: textStyle?.color,
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0),
                 ),
-              ),
+                "h1": Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                    margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0), ),
+                "h2": Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "h3": Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "h4": Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "h5":Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "h6":Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "p":Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "span":Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                "div": Style(
+                  fontSize: FontSize(textStyle?.fontSize ?? 16.0), 
+                  backgroundColor: backgroundColor,color:  theme.brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                                     margin: Margins.all(0),
+                  padding: HtmlPaddings.all(0),
+                                    ),
+                                     "ul": Style(
+                    margin: Margins.all(0),
+                    padding: HtmlPaddings.all(0),
+                  ),
+                  "li": Style(
+                    margin: Margins.all(0),
+                    padding: HtmlPaddings.all(0),
+                  ),
+                  "br": Style(
+                    margin: Margins.all(0),
+                    padding: HtmlPaddings.all(0),
+                  ),
+                  "hr": Style(
+                    margin: Margins.all(0),
+                    padding: HtmlPaddings.all(0),
+                  ),
+              },
+               onLinkTap: (url, __,_) {
+                   if (url != null) {
+              _launchURL(url);
+            }
+                },
+            )
+          : _buildRichText(body),
+  
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

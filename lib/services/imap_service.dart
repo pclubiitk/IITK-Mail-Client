@@ -29,6 +29,7 @@ class ImapService {
       await client.connectToServer(serverName, port, isSecure: port == 993);
       await client.login(username, password);
       try{
+        logger.i("Lisitng mail boxes");
         final mailboxes = await client.listMailboxes();
         for (final mailbox in mailboxes) {
           logger.i('Folder: ${mailbox.name}');
@@ -210,6 +211,27 @@ class ImapService {
        await client.uidMarkUndeleted(sequence);
        logger.i("undeleted");
       }
+      await client.logout();
+    } on ImapException catch (e) {
+      throw Exception("IMAP failed with $e");
+    }
+  }
+    static Future<void> markRead({
+    required int uniqueId,
+    required String username,
+    required String password,
+    }) async {
+    final client = ImapClient(isLogEnabled: false);
+    try {
+      logger.i("UID : $uniqueId");
+      await client.connectToServer('qasid.iitk.ac.in', 993, isSecure: true);
+      await client.login(username, password);
+      await client.selectInbox();
+      
+      final sequence = MessageSequence.fromId(uniqueId, isUid: true);
+
+      await client.uidMarkSeen(sequence);
+      logger.i("email is if $uniqueId has been marked read");
       await client.logout();
     } on ImapException catch (e) {
       throw Exception("IMAP failed with $e");

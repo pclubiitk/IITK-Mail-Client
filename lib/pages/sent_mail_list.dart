@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iitk_mail_client/pages/compose_mail_page.dart';
 import 'package:iitk_mail_client/pages/email_view_page.dart';
+import 'package:iitk_mail_client/pages/search_page.dart';
 import 'package:iitk_mail_client/services/drawer_item.dart';
 import 'package:iitk_mail_client/services/imap_service.dart';
+import 'package:logger/logger.dart';
 import '../models/advanced_settings_model.dart';
 import 'package:iitk_mail_client/theme_notifier.dart';
 import '../Storage/initializeobjectbox.dart';
@@ -10,6 +12,9 @@ import "../Storage/models/email.dart";
 import 'package:provider/provider.dart';
 import 'package:iitk_mail_client/services/fetch_sentmail.dart';
 import 'sent_mail_view.dart';
+
+final logger = Logger();
+
 class SentEmailListPage extends StatefulWidget {
   final String username;
   final String password;
@@ -47,7 +52,7 @@ class _EmailListPageState extends State<SentEmailListPage> {
         _isLoading = false;
       });
     } catch (e) {
-      debugPrint("Failed to fetch emails: $e");
+      logger.e("Failed to fetch emails: $e");
     }
   }
 
@@ -69,6 +74,20 @@ class _EmailListPageState extends State<SentEmailListPage> {
               ),
             ),
             const Spacer(),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(
+                      username: widget.username,
+                      password: widget.password,
+                    ),
+                  ),
+                );
+              },
+            ),
             CircleAvatar(
               backgroundColor: theme.primaryColor,
               child: Text(
