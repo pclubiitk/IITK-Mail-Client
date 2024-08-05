@@ -5,29 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="649537e4-10a1-407a-9ce6-06a9f1ec00df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/address_book.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/advanced_settings_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/compose_mail_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/email_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/email_view_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/flagged_mails_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/forward_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/login_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/address_book.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/advanced_settings_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/compose_mail_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/emai_view_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/email_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/login_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/reply_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/sent_mail_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/sent_mail_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/old/settings_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/reply_screen.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/search_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_list.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_view.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/settings_page.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/pages/DesktopUI/trashed_mails_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/address_book.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/advanced_settings_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/compose_mail_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/emai_view_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/email_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/forward_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/login_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/reply_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/sent_mail_view.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/DesktopUI/settings_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/address_book.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/compose_mail_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/emai_view_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/email_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/forward_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/login_page.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/reply_screen.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/sent_mail_list.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/sent_mail_view.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/pages/TabletUI/settings_page.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/services/drawer_item_desktop.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/services/drawer_item_desktop.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +72,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;io.flutter.reload.alreadyRun&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/krish/IITK Mail Client/official/IITK-Mail-Client-official/lib/pages/DesktopUI/New&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/krish/IITK Mail Client/official/IITK-Mail-Client-official/lib/pages/DesktopUI&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
@@ -79,11 +82,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/lib/pages/DesktopUI/New" />
       <recent name="$PROJECT_DIR$/lib/pages/DesktopUI" />
+      <recent name="$PROJECT_DIR$/lib/pages/DesktopUI/old" />
+      <recent name="$PROJECT_DIR$/lib/pages/DesktopUI/New" />
       <recent name="$PROJECT_DIR$/lib/pages/TabletUI" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/lib/services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib/services" />

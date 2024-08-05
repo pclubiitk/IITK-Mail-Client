@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:iitk_mail_client/Components/navbar_item.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/New/address_book.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/New/login_page.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/New/sent_mail_list.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/New/email_list.dart';
+import 'package:iitk_mail_client/Storage/initializeobjectbox.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/address_book.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/email_list.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/flagged_mails_page.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/login_page.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/sent_mail_list.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/trashed_mails_page.dart';
 import 'package:iitk_mail_client/services/secure_storage_service.dart';
-import 'package:iitk_mail_client/pages/DesktopUI/New/settings_page.dart';
+import 'package:iitk_mail_client/pages/DesktopUI/settings_page.dart';
+import 'package:iitk_mail_client/route_provider.dart';
+import 'package:provider/provider.dart';
 
 /// The widget for side navigation bar, lists down NavBarItem widget for each navigation item
 
@@ -23,7 +28,6 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
 
   String? password;
 
-
   Future<void> getCredentials() async {
     username = await SecureStorageService.getUsername();
     password = await SecureStorageService.getPassword();
@@ -38,7 +42,6 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       color: theme.drawerTheme.backgroundColor,
@@ -57,31 +60,33 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
             textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
-           NavbarItem(
-            icon: Icons.send,
-            text: 'Sent',
-            onTap: () {Navigator.push(
-                context,
-                MaterialPageRoute(
-                 
-                  builder: (context) => SentEmailListPageDesktop(username: username!,password:password!,),
-                ),
-              );},
-            textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
-            iconColor: theme.iconTheme.color,
-          ),
           NavbarItem(
             icon: Icons.outbox,
             text: 'Outbox',
-            onTap: () {},
-            textStyle: theme.textTheme.bodyLarge
-                ?.copyWith(color: theme.colorScheme.onSurface),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+
+                  builder: (context) => SentEmailListPage(username: username!,password:password!,),
+                ),
+              );
+            },
+            textStyle: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
           ),
           NavbarItem(
             icon: Icons.flag,
             text: 'Flagged',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+
+                  builder: (context) => FlaggedMailsPage(username: username!,password:password!,),
+                ),
+              );
+            },
             textStyle: theme.textTheme.bodyLarge
                 ?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
@@ -89,7 +94,15 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
           NavbarItem(
             icon: Icons.delete,
             text: 'Trash',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+
+                  builder: (context) =>TrashedMailsPage(username: username!,password:password!,),
+                ),
+              );
+            },
             textStyle: theme.textTheme.bodyLarge
                 ?.copyWith(color: theme.colorScheme.onSurface),
             iconColor: theme.iconTheme.color,
@@ -126,11 +139,12 @@ class _DrawerItemsState extends State<DrawerItemsDesktop> {
             text: 'Log Out',
             onTap: () {
               SecureStorageService.clearCredentials();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
+              final routeProvider = Provider.of<RouteProvider>(context, listen: false);
+              routeProvider.initialRoute = '/login';
+              objectbox.emailBox.removeAll();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                    (Route<dynamic> route) => false,
               );
             },
             textStyle: theme.textTheme.bodyLarge
