@@ -183,8 +183,8 @@ class _EmailListPageState extends State<EmailListPage> {
                     ),
                   ),
                 ).then((_) => setState(() {
-                  emails = getEmailsOrderedByUniqueId();
-                }));
+                      emails = getEmailsOrderedByUniqueId();
+                    }));
               },
             ),
             CircleAvatar(
@@ -244,7 +244,7 @@ class _EmailListPageState extends State<EmailListPage> {
                     final subject = email.subject;
                     final sender = email.senderName;
                     final date = email.receivedDate;
-                    final body =HtmlToPlainTextConverter.convert(email.body);
+                    final body = HtmlToPlainTextConverter.convert(email.body);
                     final isSeen = email.isRead;
                     final time =
                         '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
@@ -303,68 +303,84 @@ class _EmailListPageState extends State<EmailListPage> {
                                   sender.length > 23
                                       ? '${sender.substring(0, 23)}...'
                                       : sender,
-                                  style: isSeen?TextStyle(
-                                    fontSize: 10,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ): TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 10,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
+                                  style: isSeen
+                                      ? TextStyle(
+                                          fontSize: 10,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        )
+                                      : TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 10,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                 ),
                                 Text(
                                   day,
-                                  style: isSeen?TextStyle(   
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 11,
-                                  ):TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 11,
-                                  ),
+                                  style: isSeen
+                                      ? TextStyle(
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 11,
+                                        )
+                                      : TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 11,
+                                        ),
                                 ),
+                                if (email.hasAttachment)
+                                  Icon(
+                                    Icons.attachment,
+                                    color: themeNotifier.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
+                                    size: 16.0,
+                                  ),
                               ],
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(subject.trim(),
                                   maxLines: 1,
-                                  style: isSeen?TextStyle(
-                                    fontSize: 12,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ):TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 12,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
+                                  style: isSeen
+                                      ? TextStyle(
+                                          fontSize: 12,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        )
+                                      : TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 12,
+                                          color: themeNotifier.isDarkMode
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
                                   overflow: TextOverflow.ellipsis),
                             ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 normalizeSpaces(body),
-                                style: isSeen?TextStyle(
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.7),
-                                  fontSize: 12,
-                                ):TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.7),
-                                  fontSize: 12,
-                                ),
+                                style: isSeen
+                                    ? TextStyle(
+                                        color: theme.colorScheme.onSurface
+                                            .withOpacity(0.7),
+                                        fontSize: 12,
+                                      )
+                                    : TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        color: theme.colorScheme.onSurface
+                                            .withOpacity(0.7),
+                                        fontSize: 12,
+                                      ),
                                 maxLines: 1,
                                 softWrap: false,
                                 overflow: TextOverflow.ellipsis,
