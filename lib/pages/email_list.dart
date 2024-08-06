@@ -299,25 +299,42 @@ class _EmailListPageState extends State<EmailListPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  sender.length > 23
-                                      ? '${sender.substring(0, 23)}...'
-                                      : sender,
-                                  style: isSeen
-                                      ? TextStyle(
-                                          fontSize: 10,
-                                          color: themeNotifier.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                        )
-                                      : TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 10,
-                                          color: themeNotifier.isDarkMode
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
+                                Expanded(
+                                  child: Text(
+                                    sender.length > 23
+                                        ? '${sender.substring(0, 23)}...'
+                                        : sender,
+                                    style: isSeen
+                                        ? TextStyle(
+                                            fontSize: 10,
+                                            color: themeNotifier.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
+                                          )
+                                        : TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 10,
+                                            color: themeNotifier.isDarkMode
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                  ),
                                 ),
+                                if (email.hasAttachment)
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.attachment,
+                                        color: themeNotifier.isDarkMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                        size: 18.0,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      )
+                                    ],
+                                  ),
                                 Text(
                                   day,
                                   style: isSeen
@@ -335,14 +352,6 @@ class _EmailListPageState extends State<EmailListPage> {
                                           fontSize: 11,
                                         ),
                                 ),
-                                if (email.hasAttachment)
-                                  Icon(
-                                    Icons.attachment,
-                                    color: themeNotifier.isDarkMode
-                                        ? Colors.white
-                                        : Colors.black,
-                                    size: 16.0,
-                                  ),
                               ],
                             ),
                             Align(
