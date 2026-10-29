@@ -19,6 +19,7 @@ import 'package:logger/logger.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/gestures.dart'; 
+import 'package:flutter/services.dart';
 
 
 class EmailViewPage extends StatefulWidget {
@@ -140,6 +141,16 @@ class _EmailViewPageState extends State<EmailViewPage> {
     }
     
   }
+  Future<void> _copyEmailContent() async {
+    final content = 'From: $sender\nDate: $date\nSubject: $subject\n\n$body';
+    await Clipboard.setData(ClipboardData(text: content));
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Email content copied to clipboard')),
+      );
+    }
+  }
+
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url); // Convert String to Uri
     if (await canLaunchUrl(uri)) {
@@ -210,6 +221,12 @@ class _EmailViewPageState extends State<EmailViewPage> {
           },
         ),
         actions: [
+          IconButton(
+            icon: Icon(Icons.copy, color: theme.appBarTheme.iconTheme?.color),
+            onPressed: () {
+              _copyEmailContent();
+            },
+          ),
           !isTrashed
           ? IconButton(
             icon: Icon(Icons.delete_outline, color: theme.appBarTheme.iconTheme?.color),
