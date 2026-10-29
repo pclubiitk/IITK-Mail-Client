@@ -85,7 +85,7 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
       password: widget.password,
       to: _toController.map((e) => e.text).toList(),
       subject: _subjectController.text,
-      body: _bodyController.text,
+      body: _getBodyWithSignature(_bodyController.text),
       attachmentPaths: _attachmentPaths,
       onResult: (message, color) {
         setState(() {
@@ -258,5 +258,14 @@ class _ComposeEmailPageState extends State<ComposeEmailPage> {
         ),
       ),
     );
+  }
+
+  /// Returns the email body with default signature appended
+  String _getBodyWithSignature(String body) {
+    final signature = '\n\n---\nSent from IITK Mail Client';
+    if (body.isEmpty) {
+      return signature;
+    }
+    return body + signature;
   }
 }
